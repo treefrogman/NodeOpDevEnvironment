@@ -1,2 +1,2 @@
-# N-de
+# Nøde
 Nøde Operating / Development Environment
