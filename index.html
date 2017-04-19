@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- author: Miles Cooley <miles@milescooley.com> -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<link rel="icon" href="../favicon.ico" sizes="16x16" type="image/png">
+		<link rel="stylesheet" type="text/css" href="node/node.css" />
+		<title>Nøde</title>
+		<meta http-equiv="Content-Style-Type" content="text/css" />
+		<meta http-equiv="Content-Script-Type" content="text/javascript" />
+	</head>
+	<body>
+		<script type="text/javascript" src="node/node.js"></script>
+		<script type="text/javascript" src="node/socket.js"></script>
+		<script type="text/javascript" src="node/connector.js"></script>
+		<script type="text/javascript" src="node/nodeframe.js"></script>
+		<script type="text/javascript" src="node/nodeview.js"></script>
+		<script type="text/javascript" src="fancy-o.js"></script>
+		<script type="text/javascript">
+
+window.onload = function() {
+	var myView = new N0deView(document);
+	var viewElement = myView.getElement();
+	document.body.appendChild(viewElement);
+	
+	var pow=new N0de(document,"Exponentiation",[["Base","Exponent"],["Power"]]);	
+	var sum=new N0de(document,"Addition",[["Term 1","Term 2"],["Sum"]]);
+	var zero=new N0de(document,"Zero",[[],["0"]]);
+	var one=new N0de(document,"One",[[],["1"]]);
+	var two=new N0de(document,"Two",[[],["2"]]);
+	var neg=new N0de(document,"Negation",[["Value"],["Negative"]]);
+	var N = new N0de(document,"Q",[["a", "b"],["c"]]);
+	
+	myView.addN0de(sum,420,140);
+	myView.addN0de(zero,300,100);
+	myView.addN0de(pow,300,200);
+	myView.addN0de(two,180,120);
+	myView.addN0de(one,30,150);
+	myView.addN0de(neg,160,200);
+	myView.addN0de(N,0,0);
+	
+	pow.s0ck(1,1).c0nnectTo(sum.s0ck(0,2));
+	zero.s0ck(1,1).c0nnectTo(sum.s0ck(0,1));
+	one.s0ck(1,1).c0nnectTo(neg.s0ck(0,1));
+	two.s0ck(1,1).c0nnectTo(pow.s0ck(0,1));
+	neg.s0ck(1,1).c0nnectTo(pow.s0ck(0,2));
+	myView.resizeToFitWindow();
+	myView.centerViewOnN0des();
+};
+
+		</script>
+	</body>
+</html>

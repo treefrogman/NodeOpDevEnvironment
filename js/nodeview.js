@@ -1,3 +1,8 @@
+var ff = navigator.userAgent.match("Firefox");
+if (ff) {
+	alert("Nøde is only tested in Chrome, and uses some fancy features, so it probably won't work in Firefox.");
+}
+
 function arrayMath(operator, array1, array2) {
 	var operators = {
 			product: function (a, b) {
@@ -23,6 +28,111 @@ function arrayClip(coords, bounds) {
 	var min = arrayMath("max", coords, bounds.min);
 	return arrayMath("min", min, bounds.max);
 }
+
+function Curs0r(x, y) {
+	var x = x || 0,
+		y = y || 0,
+		dropped = false,
+		connector,
+		mousemove = function mousemove(evt) {
+			if (dropped) return;
+			x = evt.x;
+			y = evt.y;
+			connector && connector.update();
+		},
+		that = {
+			putC0nnector: function putC0nnector(c) {
+				connector = c;
+			},
+			getX: function getX() {
+				return x;
+			},
+			getY: function getY() {
+				return y;
+			},
+			drop: function drop() {
+				dropped = true;
+			}
+		};
+	window.addEventListener("mousemove", mousemove, false);
+	return that;
+}
+
+
+
+
+
+[pow,zero,one,two,neg,sum,N].some(function(a){
+		var e=a.getEl();
+		e.onmousedown=function(evt){
+			/*if (evt.target.className.baseVal.match(/s0cket/)) {
+				Array.prototype.concat.apply([], a.getS0ckets()).forEach(function (a) {
+					var el = a.getEl(),
+						curs0r;
+					if (evt.target === el) {
+						curs0r = Curs0r(evt.x, evt.y);
+						a.c0nnectTo(curs0r);
+						window.addEventListener("mouseup", function mUp(evt) {
+							console.log(evt.target);
+							curs0r.drop();
+							window.removeEventListener("mouseup", mUp);
+						}, false);
+					}
+				});
+				return;
+			}*/
+			window.dragee=a;
+			a.bringToFront();
+			window.dragAnchorX=evt.pageX-a.getX();
+			window.dragAnchorY=evt.pageY-a.getY();
+		};
+	});
+	window.onmousedown = function (evt) {
+		if (evt.target.getAttribute("class") === "n0deview") {
+			evt.stopPropagation();
+			evt.preventDefault();
+			evt.target.requestPointerLock();
+			window.dragee = myView;
+			window.onmousemove = function (evt) {
+				window.dragee.offsetView(evt.movementX, evt.movementY);
+			}
+			window.onmouseup = function () {
+				window.onmouseup = window.onmousemove = null;
+				document.exitPointerLock();
+			};
+			document.body.setAttribute("class", "");//"grabbing");
+			//window.dragAnchorX=evt.pageX;
+			//window.dragAnchorY=evt.pageY;
+		}
+	};
+	window.onmousemove=function(evt){
+		if (window.dragee) {
+			if(window.dragee.constructor.name === "N0de") {
+				//console.log(evt.pageX, window.dragAnchorX);
+				window.dragee.moveTo(evt.pageX-window.dragAnchorX,evt.pageY-window.dragAnchorY);
+			} else if (window.dragee.constructor.name === "N0deView") {
+				//window.dragee.offsetView(evt.pageX - window.dragAnchorX, evt.pageY - window.dragAnchorY);
+				//window.dragAnchorX = evt.pageX;
+				//window.dragAnchorY = evt.pageY;
+			}
+		}
+	}
+	window.onmouseup = function(evt){
+		document.body.setAttribute("class", "");
+		window.dragee=null;
+	};
+	window.onmouseout = function(evt){
+		//if (evt.toElement === null) { window.dragee=null; }// || evt.toElement.tagName.match(/html/i)
+	};/*
+	window.onresize = function(evt) {
+		myView.setSize(window.innerWidth,window.innerHeight);
+	}*/
+	
+	
+	
+	
+	
+
 
 function N0deView(doc){
 	// Variables
