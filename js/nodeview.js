@@ -3,166 +3,109 @@ if (ff) {
 	alert("Nøde is only tested in Chrome, and uses some fancy features, so it probably won't work in Firefox.");
 }
 
-function arrayMath(operator, array1, array2) {
+function arrayMath(operator, array1, array2, array3) {
 	var operators = {
-			product: function (a, b) {
-				return a * b;
+			product: function (a, b, c) {
+				return a * b + c;
 			},
-			sum: function (a, b) {
-				return a + b;
+			sum: function (a, b, c) {
+				return a + b + c;
 			},
-			min: function (a, b) {
-				return Math.min(a, b);
+			min: function (a, b, c) {
+				return Math.min(a, b, c);
 			},
-			max: function (a, b) {
-				return Math.max(a, b);
+			max: function (a, b, c) {
+				return Math.max(a, b, c);
 			}
 		},
 		result = [];
 	array1.forEach(function (a, i) {
-		result.push(operators[operator](array1[i], array2[i]));
+		var thisResult = operators[operator].apply(Array.prototype.map.call(arguments, function (a) {
+			return a[i];
+		}));
+		result.push(thisResult);
 	});
 	return result;
 }
 function arrayClip(coords, bounds) {
-	var min = arrayMath("max", coords, bounds.min);
-	return arrayMath("min", min, bounds.max);
+	//var min = arrayMath("max", coords, bounds.min);
+	//return arrayMath("min", min, bounds.max);
+	var xmin = Math.max(coords[0], bounds.min[0]),
+		ymin = Math.max(coords[1], bounds.min[1]);
+	return [
+		Math.min(xmin, bounds.max[0]),
+		Math.min(ymin, bounds.max[1])
+	];
 }
 
-function Curs0r(x, y) {
-	var x = x || 0,
-		y = y || 0,
-		dropped = false,
-		connector,
-		mousemove = function mousemove(evt) {
-			if (dropped) return;
-			x = evt.x;
-			y = evt.y;
-			connector && connector.update();
-		},
-		that = {
-			putC0nnector: function putC0nnector(c) {
-				connector = c;
-			},
-			getX: function getX() {
-				return x;
-			},
-			getY: function getY() {
-				return y;
-			},
-			drop: function drop() {
-				dropped = true;
-			}
-		};
-	window.addEventListener("mousemove", mousemove, false);
-	return that;
-}
+var svgNS = "http://www.w3.org/2000/svg",
+	xlinkNS = "http://www.w3.org/1999/xlink";
 
-
-
-
-
-[pow,zero,one,two,neg,sum,N].some(function(a){
-		var e=a.getEl();
-		e.onmousedown=function(evt){
-			/*if (evt.target.className.baseVal.match(/s0cket/)) {
-				Array.prototype.concat.apply([], a.getS0ckets()).forEach(function (a) {
-					var el = a.getEl(),
-						curs0r;
-					if (evt.target === el) {
-						curs0r = Curs0r(evt.x, evt.y);
-						a.c0nnectTo(curs0r);
-						window.addEventListener("mouseup", function mUp(evt) {
-							console.log(evt.target);
-							curs0r.drop();
-							window.removeEventListener("mouseup", mUp);
-						}, false);
-					}
-				});
-				return;
-			}*/
-			window.dragee=a;
-			a.bringToFront();
-			window.dragAnchorX=evt.pageX-a.getX();
-			window.dragAnchorY=evt.pageY-a.getY();
-		};
-	});
-	window.onmousedown = function (evt) {
-		if (evt.target.getAttribute("class") === "n0deview") {
-			evt.stopPropagation();
-			evt.preventDefault();
-			evt.target.requestPointerLock();
-			window.dragee = myView;
-			window.onmousemove = function (evt) {
-				window.dragee.offsetView(evt.movementX, evt.movementY);
-			}
-			window.onmouseup = function () {
-				window.onmouseup = window.onmousemove = null;
-				document.exitPointerLock();
-			};
-			document.body.setAttribute("class", "");//"grabbing");
-			//window.dragAnchorX=evt.pageX;
-			//window.dragAnchorY=evt.pageY;
-		}
-	};
-	window.onmousemove=function(evt){
-		if (window.dragee) {
-			if(window.dragee.constructor.name === "N0de") {
-				//console.log(evt.pageX, window.dragAnchorX);
-				window.dragee.moveTo(evt.pageX-window.dragAnchorX,evt.pageY-window.dragAnchorY);
-			} else if (window.dragee.constructor.name === "N0deView") {
-				//window.dragee.offsetView(evt.pageX - window.dragAnchorX, evt.pageY - window.dragAnchorY);
-				//window.dragAnchorX = evt.pageX;
-				//window.dragAnchorY = evt.pageY;
-			}
-		}
-	}
-	window.onmouseup = function(evt){
-		document.body.setAttribute("class", "");
-		window.dragee=null;
-	};
-	window.onmouseout = function(evt){
-		//if (evt.toElement === null) { window.dragee=null; }// || evt.toElement.tagName.match(/html/i)
-	};/*
-	window.onresize = function(evt) {
-		myView.setSize(window.innerWidth,window.innerHeight);
-	}*/
-	
-	
-	
-	
-	
-
-
-function N0deView(doc){
+function NødeView(doc){
 	// Variables
 	var element = doc.createElementNS(svgNS, "svg"),
-		n0des = [],
-		viewCenter = [0, 0],
+		nødesElement = doc.createElementNS(svgNS, "g"),
+		cønnectørsElement = doc.createElementNS(svgNS, "g"),
+		nødes = [],
+		cønnectørs = [],
+		viewCenterOffset = [0, 0],
 		viewDimensions = [100, 100],
-		zoomLevel = 1,
-		svgNS = "http://www.w3.org/2000/svg";
+		zoomLevel = 1;
 	
-	// Element
-	element.setAttribute('class', 'n0deview');
+	// Document
+	function getDocument() {
+		return doc;
+	}
+	
+	// Elements
+	element.setAttribute('class', 'nødeview');
+	element.appendChild(nødesElement);
+	element.appendChild(cønnectørsElement);
 	function getElement() {
 		return element;
 	}
 	
 	// Nødes
-	function getBoundsOfAllN0desTogether(offs) {
+	function createNøde(title, søckets, position) {
+		var nøde = new this.memberConstructors.Nøde(this, title, søckets, position);
+		nødes.push(nøde);
+		nødesElement.appendChild(nøde.getNødeElement());
+		return nøde;
+	}
+	function getBoundsOfAllNødesTogether(offs) {
+		var xs = [],
+			ys = [],
+			xmin, xmax, ymin, ymax;
+		nødes.forEach(function (a, i) {
+			var bbox = a.getBoundingBox(),
+				x = bbox[0][0],
+				y = bbox[0][1],
+				w = bbox[1][0],
+				h = bbox[1][1];
+			xs.push(x);
+			xs.push(x + w);
+			ys.push(y);
+			ys.push(y + h);
+		});
+		xmin = Math.min.apply(null, xs);
+		xmax = Math.max.apply(null, xs);
+		ymin = Math.min.apply(null, ys);
+		ymax = Math.max.apply(null, ys);
+		return {min: [xmin, ymin], max: [xmax, ymax]};
+		
+		
 		// Rewrite using four arrays, then apply maxInArray to each.!!
 		// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/max#Using_Math.max()
 		/* 
 	Array.prototype.max = function arrayMax() {
 			return Math.max.apply(null, this);
 		};
-	 */
-		var offset = n0des[0].getOffset(),
-			c=n0des[0].getBBox(),
+	 *//*
+		var offset = nødes[0].getPosition(),
+			c=nødes[0].getBBox(),
 			xMin=xMax=c.x,
 			yMin=yMax=c.y;
-		n0des.some(function(a){
+		nødes.some(function(a){
 			var x, y;
 			c=a.getBBox();
 			x = c.x + offset[0] * Boolean(offs);
@@ -171,36 +114,50 @@ function N0deView(doc){
 			if(xMax<x+c.w)xMax=x+c.w;
 			if(yMin>y)yMin=y;
 			if(yMax<y+c.h)yMax=y+c.h;
-		});
+		});*/
 		//return {xMin: xMin, xMax: xMax, yMin: yMin, yMax: yMax};
-		return {min: [xMin, yMin], max: [xMax, yMax]};
 	}
-	function addN0de(n0de, x, y){ // Needs work!!
-		element.insertBefore(n0de.getEl(), element.childNodes[0]);
-		if (n0de.setView) {
-			n0de.setView(this, x, y);
+	/*function addNøde(nøde, x, y){ // Needs work!!
+		nødesElement.insertBefore(nøde.getNødeElement(), element.childNodes[0]);
+		if (nøde.setView) {
+			nøde.setView(this, x, y);
 		}
-		if (n0de.constructor.name=="N0de") {
-			n0des.push(n0de);
+		if (nøde.constructor.name=="Nøde") {
+			nødes.push(nøde);
 		}
-	}
-	function bringToFront(n0de){
-		element.appendChild(n0de.getElement());
+	}*/
+	function bringToFront(nøde){
+		nødesElement.appendChild(nøde.getNødeElement());
 	}
 	
-	function repositionN0des() { // Rewrite!! Broken
+	function repositionNødes() { // Rewrite!! Broken
 		var inverseArray = [-1, -1],
-			offset = arrayMath("product", viewCenter, inverseArray);
-		n0des.forEach(function (a) {
-			//console.log(offset);
-			a.offset.apply(a, offset);
+			halfViewDimensions = [
+				viewDimensions[0] / 2,
+				viewDimensions[1] / 2
+			],
+			//arrayMath("product", viewDimensions, [.5, .5]),
+			viewOffset = [
+				viewCenterOffset[0] + halfViewDimensions[0],
+				viewCenterOffset[1] + halfViewDimensions[1]
+			];
+			//arrayMath("sum", viewCenterOffset, halfViewDimensions);
+		nødes.forEach(function (a) {
+			a.setViewOffset(viewOffset);
+			//console.log(viewCenterOffset);
+			//a.offset.apply(a, viewCenterOffset);
 		});
 	}
 	
-	// C0nnect0rs
-	function addC0nnect0r(c0nnect0r, x, y) { // NYI!!
-		
+	// Cønnectørs
+	function createCønnectør(søckets) {
+		return new this.memberConstructors.Cønnectør(this, søckets);
 	}
+	/* 
+function addCønnectør(cønnectør, x, y) { // NYI!!
+		element.insertBefore(cønnectør.getEl(), element.childNodes[0]);
+	}
+ */
 	
 	// Frame
 	// Add functions for handling the frame
@@ -213,35 +170,74 @@ function N0deView(doc){
 		document.body.style.maxWidth = w; // What for?!!
 		document.body.style.maxHeight = h; // What for?!!
 		
-		viewCenter = clipCenterToBounds(viewCenter);
-		repositionN0des();
+		viewCenterOffset = clipCenterToBounds(viewCenterOffset);
+		repositionNødes();
 		repositionBackground();
 	}
-	function clipCenterToBounds(newCenter) {
-		var n0deBounds = getBoundsOfAllN0desTogether(),
-			halfViewDimensions = arrayMath("product", viewDimensions, [.5, .5]),
-			margins = [25, 25],
+	function clipCenterToBounds(newCenterOffset) {
+		var nødeBounds = getBoundsOfAllNødesTogether(),
+			halfViewDimensions = [
+				viewDimensions[0] / 2,
+				viewDimensions[1] / 2
+			],
+			//arrayMath("product", viewDimensions, [.5, .5]),
+			margin = 10,
 			inverseArray = [-1, -1],
-			// Calculate centerBounds based on viewBounds, n0deBounds, margins
+			// Calculate centerBounds based on viewBounds, nødeBounds, margins
 			centerBounds = {
-				// *ArrayMath: min = n0deBounds.min - halfViewDimensions + margins
-				min: arrayMath("sum", n0deBounds.min, arrayMath("product", halfViewDimensions, inverseArray), margins),
-				// *ArrayMath: max = n0deBounds.max + halfViewDimensions - margins
-				max: arrayMath("sum", n0deBounds.max, halfViewDimensions, arrayMath("product", margins, inverseArray)),
+				// *ArrayMath: min = -(nødeBounds.min - halfViewDimensions + margins)
+				/*min: arrayMath("product",
+					arrayMath("sum",
+						nødeBounds.max,
+						halfViewDimensions,
+						arrayMath("product",
+							margins,
+							inverseArray
+						)
+					),
+					inverseArray
+				),
+				// *ArrayMath: max = -(nødeBounds.min + halfViewDimensions - margins)
+				max: arrayMath("product",
+					arrayMath("sum",
+						nødeBounds.min,
+						arrayMath("product",
+							halfViewDimensions,
+							inverseArray
+						),
+						margins
+					),
+					inverseArray
+				)*/
+				
+				max: [
+					-(nødeBounds.min[0] - halfViewDimensions[0] + margin),
+					-(nødeBounds.min[1] - halfViewDimensions[1] + margin)
+				],
+				min: [
+					-(nødeBounds.max[0] + halfViewDimensions[0] - margin),
+					-(nødeBounds.max[1] + halfViewDimensions[1] - margin)
+				]
 			};
-		// Clip newCenter to centerBounds
-		return arrayClip(newCenter, centerBounds);
+			//console.log(centerBounds);
+		// Clip newCenterOffset to centerBounds
+		console.log(nødeBounds);
+		return arrayClip(newCenterOffset, centerBounds);
 	}
-	function centerViewOnN0des() {
-		var n0deBounds = getBoundsOfAllN0desTogether();
-		// *ArrayMath: viewCenter = (n0deBounds.min + n0deBounds.max) * .5
-		viewCenter = arrayMath("product", arrayMath("sum", n0deBounds.min, n0deBounds.max), [.5, .5])
-		repositionN0des();
+	function centerViewOnNødes() {
+		var nødeBounds = getBoundsOfAllNødesTogether();
+		// *ArrayMath: viewCenterOffset = (nødeBounds.min + nødeBounds.max) * .5
+		viewCenterOffset = [
+			(nødeBounds.min[0] + nødeBounds.max[0]) / 2,
+			(nødeBounds.min[1] + nødeBounds.max[1]) / 2
+		];
+		//arrayMath("product", arrayMath("sum", nødeBounds.min, nødeBounds.max), [.5, .5])
+		repositionNødes();
 		repositionBackground();
 	}
 	function repositionBackground() {
 		// Integrate background pattern into SVG?
-		document.body.style.backgroundPosition = viewCenter.concat("").join("px ");
+		document.body.style.backgroundPosition = viewCenterOffset.concat("").join("px ");
 	}
 	function clear() { // Why is this here? !!
 		//this.el.setAttribute('width', this.el.getAttribute('width'));
@@ -254,18 +250,26 @@ function N0deView(doc){
 		// Incomplete!!
 	}
 	function pan(delta) {
-		var newCenter = arrayMath("sum", viewCenter, delta),
+		var newCenterOffset = [
+				viewCenterOffset[0] + delta[0],
+				viewCenterOffset[1] + delta[1]
+			],
+		//arrayMath("sum", viewCenterOffset, delta),
 			inverseArray = [-1, -1],
 			clippedDelta;
-		newCenter = clipCenterToBounds(newCenter);
-		clippedDelta = arrayMath("sum", newCenter, arrayMath("product", viewCenter, inverseArray))
-		viewCenter = newCenter;
+		newCenterOffset = clipCenterToBounds(newCenterOffset);
+		clippedDelta = [
+			newCenterOffset[0] - viewCenterOffset[0],
+			newCenterOffset[1] - viewCenterOffset[1]
+		];
+		//arrayMath("sum", newCenterOffset, arrayMath("product", viewCenterOffset, inverseArray))
+		viewCenterOffset = newCenterOffset;
 		
-		repositionN0des();
+		repositionNødes();
 		repositionBackground();
 		
 		// Eww. Rewrite!! vvvvvv
-		if (window.dragee && window.dragee.constructor.name === "N0de") {
+		if (window.dragee && window.dragee.constructor.name === "Nøde") {
 			window.dragAnchorX += deltaX;  // Use clippedDelta
 			window.dragAnchorY += deltaY;  // Use clippedDelta
 			window.dragee.moveTo(evt.pageX-window.dragAnchorX, evt.pageY-window.dragAnchorY);
@@ -301,18 +305,18 @@ function N0deView(doc){
 	// Publications
 	this.getElement = getElement;
 	this.resizeToFitWindow = resizeToFitWindow;
-	this.centerViewOnN0des = centerViewOnN0des;
-	this.addN0de = addN0de;
-	this.addC0nnect0r = addC0nnect0r;
+	this.centerViewOnNødes = centerViewOnNødes;
+	//this.addNøde = addNøde;
 	this.clear = clear;
+	this.createNøde = createNøde;
+	this.createCønnectør = createCønnectør;
+	this.getDocument = getDocument;
 }
+NødeView.prototype.memberConstructors = {};
 
 
 
-
-
-
-N0deView.prototype.setFramex=function(x, y, w, h){
+NødeView.prototype.setFramex=function(x, y, w, h){
 	this.width = w;
 	this.height = h;
 	this.el.setAttribute('viewBox', [0, 0, w, h].join(" "));
@@ -322,7 +326,7 @@ N0deView.prototype.setFramex=function(x, y, w, h){
 	/* this.el.style.height = (h) + "px"; */
 	//this.offset = [-x, -y];
 }
-N0deView.prototype.autoSizex=function(center){
+NødeView.prototype.autoSizex=function(center){
 	var winW = window.innerWidth,
 		winH = window.innerHeight,
 		offsetX = mouse.inWindow ? mouse.xR : 0.5,
@@ -336,8 +340,8 @@ N0deView.prototype.autoSizex=function(center){
 	document.body.style.maxWidth = winW;
 	document.body.style.maxHeight = winH;
 	
-	if(center && this.n0des.length){
-		nodesBounds = this.getBoundsOfAllN0desTogether(true);
+	if(center && this.nødes.length){
+		nodesBounds = this.getBoundsOfAllNødesTogether(true);
 		this.offsetView((winW - (nodesBounds.xMin + nodesBounds.xMax)) / 2, (winH - (nodesBounds.yMin + nodesBounds.yMax)) / 2);
 		//this.setFrame(xMin, yMin, xMax, yMax); 
 	}

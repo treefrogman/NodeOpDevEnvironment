@@ -1,0 +1,13 @@
+NodeList.prototype.some=Array.prototype.some;
+Node.prototype.getBounds=function(){
+	var l=this.offsetLeft,
+		t=this.offsetTop;
+	if(this.offsetParent){
+		var o=this.offsetParent;
+		do{
+			l+=(o.offsetLeft-(o.scrollLeft||0));
+			t += (o.offsetTop - (o.scrollTop || 0));
+		}while(o = o.offsetParent);
+	}
+	return new Rectangle(l, t, this.offsetWidth, this.offsetHeight);
+};

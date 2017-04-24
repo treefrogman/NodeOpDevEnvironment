@@ -30,7 +30,11 @@ body.grid {
 	background-size: 56px 56px, 56px 56px;
 }
 
-.n0deview {
+svg {
+	overflow: initial;
+}
+
+.nødeview {
 	top: 0;
 	left: 0;
 	right: 0;
@@ -44,47 +48,52 @@ body.grid {
 	cursor: grabbing;
 }
 
-.c0nn{
+.cønn{
 	fill: none;
 	stroke-width: 1.5;
 	stroke: black;
 	stroke-linecap: round;
 }
-.c0nnBack{
+.cønnBack{
 	fill: none;
 	stroke-width: 3.5;
 	stroke: white;
 	stroke-linecap: round;
 }
-.c0nnText{
+.cønnText{
 	fill: black;
 	font-family: "Trebuchet MS", "Lucida Grande", sans-serif;
 	font-size: 11px;
 }
-.c0nnText textPath{
+.cønnText textPath{
 	alignment-baseline: middle;
 }
-.c0nnTextBack{
+.cønnTextBack{
 	fill: none;
 	stroke-width: 12;
 	stroke: white;
 	stroke-linecap: round;
 }
-.n0de{
+.nødeBox {
+	stroke-width: 1.5;
+	stroke: black;
+	fill: white;
+	fill-opacity: 0.98;
+}
+.søcket{
 	fill:white;
 	stroke-width: 1.5;
 	stroke: black;
-	fill-opacity:0.98;
 }
-.s0cket{
-	fill:white;
-	stroke-width: 1.5;
-	stroke: black;
-}
-.s0cket:active{
-	fill:orange;
+.søcketLabelText {
+	font-family: "Trebuchet MS", "Lucida Grande", sans-serif;
+	font-size: 12px;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	user-select: none;
 }
 .titleText{
+	text-anchor: middle;
 	/* font-family: "Helvetica"; */
 	font-family: "Trebuchet MS", "Lucida Grande", sans-serif;
 	font-size: 15px;
