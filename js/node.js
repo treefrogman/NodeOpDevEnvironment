@@ -42,6 +42,7 @@ function svgRoundedRect(x, y, w, h, r) {
 	
 	return d.join(" ");
 }
+/* 
 function sum(n, i, f) {
 	var x = 0;
 	for ( ; i <= n ; i++) {
@@ -56,6 +57,18 @@ function distance(p, q) {
 		i -= 1;
 		return Math.pow(q[i] - p[i], 2);
 	}), .5);
+}
+ */
+function getTextBBox(doc, textElement) {
+	var tempSVG = doc.createElementNS(svgNS, "svg"),
+		body = doc.body,
+		bBox;
+	body.appendChild(tempSVG);
+	tempSVG.appendChild(textElement);
+	bBox = textElement.getBBox();
+	body.removeChild(tempSVG);
+	tempSVG.removeChild(textElement);
+	return bBox;
 }
 Element.prototype.setAttributes = function (attributes) {
 	var element = this;
@@ -76,6 +89,7 @@ var svgNS = "http://www.w3.org/2000/svg",
 			},
 			doc = view.getDocument(),
 			titleObject = createTitleObject(titleText),
+			søcketsObject = createSøcketsObject(søckets),
 			boxDimensions = calculateBoxDimensions(titleObject.bbox, []),
 			boxElement = createBoxElement(),
 			nødeElement = createNødeElement(),
@@ -87,18 +101,7 @@ var svgNS = "http://www.w3.org/2000/svg",
 			return view;
 		}
 		
-		// Elements
-		function getTextBBox(doc, textElement) {
-			var tempSVG = doc.createElementNS(svgNS, "svg"),
-				body = doc.body,
-				bBox;
-			body.appendChild(tempSVG);
-			tempSVG.appendChild(textElement);
-			bBox = textElement.getBBox();
-			body.removeChild(tempSVG);
-			tempSVG.removeChild(textElement);
-			return bBox;
-		}
+		// Title Object
 		function createTitleObject(text) {
 			var textNode = doc.createTextNode(text),
 				textElement = doc.createElementNS(svgNS, "text"),
@@ -113,8 +116,8 @@ var svgNS = "http://www.w3.org/2000/svg",
 				"class": "titleText"
 			});
 			textElementBBox = getTextBBox(doc, textElement);
-			backElementWidth = textElementBBox.width + (2 * margins.title); // - (ff ? 2 : 0);!!
-			backElementHeight = textElementBBox.height - 1; // - (ff ? 2 : 0);!!
+			backElementWidth = textElementBBox.width + (2 * margins.title);
+			backElementHeight = textElementBBox.height - 1;
 			backElement.setAttributes({
 				width: backElementWidth,
 				height: backElementHeight - 1,
@@ -124,8 +127,7 @@ var svgNS = "http://www.w3.org/2000/svg",
 				"class": "titleBack"
 			});
 			groupElement.setAttributes({
-				//x: backElementWidth / 2,
-				y: -backElementHeight * .56 // *.56?? Is this a hack for font zoom? Probably obsolete!!
+				y: -backElementHeight * .56
 			});
 			groupElement.appendChild(backElement);
 			groupElement.appendChild(textElement);
@@ -136,26 +138,9 @@ var svgNS = "http://www.w3.org/2000/svg",
 				bbox: textElementBBox
 			};
 		}
-		function calculateBoxDimensions(titleBBox, søcketBBoxes) {
-			var width = Math.ceil(titleBBox.width) + 24,
-				height = 20;
-				//(Math.max(søckets[0].length, søckets[1].length) - 1) * Søcket.margins.ea + Søcket.margins.top + Søcket.margins.bottom;
-			return [width, height];
-		}
 		
-		function createBoxElement() {
-			var boxElement = doc.createElementNS(svgNS, "path");
-			boxElement.setAttribute("class", "nødeBox");
-			return boxElement;
-		}
-		function resizeBoxElement() {
-			var width = boxDimensions[0],
-				height = boxDimensions[1];
-			boxElement.setAttribute("d", svgRoundedRect(0, 0, width, height, [0, 0, cornerRadius, cornerRadius]));
-		}
-		
-		// Søckets
-		function createSøcketsElement() {
+		// Søckets Element
+		function createSøcketsObject() {
 			
 		}
 		function repositionSøckets() {
@@ -169,6 +154,25 @@ var svgNS = "http://www.w3.org/2000/svg",
 			if (view) {
 				view.clear();
 			}
+		}
+		
+		// Box Element
+		function calculateBoxDimensions(titleBBox, søcketBBoxes) {
+			var width = Math.ceil(titleBBox.width) + 24, // This will need to be updated to include combined widths of (adjacent / longest) søcket names
+				height = 20;
+				// vv This should be kept as reference until rewritten (søcket height calculator)
+				//(Math.max(søckets[0].length, søckets[1].length) - 1) * Søcket.margins.ea + Søcket.margins.top + Søcket.margins.bottom;
+			return [width, height];
+		}
+		function createBoxElement() {
+			var boxElement = doc.createElementNS(svgNS, "path");
+			boxElement.setAttribute("class", "nødeBox");
+			return boxElement;
+		}
+		function resizeBoxElement() {
+			var width = boxDimensions[0],
+				height = boxDimensions[1];
+			boxElement.setAttribute("d", svgRoundedRect(0, 0, width, height, [0, 0, cornerRadius, cornerRadius]));
 		}
 		
 		// Main element
@@ -203,8 +207,8 @@ var svgNS = "http://www.w3.org/2000/svg",
 			//element.group.setAttribute('y', Math.round(yOff * ratio) / ratio + newY);
 			
 			nødeElement.setAttributes({
-				x: position[0] + viewOffset[0],
-				y: position[1] + viewOffset[1]
+				x: Math.floor(position[0] + viewOffset[0]),
+				y: Math.floor(position[1] + viewOffset[1])
 			});
 			repositionSøckets();
 		}

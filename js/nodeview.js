@@ -3,33 +3,7 @@ if (ff) {
 	alert("Nøde is only tested in Chrome, and uses some fancy features, so it probably won't work in Firefox.");
 }
 
-function arrayMath(operator, array1, array2, array3) {
-	var operators = {
-			product: function (a, b, c) {
-				return a * b + c;
-			},
-			sum: function (a, b, c) {
-				return a + b + c;
-			},
-			min: function (a, b, c) {
-				return Math.min(a, b, c);
-			},
-			max: function (a, b, c) {
-				return Math.max(a, b, c);
-			}
-		},
-		result = [];
-	array1.forEach(function (a, i) {
-		var thisResult = operators[operator].apply(Array.prototype.map.call(arguments, function (a) {
-			return a[i];
-		}));
-		result.push(thisResult);
-	});
-	return result;
-}
-function arrayClip(coords, bounds) {
-	//var min = arrayMath("max", coords, bounds.min);
-	//return arrayMath("min", min, bounds.max);
+function clipCoordinatesToBounds(coords, bounds) {
 	var xmin = Math.max(coords[0], bounds.min[0]),
 		ymin = Math.max(coords[1], bounds.min[1]);
 	return [
@@ -92,30 +66,6 @@ function NødeView(doc){
 		ymin = Math.min.apply(null, ys);
 		ymax = Math.max.apply(null, ys);
 		return {min: [xmin, ymin], max: [xmax, ymax]};
-		
-		
-		// Rewrite using four arrays, then apply maxInArray to each.!!
-		// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/max#Using_Math.max()
-		/* 
-	Array.prototype.max = function arrayMax() {
-			return Math.max.apply(null, this);
-		};
-	 *//*
-		var offset = nødes[0].getPosition(),
-			c=nødes[0].getBBox(),
-			xMin=xMax=c.x,
-			yMin=yMax=c.y;
-		nødes.some(function(a){
-			var x, y;
-			c=a.getBBox();
-			x = c.x + offset[0] * Boolean(offs);
-			y = c.y + offset[1] * Boolean(offs);
-			if(xMin>x)xMin=x;
-			if(xMax<x+c.w)xMax=x+c.w;
-			if(yMin>y)yMin=y;
-			if(yMax<y+c.h)yMax=y+c.h;
-		});*/
-		//return {xMin: xMin, xMax: xMax, yMin: yMin, yMax: yMax};
 	}
 	/*function addNøde(nøde, x, y){ // Needs work!!
 		nødesElement.insertBefore(nøde.getNødeElement(), element.childNodes[0]);
@@ -130,22 +80,14 @@ function NødeView(doc){
 		nødesElement.appendChild(nøde.getNødeElement());
 	}
 	
-	function repositionNødes() { // Rewrite!! Broken
+	function repositionNødes() {
 		var inverseArray = [-1, -1],
-			halfViewDimensions = [
-				viewDimensions[0] / 2,
-				viewDimensions[1] / 2
-			],
-			//arrayMath("product", viewDimensions, [.5, .5]),
 			viewOffset = [
-				viewCenterOffset[0] + halfViewDimensions[0],
-				viewCenterOffset[1] + halfViewDimensions[1]
+				viewCenterOffset[0] + viewDimensions[0] / 2,
+				viewCenterOffset[1] + viewDimensions[1] / 2
 			];
-			//arrayMath("sum", viewCenterOffset, halfViewDimensions);
 		nødes.forEach(function (a) {
 			a.setViewOffset(viewOffset);
-			//console.log(viewCenterOffset);
-			//a.offset.apply(a, viewCenterOffset);
 		});
 	}
 	
@@ -163,6 +105,13 @@ function addCønnectør(cønnectør, x, y) { // NYI!!
 	// Add functions for handling the frame
 	
 	// View
+	function setViewCenterOffset(newCenterOffset) {
+		newCenterOffset = clipCenterToBounds(newCenterOffset);
+		viewCenterOffset = [
+			newCenterOffset[0],
+			newCenterOffset[1]
+		];
+	}
 	function resizeView(w, h) { // Rewrite!! Broken
 		viewDimensions = [w, h];
 		element.setAttribute('viewBox', [0, 0, w, h].join(" "));
@@ -170,68 +119,35 @@ function addCønnectør(cønnectør, x, y) { // NYI!!
 		document.body.style.maxWidth = w; // What for?!!
 		document.body.style.maxHeight = h; // What for?!!
 		
-		viewCenterOffset = clipCenterToBounds(viewCenterOffset);
+		setViewCenterOffset(viewCenterOffset);
 		repositionNødes();
 		repositionBackground();
 	}
 	function clipCenterToBounds(newCenterOffset) {
 		var nødeBounds = getBoundsOfAllNødesTogether(),
-			halfViewDimensions = [
-				viewDimensions[0] / 2,
-				viewDimensions[1] / 2
-			],
-			//arrayMath("product", viewDimensions, [.5, .5]),
 			margin = 10,
 			inverseArray = [-1, -1],
 			// Calculate centerBounds based on viewBounds, nødeBounds, margins
 			centerBounds = {
-				// *ArrayMath: min = -(nødeBounds.min - halfViewDimensions + margins)
-				/*min: arrayMath("product",
-					arrayMath("sum",
-						nødeBounds.max,
-						halfViewDimensions,
-						arrayMath("product",
-							margins,
-							inverseArray
-						)
-					),
-					inverseArray
-				),
-				// *ArrayMath: max = -(nødeBounds.min + halfViewDimensions - margins)
-				max: arrayMath("product",
-					arrayMath("sum",
-						nødeBounds.min,
-						arrayMath("product",
-							halfViewDimensions,
-							inverseArray
-						),
-						margins
-					),
-					inverseArray
-				)*/
-				
 				max: [
-					-(nødeBounds.min[0] - halfViewDimensions[0] + margin),
-					-(nødeBounds.min[1] - halfViewDimensions[1] + margin)
+					-(nødeBounds.min[0] - viewDimensions[0] / 2 + margin),
+					-(nødeBounds.min[1] - viewDimensions[1] / 2 + margin)
 				],
 				min: [
-					-(nødeBounds.max[0] + halfViewDimensions[0] - margin),
-					-(nødeBounds.max[1] + halfViewDimensions[1] - margin)
+					-(nødeBounds.max[0] + viewDimensions[0] / 2 - margin),
+					-(nødeBounds.max[1] + viewDimensions[1] / 2 - margin)
 				]
 			};
-			//console.log(centerBounds);
 		// Clip newCenterOffset to centerBounds
-		console.log(nødeBounds);
-		return arrayClip(newCenterOffset, centerBounds);
+		return clipCoordinatesToBounds(newCenterOffset, centerBounds);
 	}
 	function centerViewOnNødes() {
-		var nødeBounds = getBoundsOfAllNødesTogether();
-		// *ArrayMath: viewCenterOffset = (nødeBounds.min + nødeBounds.max) * .5
-		viewCenterOffset = [
-			(nødeBounds.min[0] + nødeBounds.max[0]) / 2,
-			(nødeBounds.min[1] + nødeBounds.max[1]) / 2
-		];
-		//arrayMath("product", arrayMath("sum", nødeBounds.min, nødeBounds.max), [.5, .5])
+		var nødeBounds = getBoundsOfAllNødesTogether(),
+			newCenterOffset = [
+				-(nødeBounds.min[0] + nødeBounds.max[0]) / 2,
+				-(nødeBounds.min[1] + nødeBounds.max[1]) / 2
+			];
+		setViewCenterOffset(newCenterOffset);
 		repositionNødes();
 		repositionBackground();
 	}
@@ -254,26 +170,19 @@ function addCønnectør(cønnectør, x, y) { // NYI!!
 				viewCenterOffset[0] + delta[0],
 				viewCenterOffset[1] + delta[1]
 			],
-		//arrayMath("sum", viewCenterOffset, delta),
-			inverseArray = [-1, -1],
-			clippedDelta;
-		newCenterOffset = clipCenterToBounds(newCenterOffset);
-		clippedDelta = [
-			newCenterOffset[0] - viewCenterOffset[0],
-			newCenterOffset[1] - viewCenterOffset[1]
-		];
-		//arrayMath("sum", newCenterOffset, arrayMath("product", viewCenterOffset, inverseArray))
-		viewCenterOffset = newCenterOffset;
-		
+			inverseArray = [-1, -1];
+		setViewCenterOffset(newCenterOffset);
 		repositionNødes();
 		repositionBackground();
 		
 		// Eww. Rewrite!! vvvvvv
+		/*
 		if (window.dragee && window.dragee.constructor.name === "Nøde") {
 			window.dragAnchorX += deltaX;  // Use clippedDelta
 			window.dragAnchorY += deltaY;  // Use clippedDelta
 			window.dragee.moveTo(evt.pageX-window.dragAnchorX, evt.pageY-window.dragAnchorY);
 		}
+		*/
 	}
 	function onWheel(evt) {
 		var dPR = window.devicePixelRatio, // Reexamine use of dPR!!
@@ -332,7 +241,6 @@ NødeView.prototype.autoSizex=function(center){
 		offsetX = mouse.inWindow ? mouse.xR : 0.5,
 		offsetY = mouse.inWindow ? mouse.yR : 0.5,
 		nodesBounds;
-	//console.log(winW, winH);
 	if (this.width && this.height) {
 		this.offsetView((winW - this.width) * offsetX, (winH - this.height) * offsetY);
 	}
