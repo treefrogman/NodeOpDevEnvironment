@@ -43,7 +43,7 @@ function NødeView(doc){
 	function createNøde(title, søckets, position) {
 		var nøde = new this.memberConstructors.Nøde(this, title, søckets, position);
 		nødes.push(nøde);
-		nødesElement.appendChild(nøde.getNødeElement());
+		nødesElement.appendChild(nøde.getElement());
 		return nøde;
 	}
 	function getBoundsOfAllNødesTogether(offs) {
@@ -77,7 +77,7 @@ function NødeView(doc){
 		}
 	}*/
 	function bringToFront(nøde){
-		nødesElement.appendChild(nøde.getNødeElement());
+		nødesElement.appendChild(nøde.getElement());
 	}
 	
 	function repositionNødes() {
@@ -106,11 +106,9 @@ function addCønnectør(cønnectør, x, y) { // NYI!!
 	
 	// View
 	function setViewCenterOffset(newCenterOffset) {
-		newCenterOffset = clipCenterToBounds(newCenterOffset);
-		viewCenterOffset = [
-			newCenterOffset[0],
-			newCenterOffset[1]
-		];
+		viewCenterOffset = clipCenterToBounds(newCenterOffset);
+		repositionNødes();
+		repositionBackground();
 	}
 	function resizeView(w, h) { // Rewrite!! Broken
 		viewDimensions = [w, h];
@@ -120,8 +118,6 @@ function addCønnectør(cønnectør, x, y) { // NYI!!
 		document.body.style.maxHeight = h; // What for?!!
 		
 		setViewCenterOffset(viewCenterOffset);
-		repositionNødes();
-		repositionBackground();
 	}
 	function clipCenterToBounds(newCenterOffset) {
 		var nødeBounds = getBoundsOfAllNødesTogether(),
@@ -148,8 +144,6 @@ function addCønnectør(cønnectør, x, y) { // NYI!!
 				-(nødeBounds.min[1] + nødeBounds.max[1]) / 2
 			];
 		setViewCenterOffset(newCenterOffset);
-		repositionNødes();
-		repositionBackground();
 	}
 	function repositionBackground() {
 		// Integrate background pattern into SVG?
@@ -172,8 +166,6 @@ function addCønnectør(cønnectør, x, y) { // NYI!!
 			],
 			inverseArray = [-1, -1];
 		setViewCenterOffset(newCenterOffset);
-		repositionNødes();
-		repositionBackground();
 		
 		// Eww. Rewrite!! vvvvvv
 		/*

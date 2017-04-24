@@ -1,44 +1,14 @@
-function def() {
-	// Takes any number of arguments and returns the first one that isn't undefined.
-	// Similar to a series of (a || b || c), but treats (false, 0, "", [], {}) as valid return values.
-	var i = 0,
-		l = arguments.length,
-		a;
-	for (; i < l; i += 1) {
-		a = arguments[i];
-		if (a !== undefined) {
-			return a;
-		}
-	}
-}
 function svgRoundedRect(x, y, w, h, r) {
-	var d = [],
-		radii = [
-			[
-				def(r[0][0], r[0], r),
-				def(r[0][1], r[0], r)
-			], [
-				def(r[1][0], r[1], r),
-				def(r[1][1], r[1], r)
-			], [
-				def(r[2][0], r[2], r),
-				def(r[2][1], r[2], r)
-			], [
-				def(r[3][0], r[3], r),
-				def(r[3][1], r[3], r)
-			]
-		],
-		r = radii;
-	
-	d.push("M", x + r[0][0], y);
-	d.push("h", w - r[0][0] - r[1][0]);
-	if (r[1][0] && r[1][1]) { d.push("a", r[1][0], r[1][1], 0, 0, 1, r[1][0], r[1][1]); }
-	d.push("v", h - r[1][1] - r[2][1]);
-	if (r[2][0] && r[2][1]) { d.push("a", r[2][0], r[2][1], 0, 0, 1, -r[2][0], r[2][1]); }
-	d.push("h", -(w - r[2][0] - r[3][0]));
-	if (r[3][0] && r[3][1]) { d.push("a", r[3][0], r[3][1], 0, 0, 1, -r[3][0], -r[3][1]); }
-	d.push("v", -(h - r[3][1] - r[0][1]));
-	if (r[0][0] && r[0][1]) { d.push("a", r[0][0], r[0][1], 0, 0, 1, r[0][0], -r[0][1]); }
+	var d = [];
+	d.push("M", x + r[0], y);
+	d.push("h", w - r[0] - r[1]);
+	if (r[1]) { d.push("a", r[1], r[1], 0, 0, 1, r[1], r[1]); }
+	d.push("v", h - r[1] - r[2]);
+	if (r[2]) { d.push("a", r[2], r[2], 0, 0, 1, -r[2], r[2]); }
+	d.push("h", -(w - r[2] - r[3]));
+	if (r[3]) { d.push("a", r[3], r[3], 0, 0, 1, -r[3], -r[3]); }
+	d.push("v", -(h - r[3] - r[0]));
+	if (r[0]) { d.push("a", r[0], r[0], 0, 0, 1, r[0], -r[0]); }
 	
 	return d.join(" ");
 }
@@ -82,18 +52,16 @@ var svgNS = "http://www.w3.org/2000/svg",
 
 // Put Nøde, Søcket, Cønnectør inside NødeView, with methods like nødeView.createNøde()
 (function () {
-	function Nøde(view, titleText, søckets, position) {
+	function Nøde(view, titleText, søcketList, position) {
 		var margins = {
 				outer: 20,
 				title: 2
 			},
 			doc = view.getDocument(),
-			titleObject = createTitleObject(titleText),
-			søcketsObject = createSøcketsObject(søckets),
-			boxDimensions = calculateBoxDimensions(titleObject.bbox, []),
-			boxElement = createBoxElement(),
-			nødeElement = createNødeElement(),
-			cornerRadius = 3,
+			title = new TitleObject(titleText),
+			søckets = new SøcketsObject(søcketList),
+			box = new BoxObject(title, søckets),
+			groupElement = createGroupElement(title, søckets, box),
 			viewOffset = [0, 0];
 		
 		// View
@@ -102,48 +70,57 @@ var svgNS = "http://www.w3.org/2000/svg",
 		}
 		
 		// Title Object
-		function createTitleObject(text) {
-			var textNode = doc.createTextNode(text),
-				textElement = doc.createElementNS(svgNS, "text"),
+		function TitleObject(text) {
+			var groupElement = doc.createElementNS(svgNS, "svg"),
 				backElement = doc.createElementNS(svgNS, "rect"),
-				groupElement = doc.createElementNS(svgNS, "svg"),
+				textElement = doc.createElementNS(svgNS, "text"),
 				textElementBBox,
-				backElementWidth,
-				backElementHeight;
-			textElement.appendChild(textNode);
-			textElement.setAttributes({
-				y: 13,
-				"class": "titleText"
-			});
-			textElementBBox = getTextBBox(doc, textElement);
-			backElementWidth = textElementBBox.width + (2 * margins.title);
-			backElementHeight = textElementBBox.height - 1;
-			backElement.setAttributes({
-				width: backElementWidth,
-				height: backElementHeight - 1,
-				rx: 2,
-				ry: 2,
-				x: -backElementWidth / 2,
-				"class": "titleBack"
-			});
-			groupElement.setAttributes({
-				y: -backElementHeight * .56
-			});
-			groupElement.appendChild(backElement);
-			groupElement.appendChild(textElement);
-			return {
-				text: textElement,
-				back: backElement,
-				element: groupElement,
-				bbox: textElementBBox
-			};
+				backElementBBox;
+			
+			function initializeElements() {
+				textElement.setAttributes({
+					y: 13,
+					"class": "titleText"
+				});
+				backElement.setAttributes({
+					rx: 2,
+					ry: 2,
+					"class": "titleBack"
+				});
+			}
+			function retitle(text) {
+				textElement.textContent = text;
+				textElementBBox = getTextBBox(doc, textElement);
+				backElementBBox = [textElementBBox.width + (2 * margins.title), textElementBBox.height - 2];
+				backElement.setAttributes({
+					width: backElementBBox[0],
+					height: backElementBBox[1],
+					x: -backElementBBox[0] / 2
+				});
+				groupElement.setAttributes({
+					y: -backElementBBox[1] * .56
+				});
+				this.bbox = backElementBBox;
+				groupElement.appendChild(backElement);
+				groupElement.appendChild(textElement);
+			}
+			
+			initializeElements();
+			retitle(text);
+			
+			this.retitle = retitle;
+			this.element = groupElement;
+			this.bbox = backElementBBox;
 		}
 		
 		// Søckets Element
-		function createSøcketsObject() {
-			
+		function SøcketsObject() {
+			var groupElement = doc.createElementNS(svgNS, "svg");
+			return {
+				element: groupElement
+			};
 		}
-		function repositionSøckets() {
+		function updateCønnectørs() {
 			var side,
 				i;
 			for (side = 0; side < søckets.length; side += 1) {
@@ -157,37 +134,48 @@ var svgNS = "http://www.w3.org/2000/svg",
 		}
 		
 		// Box Element
-		function calculateBoxDimensions(titleBBox, søcketBBoxes) {
-			var width = Math.ceil(titleBBox.width) + 24, // This will need to be updated to include combined widths of (adjacent / longest) søcket names
-				height = 20;
-				// vv This should be kept as reference until rewritten (søcket height calculator)
-				//(Math.max(søckets[0].length, søckets[1].length) - 1) * Søcket.margins.ea + Søcket.margins.top + Søcket.margins.bottom;
-			return [width, height];
-		}
-		function createBoxElement() {
-			var boxElement = doc.createElementNS(svgNS, "path");
+		function BoxObject(title, søckets) {
+			var boxElement = doc.createElementNS(svgNS, "path"),
+				boxDimensions;
+			
+			function resizeToFitTitleAndSøckets(title, søckets) {
+				var width = Math.ceil(title.bbox[0]) + 24, // This will need to be updated to include combined widths of (adjacent / longest) søcket names
+					height = 20;
+					// vv This should be kept as reference until rewritten (søcket height calculator)
+					//(Math.max(søckets[0].length, søckets[1].length) - 1) * Søcket.margins.ea + Søcket.margins.top + Søcket.margins.bottom;
+				resize([width, height]);
+			}
+			function resize(dimensions) {
+				var width = dimensions[0],
+					height = dimensions[1],
+					cornerRadius = 3;
+				boxDimensions = dimensions;
+				boxElement.setAttribute("d", svgRoundedRect(0, 0, width, height, [0, 0, cornerRadius, cornerRadius]));
+				title.element.setAttribute("x", boxDimensions[0] / 2); // Don't like how this works!!
+			}
+			function getDimensions() {
+				return boxDimensions;
+			}
+			
+			resizeToFitTitleAndSøckets(title, søckets);
 			boxElement.setAttribute("class", "nødeBox");
-			return boxElement;
-		}
-		function resizeBoxElement() {
-			var width = boxDimensions[0],
-				height = boxDimensions[1];
-			boxElement.setAttribute("d", svgRoundedRect(0, 0, width, height, [0, 0, cornerRadius, cornerRadius]));
+			
+			this.resizeToFitTitleAndSøckets = resizeToFitTitleAndSøckets;
+			this.element = boxElement;
+			this.dimensions = getDimensions;
 		}
 		
 		// Main element
-		function createNødeElement() {
-			var nødeElement = doc.createElementNS(svgNS, "svg");
-			nødeElement.appendChild(boxElement);
-			nødeElement.appendChild(titleObject.element);
-			titleObject.element.setAttribute("x", boxDimensions[0] / 2);
-			//nødeElement.appendChild(søcketsElement);
-			return nødeElement;
+		function createGroupElement(title, søckets, box) {
+			var groupElement = doc.createElementNS(svgNS, "svg");
+			groupElement.appendChild(box.element);
+			groupElement.appendChild(title.element);
+			groupElement.appendChild(søckets.element);
+			return groupElement;
 		}
-		function getNødeElement() {
-			return nødeElement;
+		function getGroupElement() {
+			return groupElement;
 		}
-		resizeBoxElement();
 	
 		// Position, offset, and dimensions
 		function setPosition(newX, newY) {
@@ -206,14 +194,14 @@ var svgNS = "http://www.w3.org/2000/svg",
 			//element.group.setAttribute('x', Math.round(xOff * ratio) / ratio + newX);
 			//element.group.setAttribute('y', Math.round(yOff * ratio) / ratio + newY);
 			
-			nødeElement.setAttributes({
+			groupElement.setAttributes({
 				x: Math.floor(position[0] + viewOffset[0]),
 				y: Math.floor(position[1] + viewOffset[1])
 			});
-			repositionSøckets();
+			updateCønnectørs();
 		}
 		function getBoundingBox(){
-			return [position, boxDimensions];
+			return [position, box.dimensions()];
 			/*{
 				x:x-Nøde.margins.outer,
 				y:y-Nøde.margins.outer,
@@ -222,12 +210,20 @@ var svgNS = "http://www.w3.org/2000/svg",
 			};*/
 		}
 		
+		// Modification
+		function rename(newName) {
+			title.retitle(newName);
+			box.resizeToFitTitleAndSøckets(title, søckets);
+		}
+		thistle = this;
+		
 		// Publications
 		this.getView = getView;
-		this.getNødeElement = getNødeElement;
+		this.getElement = getGroupElement;
 		this.getPosition = getPosition;
 		this.setViewOffset = setViewOffset;
 		this.getBoundingBox = getBoundingBox;
+		this.rename = rename;
 		
 		
 		
