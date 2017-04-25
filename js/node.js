@@ -116,8 +116,14 @@ var svgNS = "http://www.w3.org/2000/svg",
 		// Søckets Element
 		function SøcketsObject() {
 			var groupElement = doc.createElementNS(svgNS, "svg");
+			
+			function repositionSøckets() {
+				
+			}
+			
 			return {
-				element: groupElement
+				element: groupElement,
+				repositionSøckets: repositionSøckets
 			};
 		}
 		function updateCønnectørs() {
