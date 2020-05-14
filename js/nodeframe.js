@@ -1,1 +1,0 @@
-// The frame around a node view

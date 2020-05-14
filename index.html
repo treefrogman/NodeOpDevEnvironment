@@ -1,136 +1,15 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<!-- author: Miles Cooley <miles@milescooley.com> -->
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+﻿<!DOCTYPE html>
+<html lang="en">
 	<head>
-		<link rel="icon" href="images/svg-node-favicon.ico" sizes="16x16" type="image/png">
-		<link rel="stylesheet" type="text/css" href="css/node.css" />
+		<meta charset="utf-8"/>
 		<title>Nøde</title>
-		<meta http-equiv="Content-Style-Type" content="text/css" />
-		<meta http-equiv="Content-Script-Type" content="text/javascript" />
 	</head>
 	<body>
-		<script type="text/javascript" src="js/nodeview.js"></script>
-		<script type="text/javascript" src="js/node.js"></script>
-		<script type="text/javascript" src="js/socket.js"></script>
-		<script type="text/javascript" src="js/connector.js"></script>
-		<script type="text/javascript" src="js/nodeframe.js"></script>
-		<script type="text/javascript" src="js/fancy-o.js"></script>
-		<script type="text/javascript">
-
-window.onload = function() {
-	var myView = new NødeView(document);
-	var viewElement = myView.getElement();
-	document.body.appendChild(viewElement);
-	
-	var pow = myView.createNøde("Exponentiation", {
-			"inputs": [
-				{
-					"name": "Base",
-					"type": "Real Number"
-				},
-				{
-					"name": "Exponent",
-					"type": "Real Number"
-				}
-			],
-			"outputs": [
-				{
-					"name": "Power",
-					"type": "Real Number"
-				}
-			],
-		}, [420, 140]);
-	var sum = myView.createNøde("Addition", {
-			"inputs": [
-				{
-					"name": "Term 1",
-					"type": "Real Number"
-				},
-				{
-					"name": "Term 2",
-					"type": "Real Number"
-				}
-			],
-			"outputs": [
-				{
-					"name": "Sum",
-					"type": "Real Number"
-				}
-			],
-		}, [300, 100]);
-	var zero = myView.createNøde("Zero", {
-			"inputs": [],
-			"outputs": [
-				{
-					"name": "Zero",
-					"type": "Real Number"
-				}
-			],
-		}, [330, 200]);[[], ["0"]]
-	var one = myView.createNøde("One", {
-			"inputs": [],
-			"outputs": [
-				{
-					"name": "One",
-					"type": "Real Number"
-				}
-			],
-		}, [180, 120]);
-	var two = myView.createNøde("Two", {
-			"inputs": [],
-			"outputs": [
-				{
-					"name": "Two",
-					"type": "Real Number"
-				}
-			],
-		}, [30, 150]);
-	var neg = myView.createNøde("Additive Inversion", {
-			"inputs": [
-				{
-					"name": "Value",
-					"type": "Real Number"
-				}
-			],
-			"outputs": [
-				{
-					"name": "Inverse",
-					"type": "Real Number"
-				}
-			],
-		}, [140, 200]);
-	var N = myView.createNøde("Nøde", {
-			"inputs": [
-				{
-					"name": "Søcket",
-					"type": "Mødel"
-				},
-				{
-					"name": "Søcket",
-					"type": "Mødel"
-				}
-			],
-			"outputs": [
-				{
-					"name": "Søcket",
-					"type": "Mødel"
-				}
-			],
-		}, [0, 0]);
-	
-	/*
-	myView.createCønnectiøn(pow.getOutput(1), sum.getInput(2));
-	myView.createCønnectiøn(zero.getOutput(1), sum.getInput(1));
-	myView.createCønnectiøn(one.getOutput(1), neg.getInput(1));
-	myView.createCønnectiøn(two.getOutput(1), pow.getInput(1));
-	myView.createCønnectiøn(neg.getOutput(1), pow.getInput(2));
-	*/
-	
-	myView.resizeToFitWindow();
-	myView.centerViewOnNødes();
-};
-
+		Nøde is under construction.
+		<script type="module">
+import N0de from './N0de.js';
+var n0de = new N0de( document.querySelector('body') );
+n0de.loadFromFile("./example.js");
 		</script>
 	</body>
 </html>
