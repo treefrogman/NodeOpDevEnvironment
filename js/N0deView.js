@@ -1,7 +1,8 @@
-class N0de {
+class N0deView {
 	constructor( bodyTag ) {
 		this.bodyTag = bodyTag;
 		this.bodyTag.innerHTML = "Nøde is under construction!"
+
 	}
 	loadFromFile(jsonFile) {
 		fetch(jsonFile)
@@ -10,4 +11,4 @@ class N0de {
 	}
 }
 
-export default N0de
+export default N0deView
