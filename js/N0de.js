@@ -1,8 +1,13 @@
 class N0de {
 	constructor( bodyTag ) {
 		this.bodyTag = bodyTag;
-		this.bodyTag.innerHTML = "N0de is under construction"
+		this.bodyTag.innerHTML = "Nøde is under construction!"
+	}
+	loadFromFile(jsonFile) {
+		fetch(jsonFile)
+			.then(response => response.json())
+			.then(json => console.log(json))
 	}
 }
 
-export default class N0de;
+export default N0de
