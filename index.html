@@ -1,16 +1,20 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-	<head>
-		<link rel="icon" href="images/svg-node-favicon.ico" sizes="16x16" type="image/png">
-		<meta charset="utf-8"/>
-		<title>Nøde</title>
-	</head>
-	<body>
-		Nøde is under construction...
-		<script type="module">
-import N0deView from './js/N0deView.js';
-var n0deView = new N0deView( document.querySelector('body') );
-n0deView.loadFromFile("example.json");
-		</script>
-	</body>
+
+<head>
+	<link rel="icon" href="images/svg-node-favicon.ico" sizes="16x16" type="image/png">
+	<meta charset="utf-8" />
+	<title>Nøde</title>
+</head>
+
+<body>
+	Nøde is under construction...
+	<script type="module">
+		import N0deView from './js/N0deView.js';
+		var n0deView = new N0deView(document);
+		document.querySelector('body').appendChild(n0deView.getElement());
+		n0deView.loadFromFile("example.json");
+	</script>
+</body>
+
 </html>
