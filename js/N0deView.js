@@ -11,6 +11,8 @@ class N0deView {
 		// Create main SVG
 		this.svg = new SVG(document);
 		this.mainSVG = this.svg.createElement("svg");
+		this.mainSVG.setAttribute("width", window.innerWidth);
+		this.mainSVG.setAttribute("height", window.innerHeight);
 
 		// Create lists and group elements
 		this.n0desList = [];
