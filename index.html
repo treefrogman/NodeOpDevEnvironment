@@ -11,10 +11,9 @@
 <body>
 	Nøde is under construction...
 	<script type="module">
-		import N0deView from './js/N0deView.js';
-		var n0deView = new N0deView(document);
-		document.querySelector('body').appendChild(n0deView.getElement());
-		n0deView.loadFromFile("example.json");
+		import N0deApp from './js/N0deApp.js';
+		let n0deApp = new N0deApp();
+		n0deApp.examineN0de("3fb9c515-b14b-4b3e-86da-29b116084b78");
 	</script>
 </body>
 

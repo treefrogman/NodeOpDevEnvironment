@@ -23,34 +23,26 @@ class N0deView {
 		this.mainSVG.appendChild(this.c0nnectorsGroup);
 	}
 
-	// Fetch the JSON file
-	loadFromFile(jsonFile) {
-		fetch(jsonFile)
-			.then(response => response.json())
-			.then(json => {
-				this.parseJSON(json);
-			});
-	}
-
-	parseJSON(json) {
-		let rootID = json["root"];
+	setupWorkingN0de(workingN0de) {
+		console.log("Set-up working nøde: ", workingN0de);
 
 		// Create the outer nøde
-		this.outerN0de = new OuterN0de(this.svg, this, rootID);
-		this.n0desList.push(this.outerN0de);
-		this.mainSVG.appendChild(this.outerN0de.getElement());
+		// this.outerN0de = new OuterN0de(this.svg, this, rootID);
+		// this.n0desList.push(this.outerN0de);
+		// this.mainSVG.appendChild(this.outerN0de.getElement());
 		
 		// 
-		let implementation = json[rootID]["implementation"];
+		let implementation = workingN0de["implementation"];
 		const _this = this;
 
 		// Iterate over inner nødes
 		let innerN0des = implementation["n0des"];
 		innerN0des.forEach(function (innerN0de) {
 			let n0deID = innerN0de["id"];
-			let x = innerN0de["x"];
-			let y = innerN0de["y"];
-			_this.addN0de(n0deID, x, y);
+			let type = innerN0de["type"];
+			let position = innerN0de["position"];
+			let s0ckets = innerN0de["s0ckets"];
+			_this.addN0de(n0deID, type, position, s0ckets);
 		});
 
 		// Iterate over cønnectors
@@ -64,8 +56,8 @@ class N0deView {
 		});
 	}
 
-	addN0de(id, x, y) {
-		let n0de = new InnerN0de(this.svg, this, id, x, y);
+	addN0de(id, type, position, s0ckets) {
+		let n0de = new InnerN0de(this.svg, this, id, type, position, s0ckets);
 		this.n0desList.push(n0de);
 		this.n0desGroup.appendChild(n0de.getElement());
 	}

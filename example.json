@@ -1,21 +1,20 @@
 {
-	"root": "3fb9c515-b14b-4b3e-86da-29b116084b78",
 	"3fb9c515-b14b-4b3e-86da-29b116084b78": {
-		"title": "Froobalizer",
+		"type": "Froobalizer",
 		"s0ckets": {
 			"in": [
 				{
-					"type": "d406dfac-ab1d-4ff5-9794-7504de4c13f9",
+					"id": "d406dfac-ab1d-4ff5-9794-7504de4c13f9",
 					"label": "Frumpkin"
 				},
 				{
-					"type": "d22ab9c1-292f-4e94-a004-f462cf0808e8",
+					"id": "d22ab9c1-292f-4e94-a004-f462cf0808e8",
 					"label": "Frumpkator"
 				}
 			],
 			"out": [
 				{
-					"type": "d80d9f3e-02cc-4425-8906-5a2dbe909063",
+					"id": "d80d9f3e-02cc-4425-8906-5a2dbe909063",
 					"label": "Frumpstant"
 				}
 			]
@@ -24,23 +23,19 @@
 			"n0des": [
 				{
 					"id": "d406dfac-ab1d-4ff5-9794-7504de4c13f9",
-					"x": 210,
-					"y": 100
+					"position": [210,100]
 				},
 				{
 					"id": "4ad86446-8906-43c6-adbb-b76c02089013",
-					"x": 300,
-					"y": 100
+					"position": [300, 100]
 				},
 				{
 					"id": "d80d9f3e-02cc-4425-8906-5a2dbe909063",
-					"x": 500,
-					"y": 100
+					"position": [500, 100]
 				},
 				{
-					"id": "4927cd88",
-					"x": 300,
-					"y": 180
+					"id": "d80d9f3e-02cc-4425-8906-5a2dbe909063",
+					"position": [300, 180]
 				}
 			],
 			"c0nnectors": [
@@ -68,67 +63,70 @@
 		}
 	},
 	"d406dfac-ab1d-4ff5-9794-7504de4c13f9": {
-		"title": "Foo",
+		"type": "Foo",
 		"s0ckets": {
 			"in": [
 				{
-					"type": "d22ab9c1-292f-4e94-a004-f462cf0808e8",
+					"id": "d22ab9c1-292f-4e94-a004-f462cf0808e8",
 					"label": "Bazzle"
 				}
 			],
 			"out": [
 				{
-					"type": "4927cd88",
+					"id": "4927cd88",
 					"label": "Basil"
 				}
 			]
 		}
 	},
 	"4ad86446-8906-43c6-adbb-b76c02089013": {
-		"title": "Frobscottle",
+		"type": "Frobscottle",
 		"s0ckets": {
 			"in": [
 				{
-					"type": "4927cd88",
+					"id": "4927cd88",
 					"label": "Froth"
 				},
 				{
-					"type": "e62f111b",
+					"id": "e62f111b",
 					"label": "Scuttle"
 				}
 			],
 			"out": [
 				{
-					"type": "1bdb3e59",
+					"id": "1bdb3e59",
 					"label": "Broth"
 				}
 			]
 		}
 	},
 	"d80d9f3e-02cc-4425-8906-5a2dbe909063": {
-		"title": "Beelzebub",
+		"type": "Beelzebub",
 		"s0ckets": {
 			"in": [
 				{
-					"type": "1bdb3e59",
+					"id": "1bdb3e59",
 					"label": "Scuzzy"
 				}
 			],
 			"out": [
 				{
-					"type": "1bdb3e59",
+					"id": "1bdb3e59",
 					"label": "Farberware"
 				}
 			]
 		}
 	},
+	"d22ab9c1-292f-4e94-a004-f462cf0808e8": {
+		"type": "Bwerp"
+	},
 	"4927cd88": {
-		"title": "Bar"
+		"type": "Bar"
 	},
 	"1bdb3e59": {
-		"title": "Blaz"
+		"type": "Blaz"
 	},
 	"e62f111b": {
-		"title": "Flotz"
+		"type": "Flotz"
 	}
 }

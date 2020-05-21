@@ -1,5 +1,14 @@
+:root {
+	--main-bg-color: rgb(32,32,32);
+	--main-element-color: rgb(212, 212, 212);
+}
+
+body {
+	background: var(--main-bg-color);
+}
+
 rect {
-	stroke: black;
+	stroke: var(--main-element-color);
 	stroke-width: 2px;
-	fill: white;
+	fill: var(--main-bg-color);
 }

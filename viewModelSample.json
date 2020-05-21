@@ -1,0 +1,38 @@
+{
+	"type": "Person",
+	"id": "4e86iu78d9o48e5u6i",
+	"s0ckets": {
+		"in": [
+			{
+				"label": "Pet",
+				"type": "Moose",
+				"id": "5u96id89h0"
+			},
+			{
+				"label": "Age",
+				"type": "Natural Number",
+				"id": "54o6eu7i8d9hctr"
+			}
+		],
+		"out": [
+			{
+				"label": "Pet",
+				"type": "Moose",
+				"id": "5u96id89h0"
+			},
+			{
+				"label": "Age",
+				"type": "Natural Number",
+				"id": "54o6eu7i8d9hctr"
+			}
+		]
+	},
+	"implementation": {
+		"n0des": [
+			// Self-similar, minus implementation, plus position
+		],
+		"c0nnectors": [
+			// Same as model JSON
+		]
+	}
+}
