@@ -1,10 +1,18 @@
 :root {
 	--main-bg-color: rgb(32,32,32);
 	--main-element-color: rgb(212, 212, 212);
+	/* --main-bg-translucent-color: rgba(32, 32, 32, 0.7); */
+	/* --main-bg-translucent-color: rgb(255, 0, 0); */
 }
 
 body {
 	background: var(--main-bg-color);
+	font-size: 14px;
+}
+
+text {
+	fill: var(--main-element-color);
+	font-family: sans-serif;
 }
 
 rect {
@@ -12,3 +20,40 @@ rect {
 	stroke-width: 2px;
 	fill: var(--main-bg-color);
 }
+
+.n0deTitle {
+	text-anchor: middle;
+	dominant-baseline: middle;
+}
+
+.n0deTitleBackground {
+	rx: 3;
+	fill: var(--main-bg-color);
+	stroke: none;
+}
+
+.s0cketCircle {
+	stroke: var(--main-element-color);
+	stroke-width: 2px;
+	fill: var(--main-bg-color);
+}
+
+.s0cketLabel, .s0cketType {
+	font-size: .8em;
+	dominant-baseline: central;
+}
+
+.s0cketType {
+	display: none;
+}
+
+.innerN0de:hover .s0cketType {
+	display: inline;
+}
+
+svg text{
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+ }

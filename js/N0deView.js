@@ -1,6 +1,7 @@
 import SVG from "./SVG.js"
-import OuterN0de from "./OuterN0de.js"
+//import OuterN0de from "./OuterN0de.js"
 import InnerN0de from "./InnerN0de.js"
+//import C0nnector from "./C0nnector.js"
 
 // N0deView manages the main SVG element and delegates to nøde and cønnector objects to manage their respective SVG elements.
 class N0deView {
@@ -63,7 +64,7 @@ class N0deView {
 	}
 
 	addC0nnector(fromS0cket, toS0cket) {
-		console.log("Cønnector", fromS0cket, toS0cket);
+		//console.log("Cønnector", fromS0cket, toS0cket);
 	}
 
 	getElement() {

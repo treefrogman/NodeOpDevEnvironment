@@ -28,7 +28,7 @@ class N0deModel {
 	fetchJSON() {
 		let _this = this;
 		this.fetchedJSON = fetch(jsonFile).then(response => response.json()).then(json => {
-			console.log(JSON.stringify(json));
+			console.log(json);
 			let ids = Object.keys(json);
 			ids.forEach(id => {
 				if (!_this.n0desList[id]) {

@@ -5,11 +5,20 @@ const xlinkNS = "http://www.w3.org/1999/xlink";
 class SVG {
 
 	constructor(document) {
-		this.document = document;
+		this.prerenderingSVG = this.createElement("svg");
 	}
 
 	createElement(tagName) {
-		return this.document.createElementNS(svgNS, tagName);
+		return document.createElementNS(svgNS, tagName);
+	}
+
+	getBBox(element) {
+		document.body.appendChild(this.prerenderingSVG);
+		this.prerenderingSVG.appendChild(element);
+		let bbox = element.getBBox();
+		this.prerenderingSVG.removeChild(element);
+		document.body.removeChild(this.prerenderingSVG);
+		return bbox;
 	}
 }
 
