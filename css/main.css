@@ -15,10 +15,19 @@ text {
 	font-family: sans-serif;
 }
 
-rect {
+svg text{
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+ }
+
+
+.n0deFrame {
 	stroke: var(--main-element-color);
 	stroke-width: 2px;
 	fill: var(--main-bg-color);
+	rx: 4;
 }
 
 .n0deTitle {
@@ -36,6 +45,7 @@ rect {
 	stroke: var(--main-element-color);
 	stroke-width: 2px;
 	fill: var(--main-bg-color);
+	r: 3;
 }
 
 .s0cketLabel, .s0cketType {
@@ -51,9 +61,11 @@ rect {
 	display: inline;
 }
 
-svg text{
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
- }
+.s0cketClickZone {
+	fill: rgba(0, 0, 0, 0);
+	z-index: 200;
+}
+
+.s0cketClickZone:hover {
+	fill: url('#s0cketGradient');
+}

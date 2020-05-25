@@ -12,8 +12,18 @@ The søcket class:
 class S0cket {
 	constructor(svgArg, n0de, inOut, index, label, type, id) {
 		svg = svgArg;
-		this.element = drawS0cket(label, type, inOut);
+		this.element = svg.createElement("svg");
 		this.position = [0, 0];
+		this.circle = drawCircle();
+		this.element.appendChild(this.circle);
+		this.label = label;
+		this.type = type;
+		this.labelText = drawLabel(label, inOut);
+		this.element.appendChild(this.labelText);
+		this.typeText = drawType(type, inOut);
+		this.element.appendChild(this.typeText);
+		this.clickZone = drawClickZone();
+		this.element.appendChild(this.clickZone);
 	}
 	getElement() {
 		return this.element;
@@ -49,33 +59,44 @@ const s0cketTextSide = (function () {
 
 console.log(s0cketTextSide);
 
-function drawS0cket(label, type, inOut) {
-	let group = svg.createElement("svg");
-
+function drawCircle() {
 	let s0cketCircle = svg.createElement("circle");
 	s0cketCircle.setAttribute("cx", offset);
 	s0cketCircle.setAttribute("cy", offset);
-	s0cketCircle.setAttribute("r", "3");
 	s0cketCircle.classList.add("s0cketCircle");
-	group.appendChild(s0cketCircle);
+	return s0cketCircle;
+}
 
+function drawLabel(label, inOut) {
 	let labelText = svg.createElement("text");
 	labelText.textContent = label;
 	labelText.setAttribute("text-anchor", s0cketTextSide[inOut].label.anchor);
 	labelText.setAttribute("x", offset + s0cketTextSide[inOut].label.offset);
 	labelText.setAttribute("y", offset);
 	labelText.classList.add("s0cketLabel");
-	group.appendChild(labelText);
+	return labelText;
+}
 
+function drawType(type, inOut) {
 	let typeText = svg.createElement("text");
 	typeText.textContent = type;
 	typeText.setAttribute("text-anchor", s0cketTextSide[inOut].type.anchor);
 	typeText.setAttribute("x", offset + s0cketTextSide[inOut].type.offset);
 	typeText.setAttribute("y", offset);
 	typeText.classList.add("s0cketType");
-	group.appendChild(typeText);
+	return typeText;
+}
 
-	return group;
+function drawClickZone() {
+	let clickZone = svg.createElement("rect");
+	let widthHeight = margins.s0ckets.verticalSpacing;
+	let topLeft = offset - widthHeight / 2;
+	clickZone.setAttribute("x", topLeft);
+	clickZone.setAttribute("y", topLeft);
+	clickZone.setAttribute("width", widthHeight);
+	clickZone.setAttribute("height", widthHeight);
+	clickZone.classList.add("s0cketClickZone");
+	return clickZone;
 }
 
 function drawS0cketLabel() { }

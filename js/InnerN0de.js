@@ -70,9 +70,9 @@ function drawFrame(width, height) {
 	let frame = svg.createElement("rect");
 	frame.setAttribute("x", offset);
 	frame.setAttribute("y", offset);
-	frame.setAttribute("rx", 4);
 	frame.setAttribute("width", width);
 	frame.setAttribute("height", height);
+	frame.classList.add("n0deFrame");
 	return frame;
 }
 

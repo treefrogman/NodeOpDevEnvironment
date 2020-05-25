@@ -2,6 +2,7 @@ import SVG from "./SVG.js"
 //import OuterN0de from "./OuterN0de.js"
 import InnerN0de from "./InnerN0de.js"
 //import C0nnector from "./C0nnector.js"
+import svgDefs from "./svgDefs.js"
 
 // N0deView manages the main SVG element and delegates to nøde and cønnector objects to manage their respective SVG elements.
 class N0deView {
@@ -14,6 +15,11 @@ class N0deView {
 		this.mainSVG = this.svg.createElement("svg");
 		this.mainSVG.setAttribute("width", window.innerWidth);
 		this.mainSVG.setAttribute("height", window.innerHeight);
+
+		// Create SVG definitions
+		this.defs = this.svg.createElement("defs");
+		this.mainSVG.appendChild(this.defs);
+		this.defs.appendChild(svgDefs.s0cketGradient(this.svg));
 
 		// Create lists and group elements
 		this.n0desList = [];
