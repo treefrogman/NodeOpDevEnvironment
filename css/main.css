@@ -1,8 +1,9 @@
 :root {
 	--main-bg-color: rgb(32,32,32);
-	--main-element-color: rgb(212, 212, 212);
-	/* --main-bg-translucent-color: rgba(32, 32, 32, 0.7); */
-	/* --main-bg-translucent-color: rgb(255, 0, 0); */
+	--main-element-color-rgb: 212, 212, 212;
+	--main-element-color: rgb(var(--main-element-color-rgb));
+	--main-element-color-transparent: rgba(var(--main-element-color-rgb), 0);
+	--main-element-line-thickness: 2px;
 }
 
 body {
@@ -25,7 +26,7 @@ svg text{
 
 .n0deFrame {
 	stroke: var(--main-element-color);
-	stroke-width: 2px;
+	stroke-width: var(--main-element-line-thickness);
 	fill: var(--main-bg-color);
 	rx: 4;
 }
@@ -43,7 +44,7 @@ svg text{
 
 .s0cketCircle {
 	stroke: var(--main-element-color);
-	stroke-width: 2px;
+	stroke-width: var(--main-element-line-thickness);
 	fill: var(--main-bg-color);
 	r: 3;
 }
@@ -62,10 +63,18 @@ svg text{
 }
 
 .s0cketClickZone {
-	fill: rgba(0, 0, 0, 0);
+	fill: var(--main-element-color-transparent);
 	z-index: 200;
 }
 
 .s0cketClickZone:hover {
 	fill: url('#s0cketGradient');
+}
+
+#s0cketGradientStart {
+	stop-color: var(--main-element-color);
+}
+
+#s0cketGradientEnd {
+	stop-color: var(--main-element-color-transparent);
 }
