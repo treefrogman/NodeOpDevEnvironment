@@ -5,7 +5,12 @@ const xlinkNS = "http://www.w3.org/1999/xlink";
 class SVG {
 
 	constructor(document) {
+		this.mainSVG = this.createElement("svg");
 		this.prerenderingSVG = this.createElement("svg");
+	}
+
+	getElement() {
+		return this.mainSVG;
 	}
 
 	createElement(tagName) {

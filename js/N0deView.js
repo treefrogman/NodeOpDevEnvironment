@@ -12,7 +12,7 @@ class N0deView {
 
 		// Create main SVG
 		this.svg = new SVG(document);
-		this.mainSVG = this.svg.createElement("svg");
+		this.mainSVG = this.svg.getElement();
 		this.mainSVG.setAttribute("width", window.innerWidth);
 		this.mainSVG.setAttribute("height", window.innerHeight);
 
