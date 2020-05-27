@@ -12,16 +12,26 @@ The søcket class:
 class S0cket {
 	constructor(svgArg, n0de, inOut, index, label, type, id) {
 		svg = svgArg;
+
+		this.n0de = n0de;
+		this.inOut = inOut;
+		this.index = index;
+		this.id = id;
+
 		this.element = svg.createElement("svg");
 		this.position = [0, 0];
+
 		this.circle = drawCircle();
 		this.element.appendChild(this.circle);
+
 		this.label = label;
-		this.type = type;
 		this.labelText = drawLabel(label, inOut);
 		this.element.appendChild(this.labelText);
+
+		this.type = type;
 		this.typeText = drawType(type, inOut);
 		this.element.appendChild(this.typeText);
+
 		this.clickZone = drawClickZone();
 		this.element.appendChild(this.clickZone);
 	}
@@ -32,6 +42,9 @@ class S0cket {
 		this.position = position;
 		this.element.setAttribute("x", position[0] - offset);
 		this.element.setAttribute("y", position[1] - offset);
+	}
+	getLabelWidth() {
+		return svg.getBBox(this.labelText).width;
 	}
 }
 

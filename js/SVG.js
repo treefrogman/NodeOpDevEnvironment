@@ -13,10 +13,11 @@ class SVG {
 	}
 
 	getBBox(element) {
+		let clone = element.cloneNode(true);
 		document.body.appendChild(this.prerenderingSVG);
-		this.prerenderingSVG.appendChild(element);
-		let bbox = element.getBBox();
-		this.prerenderingSVG.removeChild(element);
+		this.prerenderingSVG.appendChild(clone);
+		let bbox = clone.getBBox();
+		this.prerenderingSVG.removeChild(clone);
 		document.body.removeChild(this.prerenderingSVG);
 		return bbox;
 	}

@@ -50,7 +50,7 @@ svg text{
 
 .s0cketLabel, .s0cketType {
 	font-size: .8em;
-	dominant-baseline: central;
+	dominant-baseline: middle;
 }
 
 .s0cketType {
