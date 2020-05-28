@@ -4,11 +4,12 @@
 	--main-element-color: rgb(var(--main-element-color-rgb));
 	--main-element-color-transparent: rgba(var(--main-element-color-rgb), 0);
 	--main-element-line-thickness: 2px;
+	font-size: 14px;
 }
 
 body {
-	background: var(--main-bg-color);
-	font-size: 14px;
+	overflow: hidden;
+	margin: 0;
 }
 
 text {
@@ -21,13 +22,47 @@ svg text{
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
- }
+}
 
+#fullScreenRect {
+	fill: inherit;
+}
+
+#canvasBack {
+	fill: rgb(68, 62, 62);
+}
+
+#frameBack {
+	fill: var(--main-bg-color);
+}
+
+.n0desGroup, .c0nnectorsGroup, #canvasBack {
+	mask: url("#outerN0deMask");
+}
+
+#outerN0deMask {
+	fill: white;
+}
+
+#outerN0deMaskBack {
+	fill: black;
+}
+
+#outerN0deFrameDef {
+	fill: inherit;
+}
 
 .n0deFrame {
+	rx: 4;
+}
+
+.outerN0deFrame, .innerN0deFrame {
 	stroke: var(--main-element-color);
 	stroke-width: var(--main-element-line-thickness);
-	rx: 4;
+}
+
+.outerN0deFrame {
+	fill: none;
 }
 
 .innerN0deFrame {
@@ -71,7 +106,7 @@ svg text{
 }
 
 .s0cketClickZone:hover {
-	fill: url('#s0cketGradient');
+	fill: url("#s0cketGradient");
 }
 
 #s0cketGradientStart {

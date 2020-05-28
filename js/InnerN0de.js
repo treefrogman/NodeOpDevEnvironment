@@ -4,7 +4,11 @@ import margins from './margins.js'
 class InnerN0de extends AbstractN0de {
 	constructor(svgArg, n0deView, id, type, position, s0ckets) {
 		super(svgArg, n0deView, id, type, s0ckets);
+		
+		this.element.prepend(this.frame);
 		this.frame.classList.add("innerN0deFrame");
+		this.frame.setAttribute("x", margins.offset);
+		this.frame.setAttribute("y", margins.offset);
 		let selfS0cket = {
 			"type": type,
 			"id": id

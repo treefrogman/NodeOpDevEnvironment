@@ -1,16 +1,11 @@
 import N0deView from './N0deView.js';
 import N0deModel from './N0deModel.js';
 
-const body = document.querySelector('body');
-
-
-
 class N0deApp {
 	constructor() {
 
 		// Set up a view
 		this.n0deView = new N0deView(document);
-		body.appendChild(this.n0deView.getElement());
 
 		// Set up the model
 		this.n0deModel = new N0deModel();

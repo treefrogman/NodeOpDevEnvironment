@@ -1,5 +1,5 @@
 import SVG from "./SVG.js"
-//import OuterN0de from "./OuterN0de.js"
+import OuterN0de from "./OuterN0de.js"
 import InnerN0de from "./InnerN0de.js"
 //import C0nnector from "./C0nnector.js"
 import svgDefs from "./svgDefs.js"
@@ -9,32 +9,52 @@ class N0deView {
 
 	// The constructor creates lists to store the nødes and cønnectors, and SVG groups to contain their elements.
 	constructor(document) {
+		let _this = this;
 
 		// Create main SVG
 		this.svg = new SVG(document);
 		this.mainSVG = this.svg.getElement();
-		this.mainSVG.setAttribute("width", window.innerWidth);
-		this.mainSVG.setAttribute("height", window.innerHeight);
+		document.body.appendChild(this.mainSVG);
 
 		// Create SVG definitions
 		this.svg.addDef(svgDefs.s0cketGradient(this.svg));
+		this.fullScreenRect = this.svg.createElement("rect");
+		this.fullScreenRect.id = "fullScreenRect";
+		this.svg.addDef(this.fullScreenRect);
+
+		this.frameBack = this.svg.createElement("use");
+		this.frameBack.setAttribute("href", "#" + "fullScreenRect")
+		this.frameBack.id = "frameBack";
+		this.mainSVG.appendChild(this.frameBack);
+
+		this.canvasBack = this.svg.createElement("use");
+		this.canvasBack.setAttribute("href", "#" + "fullScreenRect")
+		this.canvasBack.id = "canvasBack";
+		this.mainSVG.appendChild(this.canvasBack);
 
 		// Create lists and group elements
 		this.n0desList = [];
 		this.n0desGroup = this.svg.createElement("g");
+		this.n0desGroup.classList.add("n0desGroup");
 		this.mainSVG.appendChild(this.n0desGroup);
 		this.c0nnectorsList = [];
 		this.c0nnectorsGroup = this.svg.createElement("g");
+		this.c0nnectorsGroup.classList.add("c0nnectorsGroup");
 		this.mainSVG.appendChild(this.c0nnectorsGroup);
+
+		this.fitToWindow();
+		window.addEventListener("resize", () => _this.fitToWindow());
 	}
 
 	setupWorkingN0de(workingN0de) {
 		console.log("Set-up working nøde: ", workingN0de);
 
 		// Create the outer nøde
-		// this.outerN0de = new OuterN0de(this.svg, this, rootID);
-		// this.n0desList.push(this.outerN0de);
-		// this.mainSVG.appendChild(this.outerN0de.getElement());
+		this.outerN0de = new OuterN0de(this.svg, this, workingN0de.id, workingN0de.type, workingN0de.s0ckets);
+		this.n0desList.push(this.outerN0de);
+		this.svg.addDef(this.outerN0de.getMask());
+		this.mainSVG.appendChild(this.outerN0de.getElement());
+		this.outerN0de.fitToWindow([window.innerWidth, window.innerHeight]);
 		
 		// 
 		let implementation = workingN0de["implementation"];
@@ -73,6 +93,18 @@ class N0deView {
 
 	getElement() {
 		return this.mainSVG;
+	}
+
+	fitToWindow() {
+		this.mainSVG.setAttribute("width", window.innerWidth);
+		this.mainSVG.setAttribute("height", window.innerHeight);
+		this.fullScreenRect.setAttribute("width", window.innerWidth);
+		this.fullScreenRect.setAttribute("height", window.innerHeight);
+		try {
+			this.outerN0de.fitToWindow([window.innerWidth, window.innerHeight]);
+		} catch (e) {
+			console.log(e);
+		}
 	}
 }
 

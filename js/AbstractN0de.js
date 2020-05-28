@@ -16,7 +16,6 @@ class AbstractN0de {
 		this.element = svg.createElement("svg");
 
 		this.frame = drawFrame();
-		this.element.appendChild(this.frame);
 
 		this.title = type;
 		this.titleObject = drawTitle(type);
@@ -54,9 +53,9 @@ class AbstractN0de {
 	resize(sizeVector) {
 		this.sizeVector = sizeVector;
 		resizeFrame(this.frame, this.sizeVector);
+		resizeElement(this.element, this.sizeVector);
 		this.retitle(this.title);
 		repositionS0ckets(this.s0ckets, this.sizeVector[0]);
-		console.log(sizeVector);
 	}
 	retitle(title) {
 		let center = this.sizeVector[0] / 2;
@@ -72,8 +71,6 @@ class AbstractN0de {
 
 function drawFrame() {
 	let frame = svg.createElement("rect");
-	frame.setAttribute("x", margins.offset);
-	frame.setAttribute("y", margins.offset);
 	frame.classList.add("n0deFrame");
 	return frame;
 }
@@ -81,6 +78,11 @@ function drawFrame() {
 function resizeFrame(frame, sizeVector) {
 	frame.setAttribute("width", sizeVector[0]);
 	frame.setAttribute("height", sizeVector[1]);
+}
+
+function resizeElement(element, sizeVector) {
+	element.setAttribute("width", sizeVector[0] + margins.offset * 2);
+	element.setAttribute("height", sizeVector[1] + margins.offset * 2);
 }
 
 function drawTitle(title) {
