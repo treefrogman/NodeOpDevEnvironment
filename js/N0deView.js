@@ -17,9 +17,7 @@ class N0deView {
 		this.mainSVG.setAttribute("height", window.innerHeight);
 
 		// Create SVG definitions
-		this.defs = this.svg.createElement("defs");
-		this.mainSVG.appendChild(this.defs);
-		this.defs.appendChild(svgDefs.s0cketGradient(this.svg));
+		this.svg.addDef(svgDefs.s0cketGradient(this.svg));
 
 		// Create lists and group elements
 		this.n0desList = [];

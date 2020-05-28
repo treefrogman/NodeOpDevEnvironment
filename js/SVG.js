@@ -7,6 +7,12 @@ class SVG {
 	constructor(document) {
 		this.mainSVG = this.createElement("svg");
 		this.prerenderingSVG = this.createElement("svg");
+		this.defsElement = this.createElement("defs");
+		this.mainSVG.appendChild(this.defsElement);
+	}
+
+	addDef(def) {
+		this.defsElement.appendChild(def);
 	}
 
 	getElement() {
