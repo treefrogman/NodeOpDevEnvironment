@@ -27,8 +27,11 @@ svg text{
 .n0deFrame {
 	stroke: var(--main-element-color);
 	stroke-width: var(--main-element-line-thickness);
-	fill: var(--main-bg-color);
 	rx: 4;
+}
+
+.innerN0deFrame {
+	fill: var(--main-bg-color);
 }
 
 .n0deTitle {
