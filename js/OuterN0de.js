@@ -7,6 +7,7 @@ class OuterN0de extends AbstractN0de {
 		
 		this.element.setAttribute("x", margins.outerN0de.sideMargin - margins.offset);
 		this.element.setAttribute("y", margins.outerN0de.topMargin - margins.offset);
+		this.element.classList.add("outerN0de");
 
 		this.mask = svgArg.createElement("mask");
 		this.mask.id = "outerN0deMask";

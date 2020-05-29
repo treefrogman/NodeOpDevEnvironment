@@ -52,6 +52,10 @@ svg text{
 	fill: inherit;
 }
 
+#frameMouseMask {
+	fill: var(--main-element-color-transparent);
+}
+
 .n0deFrame {
 	rx: 4;
 }
@@ -96,7 +100,7 @@ svg text{
 	display: none;
 }
 
-.innerN0de:hover .s0cketType {
+.innerN0de:hover .s0cketType, .outerN0de:hover .s0cketType, #frameMouseMask:hover ~ .outerN0de .s0cketType {
 	display: inline;
 }
 

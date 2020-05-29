@@ -42,6 +42,10 @@ class N0deView {
 		this.c0nnectorsGroup.classList.add("c0nnectorsGroup");
 		this.mainSVG.appendChild(this.c0nnectorsGroup);
 
+		this.frameMouseMask = this.svg.createElement("path");
+		this.frameMouseMask.id = "frameMouseMask";
+		this.mainSVG.appendChild(this.frameMouseMask);
+
 		this.fitToWindow();
 		window.addEventListener("resize", () => _this.fitToWindow());
 	}
@@ -79,6 +83,8 @@ class N0deView {
 			let toS0cket = _this.n0desList[outAddress[0]].getS0cket("out", outAddress[1]);
 			_this.addC0nnector(fromS0cket, toS0cket);
 		});
+		
+		this.fitToWindow();
 	}
 
 	addN0de(id, type, position, s0ckets) {
@@ -96,16 +102,34 @@ class N0deView {
 	}
 
 	fitToWindow() {
-		this.mainSVG.setAttribute("width", window.innerWidth);
-		this.mainSVG.setAttribute("height", window.innerHeight);
-		this.fullScreenRect.setAttribute("width", window.innerWidth);
-		this.fullScreenRect.setAttribute("height", window.innerHeight);
+		let windowVector = [window.innerWidth, window.innerHeight];
+		this.mainSVG.setAttribute("width", windowVector[0]);
+		this.mainSVG.setAttribute("height", windowVector[1]);
+		this.fullScreenRect.setAttribute("width", windowVector[0]);
+		this.fullScreenRect.setAttribute("height", windowVector[1]);
 		try {
-			this.outerN0de.fitToWindow([window.innerWidth, window.innerHeight]);
+			this.outerN0de.fitToWindow(windowVector);
+			resizeFrameMouseMask(this.frameMouseMask, this.svg.getBBox(this.outerN0de.maskFrame), windowVector);
 		} catch (e) {
 			console.log(e);
 		}
 	}
+}
+
+function resizeFrameMouseMask(frameMouseMask, bbox, windowVector) {
+	console.log(bbox);
+	let path = `M0,0 H${
+		windowVector[0]
+	} V${
+		windowVector[1]
+	} H0 Z M${bbox.x},${bbox.y} v${
+		bbox.height
+	} h${
+		bbox.width
+	} V${
+		bbox.y
+	} Z`;
+	frameMouseMask.setAttribute("d", path);
 }
 
 export default N0deView
