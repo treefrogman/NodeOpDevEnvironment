@@ -21,6 +21,9 @@ class InnerN0de extends AbstractN0de {
 		this.element.classList.add("innerN0de");
 		this.shrinkWrap();
 	}
+	addS0cket(s0cketSpec, inOut, index) {
+		super.addS0cket(s0cketSpec, "inner", inOut, index);
+	}
 	shrinkWrap() {
 		let s0cketWidths = [];
 		[...this.s0ckets.in, ...this.s0ckets.out].forEach(function (s0cket) {

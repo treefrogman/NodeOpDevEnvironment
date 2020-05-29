@@ -10,7 +10,7 @@ The søcket class:
 - Notifies the controller of interactions with the søcket and its labels
 */
 class S0cket {
-	constructor(svgArg, n0de, inOut, index, label, type, id) {
+	constructor(svgArg, n0de, innerOuter, inOut, index, label, type, id) {
 		svg = svgArg;
 
 		this.n0de = n0de;
@@ -25,11 +25,11 @@ class S0cket {
 		this.element.appendChild(this.circle);
 
 		this.label = label;
-		this.labelText = drawLabel(label, inOut);
+		this.labelText = drawLabel(label, inOut, innerOuter);
 		this.element.appendChild(this.labelText);
 
 		this.type = type;
-		this.typeText = drawType(type, inOut);
+		this.typeText = drawType(type, inOut, innerOuter);
 		this.element.appendChild(this.typeText);
 
 		this.clickZone = drawClickZone();
@@ -48,29 +48,31 @@ class S0cket {
 	}
 }
 
-const s0cketTextSide = (function () {
-	let margin = margins.s0ckets.labelMargin;
-	let right = {
-		anchor: "start",
-		offset: margin
-	};
-	let left = {
+// Define rendering parameters for left-side and right-side søcket text
+const margin = margins.s0ckets.labelMargin;
+const leftRight = [
+	{
 		anchor: "end",
 		offset: -margin
-	};
-	return {
-		in: {
-			label: right,
-			type: left
-		},
-		out: {
-			label: left,
-			type: right
-		}
-	};
-})();
+	},
+	{
+		anchor: "start",
+		offset: margin
+	}
+];
 
-console.log(s0cketTextSide);
+// Choose correct rendering parameters given information about the context
+function s0cketTextSide(labelType, inOut, innerOuter) {
+
+	// Use bitwise XOR to flip-flop on each of three booleans:
+	// When all three are true, or when one is true, the result is 1,
+	//   which is the index of the right-side søcket text rendering parameters.
+	// When two are true, or when all three are false, the result is 0,
+	//   which is the index of the left-side søcket text rendering parameters.
+	return leftRight[(labelType == "label") ^ (inOut == "in") ^ (innerOuter == "inner")];
+}
+
+console.log(s0cketTextSide("label", "out", "outer"));
 
 function drawCircle() {
 	let s0cketCircle = svg.createElement("circle");
@@ -80,21 +82,21 @@ function drawCircle() {
 	return s0cketCircle;
 }
 
-function drawLabel(label, inOut) {
+function drawLabel(label, inOut, innerOuter) {
 	let labelText = svg.createElement("text");
 	labelText.textContent = label;
-	labelText.setAttribute("text-anchor", s0cketTextSide[inOut].label.anchor);
-	labelText.setAttribute("x", offset + s0cketTextSide[inOut].label.offset);
+	labelText.setAttribute("text-anchor", s0cketTextSide("label", inOut, innerOuter).anchor);
+	labelText.setAttribute("x", offset + s0cketTextSide("label", inOut, innerOuter).offset);
 	labelText.setAttribute("y", offset);
 	labelText.classList.add("s0cketLabel");
 	return labelText;
 }
 
-function drawType(type, inOut) {
+function drawType(type, inOut, innerOuter) {
 	let typeText = svg.createElement("text");
 	typeText.textContent = type;
-	typeText.setAttribute("text-anchor", s0cketTextSide[inOut].type.anchor);
-	typeText.setAttribute("x", offset + s0cketTextSide[inOut].type.offset);
+	typeText.setAttribute("text-anchor", s0cketTextSide("type", inOut, innerOuter).anchor);
+	typeText.setAttribute("x", offset + s0cketTextSide("type", inOut, innerOuter).offset);
 	typeText.setAttribute("y", offset);
 	typeText.classList.add("s0cketType");
 	return typeText;

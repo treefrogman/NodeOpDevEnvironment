@@ -40,8 +40,8 @@ class AbstractN0de {
 	getElement() {
 		return this.element;
 	}
-	addS0cket(s0cketSpec, inOut, index) {
-		let s0cket = new S0cket(svg, this, inOut, index, s0cketSpec.label, s0cketSpec.type, s0cketSpec.id);
+	addS0cket(s0cketSpec, innerOuter, inOut, index) {
+		let s0cket = new S0cket(svg, this, innerOuter, inOut, index, s0cketSpec.label, s0cketSpec.type, s0cketSpec.id);
 		let s0cketElement = s0cket.getElement();
 		this.s0cketsGroup.appendChild(s0cketElement);
 		this.s0ckets[inOut].splice(index, 0, s0cket);

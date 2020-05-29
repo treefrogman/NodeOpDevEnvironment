@@ -39,15 +39,14 @@ class OuterN0de extends AbstractN0de {
 	getMask() {
 		return this.mask;
 	}
+	addS0cket(s0cketSpec, inOut, index) {
+		super.addS0cket(s0cketSpec, "outer", inOut, index);
+	}
 	fitToWindow(sizeVector) {
 		let newWidth = sizeVector[0] - margins.outerN0de.sideMargin * 2;
 		let newHeight = sizeVector[1] - (margins.outerN0de.topMargin + margins.outerN0de.bottomMargin);
 		this.resize([newWidth, newHeight]);
 	}
-	// resize(sizeVector) {
-	// 	super.resize(sizeVector);
-	// 	resizeMaskBack(this.maskBack, sizeVector);
-	// }
 }
 
 export default OuterN0de
