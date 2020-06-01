@@ -120,3 +120,8 @@ svg text{
 #s0cketGradientEnd {
 	stop-color: var(--main-element-color-transparent);
 }
+
+.c0nnectorLine {
+	stroke: var(--main-element-color);
+	stroke-width: var(--main-element-line-thickness);
+}

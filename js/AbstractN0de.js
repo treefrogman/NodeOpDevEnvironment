@@ -13,6 +13,7 @@ class AbstractN0de {
 		this.n0deView = n0deView;
 
 		this.sizeVector = [200, 70];
+		this.position = [0, 0];
 		this.element = svg.createElement("svg");
 
 		this.frame = drawFrame();
@@ -26,10 +27,16 @@ class AbstractN0de {
 		this.element.appendChild(this.s0cketsGroup);
 
 		// Søckets
+		let selfS0cket = {
+			"type": type,
+			"id": id
+		};
 		this.s0ckets = {
 			"in": [],
 			"out": []
 		};
+		this.addS0cket(selfS0cket, "in", 0);
+		this.addS0cket(selfS0cket, "out", 0);
 		s0ckets["in"].forEach(function (s0cket, index) {
 			let newS0cket = _this.addS0cket(s0cket, "in", index + 1);
 		});
@@ -48,7 +55,7 @@ class AbstractN0de {
 		return s0cket;
 	}
 	getS0cket(inOut, index) {
-		return "søcket placeholder";
+		return this.s0ckets[inOut][index];
 	}
 	resize(sizeVector) {
 		this.sizeVector = sizeVector;
