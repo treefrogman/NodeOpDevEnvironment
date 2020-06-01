@@ -5,8 +5,9 @@ class OuterN0de extends AbstractN0de {
 	constructor(svgArg, n0deView, id, type, s0ckets) {
 		super(svgArg, n0deView, id, type, s0ckets);
 		
-		this.element.setAttribute("x", margins.outerN0de.sideMargin - margins.offset);
-		this.element.setAttribute("y", margins.outerN0de.topMargin - margins.offset);
+		this.position = [margins.outerN0de.sideMargin - margins.offset, margins.outerN0de.topMargin - margins.offset];
+		this.element.setAttribute("x", this.position[0]);
+		this.element.setAttribute("y", this.position[1]);
 		this.element.classList.add("outerN0de");
 
 		this.mask = svgArg.createElement("mask");

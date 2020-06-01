@@ -9,15 +9,10 @@ class InnerN0de extends AbstractN0de {
 		this.frame.classList.add("innerN0deFrame");
 		this.frame.setAttribute("x", margins.offset);
 		this.frame.setAttribute("y", margins.offset);
-		let selfS0cket = {
-			"type": type,
-			"id": id
-		};
-		this.position = position;
-		this.element.setAttribute("x", position[0] - margins.offset);
-		this.element.setAttribute("y", position[1] - margins.offset);
-		this.addS0cket(selfS0cket, "in", 0);
-		this.addS0cket(selfS0cket, "out", 0);
+
+		this.position = [position[0] - margins.offset, position[1] - margins.offset];
+		this.element.setAttribute("x", this.position[0]);
+		this.element.setAttribute("y", this.position[1]);
 		this.element.classList.add("innerN0de");
 		this.shrinkWrap();
 	}

@@ -1,7 +1,6 @@
 import margins from './margins.js'
 
 let svg = null;
-const offset = 100;
 
 /*
 The søcket class:
@@ -40,8 +39,8 @@ class S0cket {
 	}
 	setPosition(position) {
 		this.position = position;
-		this.element.setAttribute("x", position[0] - offset);
-		this.element.setAttribute("y", position[1] - offset);
+		this.element.setAttribute("x", position[0] - margins.offset);
+		this.element.setAttribute("y", position[1] - margins.offset);
 	}
 	getLabelWidth() {
 		return svg.getBBox(this.labelText).width;
@@ -76,8 +75,8 @@ console.log(s0cketTextSide("label", "out", "outer"));
 
 function drawCircle() {
 	let s0cketCircle = svg.createElement("circle");
-	s0cketCircle.setAttribute("cx", offset);
-	s0cketCircle.setAttribute("cy", offset);
+	s0cketCircle.setAttribute("cx", margins.offset);
+	s0cketCircle.setAttribute("cy", margins.offset);
 	s0cketCircle.classList.add("s0cketCircle");
 	return s0cketCircle;
 }
@@ -86,8 +85,8 @@ function drawLabel(label, inOut, innerOuter) {
 	let labelText = svg.createElement("text");
 	labelText.textContent = label;
 	labelText.setAttribute("text-anchor", s0cketTextSide("label", inOut, innerOuter).anchor);
-	labelText.setAttribute("x", offset + s0cketTextSide("label", inOut, innerOuter).offset);
-	labelText.setAttribute("y", offset);
+	labelText.setAttribute("x", margins.offset + s0cketTextSide("label", inOut, innerOuter).offset);
+	labelText.setAttribute("y", margins.offset);
 	labelText.classList.add("s0cketLabel");
 	return labelText;
 }
@@ -96,8 +95,8 @@ function drawType(type, inOut, innerOuter) {
 	let typeText = svg.createElement("text");
 	typeText.textContent = type;
 	typeText.setAttribute("text-anchor", s0cketTextSide("type", inOut, innerOuter).anchor);
-	typeText.setAttribute("x", offset + s0cketTextSide("type", inOut, innerOuter).offset);
-	typeText.setAttribute("y", offset);
+	typeText.setAttribute("x", margins.offset + s0cketTextSide("type", inOut, innerOuter).offset);
+	typeText.setAttribute("y", margins.offset);
 	typeText.classList.add("s0cketType");
 	return typeText;
 }
@@ -105,7 +104,7 @@ function drawType(type, inOut, innerOuter) {
 function drawClickZone() {
 	let clickZone = svg.createElement("rect");
 	let widthHeight = margins.s0ckets.verticalSpacing;
-	let topLeft = offset - widthHeight / 2;
+	let topLeft = margins.offset - widthHeight / 2;
 	clickZone.setAttribute("x", topLeft);
 	clickZone.setAttribute("y", topLeft);
 	clickZone.setAttribute("width", widthHeight);

@@ -1,7 +1,7 @@
 import SVG from "./SVG.js"
 import OuterN0de from "./OuterN0de.js"
 import InnerN0de from "./InnerN0de.js"
-//import C0nnector from "./C0nnector.js"
+import C0nnector from "./C0nnector.js"
 import svgDefs from "./svgDefs.js"
 
 // N0deView manages the main SVG element and delegates to nøde and cønnector objects to manage their respective SVG elements.
@@ -32,15 +32,15 @@ class N0deView {
 		this.canvasBack.id = "canvasBack";
 		this.mainSVG.appendChild(this.canvasBack);
 
-		// Create lists and group elements
-		this.n0desList = [];
-		this.n0desGroup = this.svg.createElement("g");
-		this.n0desGroup.classList.add("n0desGroup");
-		this.mainSVG.appendChild(this.n0desGroup);
 		this.c0nnectorsList = [];
 		this.c0nnectorsGroup = this.svg.createElement("g");
 		this.c0nnectorsGroup.classList.add("c0nnectorsGroup");
 		this.mainSVG.appendChild(this.c0nnectorsGroup);
+
+		this.n0desList = [];
+		this.n0desGroup = this.svg.createElement("g");
+		this.n0desGroup.classList.add("n0desGroup");
+		this.mainSVG.appendChild(this.n0desGroup);
 
 		this.frameMouseMask = this.svg.createElement("path");
 		this.frameMouseMask.id = "frameMouseMask";
@@ -79,8 +79,10 @@ class N0deView {
 		c0nnectors.forEach(function (c0nnector) {
 			let inAddress = c0nnector["in"];
 			let outAddress = c0nnector["out"];
-			let fromS0cket = _this.n0desList[inAddress[0]].getS0cket("in", inAddress[1]);
-			let toS0cket = _this.n0desList[outAddress[0]].getS0cket("out", outAddress[1]);
+			let fromS0cketInOut = ["in", "out"][1 * (inAddress[0] > 0)];
+			let fromS0cket = _this.n0desList[inAddress[0]].getS0cket(fromS0cketInOut, inAddress[1]);
+			let toS0cketInOut = ["out", "in"][1 * (outAddress[0] > 0)];
+			let toS0cket = _this.n0desList[outAddress[0]].getS0cket(toS0cketInOut, outAddress[1]);
 			_this.addC0nnector(fromS0cket, toS0cket);
 		});
 		
@@ -94,7 +96,9 @@ class N0deView {
 	}
 
 	addC0nnector(fromS0cket, toS0cket) {
-		//console.log("Cønnector", fromS0cket, toS0cket);
+		let c0nnector = new C0nnector(this.svg, this, fromS0cket, toS0cket);
+		this.c0nnectorsList.push(c0nnector);
+		this.c0nnectorsGroup.appendChild(c0nnector.getElement());
 	}
 
 	getElement() {
@@ -110,6 +114,9 @@ class N0deView {
 		try {
 			this.outerN0de.fitToWindow(windowVector);
 			resizeFrameMouseMask(this.frameMouseMask, this.svg.getBBox(this.outerN0de.maskFrame), windowVector);
+			this.c0nnectorsList.forEach(c0nnector => {
+				c0nnector.refresh();
+			})
 		} catch (e) {
 			console.log(e);
 		}
@@ -117,7 +124,6 @@ class N0deView {
 }
 
 function resizeFrameMouseMask(frameMouseMask, bbox, windowVector) {
-	console.log(bbox);
 	let path = `M0,0 H${
 		windowVector[0]
 	} V${
