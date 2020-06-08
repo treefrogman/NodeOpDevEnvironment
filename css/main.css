@@ -1,3 +1,4 @@
+/* Define the colors, etc. to be used throughout the interface. This is what themes would modify. */
 :root {
 	--main-bg-color: rgb(32,32,32);
 	--main-element-color-rgb: 212, 212, 212;
@@ -5,18 +6,22 @@
 	--main-element-color-transparent: rgba(var(--main-element-color-rgb), 0);
 	--main-element-line-thickness: 2px;
 	font-size: 14px;
+	font-family: sans-serif;
 }
 
+/* Allow the SVG element to truly fill the window. */
 body {
 	overflow: hidden;
 	margin: 0;
 }
 
+/* Assign the theme's element color to all text. */
 text {
 	fill: var(--main-element-color);
-	font-family: sans-serif;
 }
 
+/* Disable selection of text elements. Not to discourage copying of text, but to reduce GUI confusion.
+Copying of text to enable googling is important, so this matter should be revisited. */
 svg text{
 	-webkit-user-select: none;
 	-moz-user-select: none;
@@ -24,66 +29,80 @@ svg text{
 	user-select: none;
 }
 
+/* The fullScreenRect is a multi-purpose rectangle that's always the same size as the window. */
 #fullScreenRect {
 	fill: inherit;
 }
-
+/* The canvasBack is the backdrop to all the n0des and c0nnectors.
+Later it will have texture and will pan with the contents of the canvas. */
 #canvasBack {
 	fill: rgb(68, 62, 62);
 }
-
+/* The frameBack is essentially the background of the outerN0de. */
 #frameBack {
 	fill: var(--main-bg-color);
 }
 
-.n0desGroup, .c0nnectorsGroup, #canvasBack {
-	mask: url("#outerN0deMask");
-}
-
-#outerN0deMask {
-	fill: white;
-}
-
-#outerN0deMaskBack {
-	fill: black;
-}
-
+/* The outerN0deFrameDef defines the shape of the outerN0deFrame and the outerN0deMask. */
 #outerN0deFrameDef {
 	fill: inherit;
 }
 
+/* The outerN0deMask element contains both the black and white mask elements,
+but we can't style the <use> instance directly, so we have to give it a style to inherit.*/
+#outerN0deMask {
+	fill: white;
+}
+/* A mask is defined by black and white areas,
+so this mask needs a black background to complete it.
+This style overrides the parent element's style. */
+#outerN0deMaskBack {
+	fill: black;
+}
+/* SVG does not support inverse masking,
+so instead of masking a hole in the frameBack,
+we put the canvas and its contents in front of the frameBack, and mask them. */
+.n0desGroup, .c0nnectorsGroup, #canvasBack {
+	mask: url("#outerN0deMask");
+}
+
+/* Because the canvas contents are actually in front of the frameBack,
+and SVG masks do not apply to mouse interactions,
+a separate invisible element without radiused corners is placed in front to catch mouse interactions. */
 #frameMouseMask {
 	fill: var(--main-element-color-transparent);
 }
 
+/* All n0deFrames, inner or outer have the same radius and stroke. */
 .n0deFrame {
 	rx: 4;
-}
-
-.outerN0deFrame, .innerN0deFrame {
 	stroke: var(--main-element-color);
 	stroke-width: var(--main-element-line-thickness);
 }
-
+/* The frameBack and the canvasBack provide the fills, so all the outerN0deFrame needs is a stroke. */
 .outerN0deFrame {
 	fill: none;
 }
-
+/* The innerN0deFrame is filled with the global background color to hide any elements behind it. */
 .innerN0deFrame {
 	fill: var(--main-bg-color);
 }
 
+/* The n0deTitle sits at the top of the n0deFrame indicating the type of n0de. */
 .n0deTitle {
 	text-anchor: middle;
 	dominant-baseline: middle;
 }
-
+/* The n0deTitleBackground serves to hide the n0deFrame where it passes behind the title
+and to hide any c0nnectors or other graphical elements that get behind it.
+Its bounding box is adjusted programatically to match the bounding box of the title. */
 .n0deTitleBackground {
 	rx: 3;
 	fill: var(--main-bg-color);
 	stroke: none;
 }
 
+/* The s0cketCircle is the graphical core of the s0cket. */
 .s0cketCircle {
 	stroke: var(--main-element-color);
 	stroke-width: var(--main-element-line-thickness);
@@ -91,36 +110,42 @@ svg text{
 	r: 3;
 }
 
+/* The s0cketLabel and the s0cketType sit on opposite sides of the s0cket, but both get the same styling otherwise. */
 .s0cketLabel, .s0cketType {
 	font-size: .8em;
 	dominant-baseline: middle;
 }
 
+/* The s0cketType is only shown when hovered.
+Later it will also be hidden when there's a c0nnector
+and the type will instead be displayed on the c0nnector. */
 .s0cketType {
 	display: none;
 }
-
 .innerN0de:hover .s0cketType, .outerN0de:hover .s0cketType, #frameMouseMask:hover ~ .outerN0de .s0cketType {
 	display: inline;
 }
 
+/* The clickZone is an invisible square on top (hence z-index) of the the s0cket.
+It handles all mouse interactions with the s0cket.
+When hovered it displays a dot in the center of the s0cket. */
 .s0cketClickZone {
 	fill: var(--main-element-color-transparent);
 	z-index: 200;
 }
-
 .s0cketClickZone:hover {
 	fill: url("#s0cketGradient");
 }
-
+/* The s0cketGradient is used by the clickZone to display the dot.
+A bit hacky, but it does the job. */
 #s0cketGradientStart {
 	stop-color: var(--main-element-color);
 }
-
 #s0cketGradientEnd {
 	stop-color: var(--main-element-color-transparent);
 }
 
+/* The c0nnectorLine is going to get a lot more styling later. */
 .c0nnectorLine {
 	stroke: var(--main-element-color);
 	stroke-width: var(--main-element-line-thickness);
