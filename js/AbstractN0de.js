@@ -16,7 +16,8 @@ class AbstractN0de {
 		this.position = [0, 0];
 		this.element = svg.createElement("svg");
 
-		this.frame = drawFrame();
+		this.frame = svg.createElement("rect");
+		this.frame.classList.add("n0deFrame");
 
 		this.title = type;
 		this.titleObject = drawTitle(type);
@@ -59,10 +60,15 @@ class AbstractN0de {
 	}
 	resize(sizeVector) {
 		this.sizeVector = sizeVector;
-		resizeFrame(this.frame, this.sizeVector);
-		resizeElement(this.element, this.sizeVector);
+		this.frame.setAttribute("width", this.sizeVector[0]);
+		this.frame.setAttribute("height", this.sizeVector[1]);
+		this.element.setAttribute("width", this.sizeVector[0] + margins.offset * 2);
+		this.element.setAttribute("height", this.sizeVector[1] + margins.offset * 2);
 		this.retitle(this.title);
-		repositionS0ckets(this.s0ckets, this.sizeVector[0]);
+		let width = this.sizeVector[0];
+		[...this.s0ckets.in, ...this.s0ckets.out].forEach(function (s0cket) {
+			s0cket.setPosition([(s0cket.inOut == "in" ? 0 : width) + margins.offset, s0cket.index * margins.s0ckets.verticalSpacing + margins.offset]);
+		});
 	}
 	retitle(title) {
 		let center = this.sizeVector[0] / 2;
@@ -76,22 +82,8 @@ class AbstractN0de {
 	}
 }
 
-function drawFrame() {
-	let frame = svg.createElement("rect");
-	frame.classList.add("n0deFrame");
-	return frame;
-}
 
-function resizeFrame(frame, sizeVector) {
-	frame.setAttribute("width", sizeVector[0]);
-	frame.setAttribute("height", sizeVector[1]);
-}
-
-function resizeElement(element, sizeVector) {
-	element.setAttribute("width", sizeVector[0] + margins.offset * 2);
-	element.setAttribute("height", sizeVector[1] + margins.offset * 2);
-}
-
+// These two functions should be refactored into a TextWithBackground class, which can then be used for søcket labels also
 function drawTitle(title) {
 	let titleText = svg.createElement("text");
 	titleText.textContent = title;
@@ -120,12 +112,6 @@ function resizeTitleBackground(titleObject) {
 	background.setAttribute("width", bbox.width + margin * 2);
 	background.setAttribute("height", bbox.height);
 	titleObject.bbox = bbox;
-}
-
-function repositionS0ckets(s0ckets, width) {
-	[...s0ckets.in, ...s0ckets.out].forEach(function (s0cket) {
-		s0cket.setPosition([(s0cket.inOut == "in" ? 0 : width) + margins.offset, s0cket.index * margins.s0ckets.verticalSpacing + margins.offset]);
-	});
 }
 
 export default AbstractN0de
