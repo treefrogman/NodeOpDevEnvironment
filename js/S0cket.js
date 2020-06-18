@@ -32,7 +32,10 @@ class S0cket {
 		this.position = [0, 0];
 
 		// The graphical core of a søcket
-		this.circle = drawCircle();
+		this.circle = svg.createElement("circle");
+		this.circle.setAttribute("cx", margins.offset);
+		this.circle.setAttribute("cy", margins.offset);
+		this.circle.classList.add("s0cketCircle");
 		this.element.appendChild(this.circle);
 
 		// LABEL
@@ -46,7 +49,14 @@ class S0cket {
 		this.element.appendChild(this.typeText);
 
 		// CLICK HITBOX
-		this.clickZone = drawClickZone();
+		this.clickZone = svg.createElement("rect");
+		let widthHeight = margins.s0ckets.verticalSpacing;
+		let topLeft = margins.offset - widthHeight / 2;
+		this.clickZone.setAttribute("x", topLeft);
+		this.clickZone.setAttribute("y", topLeft);
+		this.clickZone.setAttribute("width", widthHeight);
+		this.clickZone.setAttribute("height", widthHeight);
+		this.clickZone.classList.add("s0cketClickZone");
 		this.element.appendChild(this.clickZone);
 	}
 
@@ -76,16 +86,6 @@ class S0cket {
 	getLabelWidth() {
 		return svg.getBBox(this.labelText).width;
 	}
-}
-
-// Draw the circle element
-// TODO: This doesn't really need to be in a function, so its content could be moved to the constructor
-function drawCircle() {
-	let s0cketCircle = svg.createElement("circle");
-	s0cketCircle.setAttribute("cx", margins.offset);
-	s0cketCircle.setAttribute("cy", margins.offset);
-	s0cketCircle.classList.add("s0cketCircle");
-	return s0cketCircle;
 }
 
 // Define rendering parameters for left-side and right-side søcket text
@@ -124,19 +124,6 @@ function drawS0cketText(text, labelType, inOut, innerOuter) {
 	// Convert boolean to index to choose correct class.
 	textElement.classList.add(["s0cketType", "s0cketLabel"][(labelType == "label") ^ 0]);
 	return textElement;
-}
-
-// Draw the invisible box that receives mouse events
-function drawClickZone() {
-	let clickZone = svg.createElement("rect");
-	let widthHeight = margins.s0ckets.verticalSpacing;
-	let topLeft = margins.offset - widthHeight / 2;
-	clickZone.setAttribute("x", topLeft);
-	clickZone.setAttribute("y", topLeft);
-	clickZone.setAttribute("width", widthHeight);
-	clickZone.setAttribute("height", widthHeight);
-	clickZone.classList.add("s0cketClickZone");
-	return clickZone;
 }
 
 export default S0cket
