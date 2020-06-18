@@ -78,6 +78,16 @@ class S0cket {
 	}
 }
 
+// Draw the circle element
+// TODO: This doesn't really need to be in a function, so its content could be moved to the constructor
+function drawCircle() {
+	let s0cketCircle = svg.createElement("circle");
+	s0cketCircle.setAttribute("cx", margins.offset);
+	s0cketCircle.setAttribute("cy", margins.offset);
+	s0cketCircle.classList.add("s0cketCircle");
+	return s0cketCircle;
+}
+
 // Define rendering parameters for left-side and right-side søcket text
 const margin = margins.s0ckets.labelMargin;
 const leftRight = [
@@ -91,35 +101,6 @@ const leftRight = [
 	}
 ];
 
-// Choose correct rendering parameters given information about the context
-// @param {string} labelType - Either "label" or "type", specifying which kind of søcket text we're working with.
-// @param {string} inOut - Either "in" or "out", specifying whether this is an input or output søcket.
-// @param {string} innerOuter - Either "inner" or "outer", specifying whether this søcket belongs to an InnerN0de or an OuterN0de.
-// @returns {object} - 
-
-function s0cketTextSide(labelType, inOut, innerOuter) {
-
-	// Use bitwise XOR to flip-flop on each of three booleans:
-	// When all three are true, or when one is true, the result is 1,
-	//   which is the index of the right-side søcket text rendering parameters.
-	// When two are true, or when all three are false, the result is 0,
-	//   which is the index of the left-side søcket text rendering parameters.
-	return leftRight[(labelType == "label") ^ (inOut == "in") ^ (innerOuter == "inner")];
-}
-
-// Test s0cketTextSide
-console.log(s0cketTextSide("label", "out", "outer"));
-
-// Draw the circle element
-// TODO: This doesn't really need to be in a function, so its content could be moved to the constructor
-function drawCircle() {
-	let s0cketCircle = svg.createElement("circle");
-	s0cketCircle.setAttribute("cx", margins.offset);
-	s0cketCircle.setAttribute("cy", margins.offset);
-	s0cketCircle.classList.add("s0cketCircle");
-	return s0cketCircle;
-}
-
 // Draw the label or type text
 function drawS0cketText(text, labelType, inOut, innerOuter) {
 
@@ -127,8 +108,13 @@ function drawS0cketText(text, labelType, inOut, innerOuter) {
 	let textElement = svg.createElement("text");
 	textElement.textContent = text;
 
-
-	let textSide = s0cketTextSide(labelType, inOut, innerOuter);
+	// Choose correct rendering parameters given information about the context.
+	// Use bitwise XOR to flip-flop on each of three booleans:
+	// When all three are true, or when one is true, the result is 1,
+	//   which is the index of the right-side søcket text rendering parameters.
+	// When two are true, or when all three are false, the result is 0,
+	//   which is the index of the left-side søcket text rendering parameters.
+	let textSide = leftRight[(labelType == "label") ^ (inOut == "in") ^ (innerOuter == "inner")];
 
 	// Position the text
 	textElement.setAttribute("text-anchor", textSide.anchor);
