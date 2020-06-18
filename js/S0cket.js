@@ -37,12 +37,12 @@ class S0cket {
 
 		// LABEL
 		this.label = label;
-		this.labelText = drawLabel(label, inOut, innerOuter);
+		this.labelText = drawS0cketText(label, "label", inOut, innerOuter);
 		this.element.appendChild(this.labelText);
 
 		// TYPE
 		this.type = type;
-		this.typeText = drawType(type, inOut, innerOuter);
+		this.typeText = drawS0cketText(type, "type", inOut, innerOuter);
 		this.element.appendChild(this.typeText);
 
 		// CLICK HITBOX
@@ -120,29 +120,24 @@ function drawCircle() {
 	return s0cketCircle;
 }
 
-// Draw the label text
-function drawLabel(label, inOut, innerOuter) {
-	let labelText = svg.createElement("text");
-	labelText.textContent = label;
-	// TODO: refactor to use s0cketTextSide only once and store value.
-	labelText.setAttribute("text-anchor", s0cketTextSide("label", inOut, innerOuter).anchor);
-	labelText.setAttribute("x", margins.offset + s0cketTextSide("label", inOut, innerOuter).offset);
-	labelText.setAttribute("y", margins.offset);
-	labelText.classList.add("s0cketLabel");
-	return labelText;
-}
+// Draw the label or type text
+function drawS0cketText(text, labelType, inOut, innerOuter) {
 
-// Draw the type text
-// TODO: This is identical to drawLabel, save for select few differences which could be toggled by a parameter
-function drawType(type, inOut, innerOuter) {
-	let typeText = svg.createElement("text");
-	typeText.textContent = type;
-	// TODO: refactor to use s0cketTextSide only once and store value.
-	typeText.setAttribute("text-anchor", s0cketTextSide("type", inOut, innerOuter).anchor);
-	typeText.setAttribute("x", margins.offset + s0cketTextSide("type", inOut, innerOuter).offset);
-	typeText.setAttribute("y", margins.offset);
-	typeText.classList.add("s0cketType");
-	return typeText;
+	// Create and populate the text element
+	let textElement = svg.createElement("text");
+	textElement.textContent = text;
+
+
+	let textSide = s0cketTextSide(labelType, inOut, innerOuter);
+
+	// Position the text
+	textElement.setAttribute("text-anchor", textSide.anchor);
+	textElement.setAttribute("x", margins.offset + textSide.offset);
+	textElement.setAttribute("y", margins.offset);
+
+	// Convert boolean to index to choose correct class.
+	textElement.classList.add(["s0cketType", "s0cketLabel"][(labelType == "label") ^ 0]);
+	return textElement;
 }
 
 // Draw the invisible box that receives mouse events
@@ -157,8 +152,5 @@ function drawClickZone() {
 	clickZone.classList.add("s0cketClickZone");
 	return clickZone;
 }
-
-// Unused function: delete??? 🤔🤔
-function drawS0cketLabel() { }
 
 export default S0cket
