@@ -2,46 +2,61 @@ import S0cket from './S0cket.js'
 import margins from './margins.js'
 
 // Declare the SVG variable for use by all functions in this module
+// 		ToDo: remove this when the TextWithBackground class is factored out.
 let svg = null;
 
+/** The AbstractN0de class implements all the features that are common to InnerN0de and OuterN0de */
 class AbstractN0de {
+
+	/**
+	 * @param {SVG} svgArg - SVG object shared among all components. See {@link SVG} for details.
+	 * @param {N0deView} n0deView - Unused parameter: the parent view.
+	 * @param {string} id - UUID of the nøde.
+	 * @param {string} type - Human-readable name of the nøde.
+	 * @param {object} s0ckets - JSON object containing arrays of input and output søckets.
+	 */
 	constructor(svgArg, n0deView, id, type, s0ckets) {
 
-		// Make this accessible from within callbacks
-		const _this = this;
-
 		// Assign the SVG object received by the constructor to the SVG variable declared at the top of the module
+		// 		ToDo: remove this when the TextWithBackground class is factored out.
 		svg = svgArg;
 
-		// Store the n0deView in this n0de.
 		// 		This value does not get used. Maybe it should be removed.
 		this.n0deView = n0deView;
 
-		// Initialize size and location vectors
+		// 		ToDo: Rename one or the other of these to be consistent
 		this.sizeVector = [200, 70];
 		this.position = [0, 0];
 
-		// Create the root element of the nøde
+		// This SVG will contain all the graphical components of the nøde
 		this.element = svg.createElement("svg");
 
-		// Create the frame element and give it a class
-		// Don't append it because InnerN0de and OuterN0de handle this differently
+		// The frame is the graphical base for the nøde
+		// Don't append it because InnerN0de and OuterN0de handle it differently
 		this.frame = svg.createElement("rect");
 		this.frame.classList.add("n0deFrame");
 
-		// Create the title object and append its components to the root element
-		// 		This will likely be rewritten when the TextWithBackground class is factored out.
+		// Title is the text at the top of the nøde
+		// 		Todo: Rewrite when the TextWithBackground class is factored out.
 		this.title = type;
 		this.titleObject = drawTitle(type);
 		this.element.appendChild(this.titleObject.background);
 		this.element.appendChild(this.titleObject.text);
 
-		// Create the søcket container element
+		// THE REST OF THE CONSTRUCTOR DEALS WITH SØCKETS
+
 		this.s0cketsGroup = svg.createElement("g");
 		this.element.appendChild(this.s0cketsGroup);
 
-		// The s0ckets array passed to the constructor does not contain a self søcket
-		// Here we create a self s0cket based on known information about the n0de
+		// The this.s0ckets object holds arrays of input and output søckets - the actual
+		// s0cket objects, rather than the JSON objects received from the controller.
+		this.s0ckets = {
+			"in": [],
+			"out": []
+		};
+
+		// The s0ckets array passed to the constructor does not contain a self søcket.
+		// Create a self søcket based on known information about the nøde
 		// 		This was factored into the AbstractN0de class on the assumption that OuterN0des would need them too
 		// 		but at this point I am doubting that assumption. I see no reason for the inner workings of a nøde
 		// 		to have access to the self instance. I plan to refactor this soon.
@@ -49,22 +64,15 @@ class AbstractN0de {
 			"type": type,
 			"id": id
 		};
-
-		// The this.s0ckets object holds arrays of input and output søckets.
-		// The actual S0cket objects, rather than the JSON objects received from the controller.
-		this.s0ckets = {
-			"in": [],
-			"out": []
-		};
-
-		// First add the selfS0ckets
 		this.addS0cket(selfS0cket, "in", 0);
 		this.addS0cket(selfS0cket, "out", 0);
 
-		// Then iterate over the søcket arrays from the JSON and add those S0ckets
+		// Iterate over the søcket arrays from the JSON and add those S0ckets
+		// Because there's no self søcket in the JSON array, we have to shift every index by 1
 		// 		There's no need to assign these to variables.
 		// 		I think there used to be another action performed on each s0cket before continuing the iteration.
 		// 		But at this point it is a superfluous declaration.
+		const _this = this;
 		s0ckets["in"].forEach(function (s0cket, index) {
 			let newS0cket = _this.addS0cket(s0cket, "in", index + 1);
 		});
@@ -73,6 +81,11 @@ class AbstractN0de {
 		});
 	}
 
+	/** Return the root SVG element.
+	 * @deprecated Will likely switch to referencing the element property directly.
+	 * @returns {SVGSVGElement} The root SVG element.
+	 * @memberof AbstractN0de
+	 */
 	getElement() {
 
 		// Return the root element of the nøde
@@ -82,6 +95,15 @@ class AbstractN0de {
 		return this.element;
 	}
 
+	/** Add an input or output søcket to the nøde.
+	 * @param {object} s0cketSpec - Object with three properties: <code>label</code>, <code>type</code>, and <code>id</code>. See {@link N0deApp} for details.
+	 * @param {string} innerOuter - Either <code>"inner"</code> or <code>"outer"</code>. Specifies whether the søcket belongs to an InnerN0de or an OuterN0de.
+	 * @param {string} inOut - Either <code>"in"</code> or <code>"out"</code>. Specifies whether the søcket is an input or an output.
+	 * @param {integer} index - Where in the list of input or output søckets this søcket resides.
+	 * @returns {S0cket} The søcket just created.
+	 * @todo There's no reason to return the søcket, as the return value is not used. Alternatively, if it does get used, then the addS0cket methods of InnerN0de and OuterN0de need to return the result of the call to this method.
+	 * @memberof AbstractN0de
+	 */
 	// This method takes one more argument than the call to it above.
 	// This is because InnerN0de and OuterN0de each override this method
 	//  with one that takes three arguments and just calls super.addS0cket
@@ -104,12 +126,20 @@ class AbstractN0de {
 		return s0cket;
 	}
 
+	/** Look up a s0cket by "address" and return it.
+	 * @param {string} inOut - Either <code>"in"</code> or <code>"out"</code>. Specifies whether the søcket is an input or an output.
+	 * @param {integer} index - The index of the søcket.
+	 * @returns {S0cket} The søcket at the given address.
+	 * @memberof AbstractN0de
+	 */
 	getS0cket(inOut, index) {
-
-		// Look up a s0cket by "address" and return it
 		return this.s0ckets[inOut][index];
 	}
 
+	/** Resize the nøde.
+	 * @param {array} sizeVector - The new width and height for the nøde, as an array.
+	 * @memberof AbstractN0de
+	 */
 	resize(sizeVector) {
 
 		// Update the sizeVector property to the supplied value 
@@ -134,18 +164,23 @@ class AbstractN0de {
 		});
 	}
 
-	// Retitle the nøde
 	// 		This will likely be rewritten when the TextWithBackground class is factored out.
+	/** Retitle the nøde.
+	 * @param {string} title - New title for the nøde.
+	 * @memberof AbstractN0de
+	 */
 	retitle(title) {
 
-		
+		// Find center of nøde.
 		let center = this.sizeVector[0] / 2;
 
+		// Create a text element, populate it, and position it.
 		let titleText = this.titleObject.text;
 		titleText.textContent = title;
 		titleText.setAttribute("x", center + margins.offset);
 		titleText.setAttribute("y", margins.offset);
-	
+		
+		// Resize the title background to match the title text.
 		resizeTitleBackground(this.titleObject);
 	}
 }
