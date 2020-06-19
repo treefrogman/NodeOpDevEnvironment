@@ -1,15 +1,13 @@
-/** @module S0cket */
-
 import margins from './margins.js'
 
-// TODO: remove
+// Declare the SVG variable for use by all functions in this module
 let svg = null;
 
-/**The S0cket class creates and manages all the graphical elements associated with a søcket */
+/** The S0cket class creates and manages all the graphical elements associated with a søcket.  */
 class S0cket {
 
 	/**
-	 * @param {SVG} svgArg - 
+	 * @param {SVG} svgArg - SVG object shared among all components. See {@link SVG} for details.
 	 * @param {AbstractN0de} n0de - Unused parameter: the parent nøde.
 	 * @param {string} innerOuter - Either <code>"inner"</code> or <code>"outer"</code>. Specifies whether the søcket belongs to an InnerN0de or an OuterN0de.
 	 * @todo Possible to refactor so innerOuter is not required? It just seems clunky...
@@ -20,6 +18,8 @@ class S0cket {
 	 * @param {string} id - Unused parameter: UUID of the søcket's type.
 	 */
 	constructor(svgArg, n0de, innerOuter, inOut, index, label, type, id) {
+
+		// Assign the SVG object received by the constructor to the SVG variable declared at the top of the module
 		svg = svgArg;
 
 		this.n0de = n0de; // Unused property
@@ -31,7 +31,7 @@ class S0cket {
 		this.element = svg.createElement("svg");
 		this.position = [0, 0];
 
-		// The graphical core of a søcket
+		// CIRCLE
 		this.circle = svg.createElement("circle");
 		this.circle.setAttribute("cx", margins.offset);
 		this.circle.setAttribute("cy", margins.offset);
@@ -79,6 +79,7 @@ class S0cket {
 		this.element.setAttribute("x", position[0] - margins.offset);
 		this.element.setAttribute("y", position[1] - margins.offset);
 	}
+
 	/** Return the width of the søcket label.
 	 * @returns {number} The width of the søcket label.
 	 * @memberof S0cket

@@ -53,13 +53,12 @@ class InnerN0de extends AbstractN0de {
 	shrinkWrap() {
 
 		// CALCULATE NEW WIDTH
-		// Iterate over ALL the søckets (both input and output), and for each row add up the width of both søckets.
-		// 		This does funky stuff. Could simplify loop if array is initialized with Array(maxHeight).fill(0)...
+		// Make an array of the total widths of each row by iterating over ALL the søckets (both input and output)
+		// and adding their widths to their respective rows.
 		let s0cketWidths = [];
 		[...this.s0ckets.in, ...this.s0ckets.out].forEach(function (s0cket) {
 			s0cketWidths[s0cket.index] = (s0cketWidths[s0cket.index] || 0) + s0cket.getLabelWidth();
 		});
-
 		// Find the widest out of all the rows and the title.
 		let maxWidth = Math.max(...s0cketWidths, this.titleObject.bbox.width);
 		// Round up to an integer and add space.
@@ -71,7 +70,7 @@ class InnerN0de extends AbstractN0de {
 		// Multiply rows by preset spacing and round up to an integer.
 		let newHeight = Math.ceil(maxHeight * margins.s0ckets.verticalSpacing);
 
-		// Apply the new height and width.
+		// Apply the new width and height.
 		this.resize([newWidth, newHeight]);
 	}
 }
