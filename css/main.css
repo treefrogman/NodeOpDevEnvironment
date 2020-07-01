@@ -1,12 +1,27 @@
 /* Define the colors, etc. to be used throughout the interface. This is what themes would modify. */
 :root {
-	--main-bg-color: rgb(32,32,32);
-	--main-element-color-rgb: 212, 212, 212;
+	--main-bg-color: rgb(255, 255, 255);
+	--main-element-color-rgb: 32, 32, 32;
+	--canvas-background-color: rgb(212, 212, 212);
 	--main-element-color: rgb(var(--main-element-color-rgb));
 	--main-element-color-transparent: rgba(var(--main-element-color-rgb), 0);
 	--main-element-line-thickness: 2px;
 	font-size: 14px;
 	font-family: sans-serif;
+}
+
+/* Dark mode color scheme */
+@media (prefers-color-scheme: dark) {
+	:root {
+		--main-bg-color: rgb(32,32,32);
+		--main-element-color-rgb: 212, 212, 212;
+		--canvas-background-color: rgb(68, 62, 62);
+		--main-element-color: rgb(var(--main-element-color-rgb));
+		--main-element-color-transparent: rgba(var(--main-element-color-rgb), 0);
+		--main-element-line-thickness: 2px;
+		font-size: 14px;
+		font-family: sans-serif;
+	}
 }
 
 /* Allow the SVG element to truly fill the window. */
@@ -36,7 +51,7 @@ svg text{
 /* The canvasBack is the backdrop to all the n0des and c0nnectors.
 Later it will have texture and will pan with the contents of the canvas. */
 #canvasBack {
-	fill: rgb(68, 62, 62);
+	fill: var(--canvas-background-color);
 }
 /* The frameBack is essentially the background of the outerN0de. */
 #frameBack {
