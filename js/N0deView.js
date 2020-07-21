@@ -12,7 +12,7 @@ class N0deView {
 		let _this = this;
 
 		// Create main SVG
-		this.svg = new SVG(document);
+		this.svg = new SVG();
 		this.mainSVG = this.svg.getElement();
 		document.body.appendChild(this.mainSVG);
 

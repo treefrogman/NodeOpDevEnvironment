@@ -1,26 +1,26 @@
-// SVG namespace declarations
+// SVG elements (not just <svg>, but <circle>, <rect>, etc.) need to be declared using the SVG namespace.
 const svgNS = "http://www.w3.org/2000/svg";
 
 
 /** The SVG object handles certain management tasks for the main SVG element, and provides helper functions for SVG elements. */
 class SVG {
-	/**
-	 * @param {HTMLDocument} document - The HTML document that will contain all the graphical elements.
-	 */
-	constructor(document) {
+	constructor() {
 
-		// Create the main SVG element. This will be the root element for all view components.
+		// The mainSVG will be the root element for all view components.
 		this.mainSVG = this.createElement("svg");
 
-		// Create an extra SVG element for use by the getBBox method.
+		// The prerenderingSVG spends most of its time empty and unrendered.
+		// It will only be added to the document briefly whenever a bounding box needs to be calculated.
+		// See the getBBox method for details on how this works.
 		this.prerenderingSVG = this.createElement("svg");
 
-		// Add a defs element to the main SVG.
+		// The defsElement is a container for elements such as gradients and shapes that are not meant to be rendered directly.
+		// Like abstract classes, these elements are then instanced by other elements which don't then need to rearticulate their details.
 		this.defsElement = this.createElement("defs");
 		this.mainSVG.appendChild(this.defsElement);
 	}
 
-	/** Add the provided element to the defs element. Note: Elements in defs are not rendered, but may be referenced by other elements.
+	/** Add the provided element to the defs element. Elements in defs are not rendered, but may be referenced by other elements.
 	 * @param {SVGElement} def - The element to add to the defs element.
 	 * @memberof SVG
 	 */
@@ -52,22 +52,20 @@ class SVG {
 	 */
 	getBBox(element) {
 
-		// Make a clone of the element so that when it is added to the prerenderingSVG
-		// it doesn't get removed from wherever it might already have been placed.
+		// To calculate the bounding box of an element it must first be added to the DOM so that it visually "exists".
+		// It can't be directly added to the DOM---it needs to be wrapped in an <svg> element, hence the prerenderingSVG.
+		// This method is sometimes used on elements that have already been placed somewhere in the mainSVG,
+		// and appending the element to the prerenderingSVG would cause it to be removed from where it belongs.
+		// Instead, we make a clone of the element and calculate the bounding box of the clone.
 		let clone = element.cloneNode(true);
-
-		// Add the prerenderingSVG element to the DOM, then add the cloned element to the prerenderingSVG.
 		document.body.appendChild(this.prerenderingSVG);
 		this.prerenderingSVG.appendChild(clone);
-
-		// Get the bounding box.
 		let bbox = clone.getBBox();
 
-		// Remove everything.
+		// Before we return our measurements let's clean up our little measuring station.
 		this.prerenderingSVG.removeChild(clone);
 		document.body.removeChild(this.prerenderingSVG);
 
-		// Return the bounding box.
 		return bbox;
 	}
 }
