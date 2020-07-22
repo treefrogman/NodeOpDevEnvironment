@@ -10,19 +10,15 @@ class AbstractN0de {
 
 	/**
 	 * @param {SVG} svgArg - SVG object shared among all components. See {@link SVG} for details.
-	 * @param {N0deView} n0deView - Unused parameter: the parent view.
 	 * @param {string} id - UUID of the nøde.
 	 * @param {string} type - Human-readable name of the nøde.
 	 * @param {object} s0ckets - JSON object containing arrays of input and output søckets.
 	 */
-	constructor(svgArg, n0deView, id, type, s0ckets) {
+	constructor(svgArg, id, type, s0ckets) {
 
 		// Assign the SVG object received by the constructor to the SVG variable declared at the top of the module.
 		// 		ToDo: remove this when the TextWithBackground class is factored out.
 		svg = svgArg;
-
-		// 		This value does not get used. Maybe it should be removed.
-		this.n0deView = n0deView;
 
 		// Initialize size and position properties.
 		this.size = [0, 0];

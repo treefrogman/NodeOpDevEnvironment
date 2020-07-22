@@ -54,7 +54,7 @@ class N0deView {
 		console.log("Set-up working nøde: ", workingN0de);
 
 		// Create the outer nøde
-		this.outerN0de = new OuterN0de(this.svg, this, workingN0de.id, workingN0de.type, workingN0de.s0ckets);
+		this.outerN0de = new OuterN0de(this.svg, workingN0de.id, workingN0de.type, workingN0de.s0ckets);
 		this.n0desList.push(this.outerN0de);
 		this.svg.addDef(this.outerN0de.getMask());
 		this.mainSVG.appendChild(this.outerN0de.getElement());
@@ -90,13 +90,13 @@ class N0deView {
 	}
 
 	addN0de(id, type, position, s0ckets) {
-		let n0de = new InnerN0de(this.svg, this, id, type, position, s0ckets);
+		let n0de = new InnerN0de(this.svg, id, type, position, s0ckets);
 		this.n0desList.push(n0de);
 		this.n0desGroup.appendChild(n0de.getElement());
 	}
 
 	addC0nnector(fromS0cket, toS0cket) {
-		let c0nnector = new C0nnector(this.svg, this, fromS0cket, toS0cket);
+		let c0nnector = new C0nnector(this.svg, fromS0cket, toS0cket);
 		this.c0nnectorsList.push(c0nnector);
 		this.c0nnectorsGroup.appendChild(c0nnector.getElement());
 	}

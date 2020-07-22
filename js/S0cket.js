@@ -8,24 +8,25 @@ class S0cket {
 
 	/**
 	 * @param {SVG} svgArg - SVG object shared among all components. See {@link SVG} for details.
-	 * @param {AbstractN0de} n0de - Unused parameter: the parent nøde.
+	 * @param {AbstractN0de} n0de - The nøde to which this søcket belongs.
 	 * @param {string} innerOuter - Either <code>"inner"</code> or <code>"outer"</code>. Specifies whether the søcket belongs to an InnerN0de or an OuterN0de.
 	 * @todo Possible to refactor so innerOuter is not required? It just seems clunky...
 	 * @param {string} inOut - Either <code>"in"</code> or <code>"out"</code>. Specifies whether the søcket is an input or an output.
-	 * @param {integer} index - Unused parameter: Where in the list of input or output søckets this søcket resides.
+	 * @param {integer} index - Where in the list of input or output søckets this søcket resides.
 	 * @param {string} label - Human readable name of the søcket's role in the context of the parent nøde.
 	 * @param {string} type - Human readable name of the søcket's type.
-	 * @param {string} id - Unused parameter: UUID of the søcket's type.
+	 * @param {string} id - UUID of the søcket's type.
 	 */
 	constructor(svgArg, n0de, innerOuter, inOut, index, label, type, id) {
 
 		// Assign the SVG object received by the constructor to the SVG variable declared at the top of the module
 		svg = svgArg;
 
-		this.n0de = n0de; // Unused property
-		this.inOut = inOut; // Unused property
-		this.index = index; // Unused property
-		this.id = id; // Unused property
+		this.n0de = n0de; // I thought this property was unused, but the C0nnector class uses it to query the nøde for its position.
+		// Perhaps this should be refactored so that the søcket can ask for its absolute position, but until it IS refactored, we need to keep this property.
+		this.index = index; // This is used in various places to calculate the position of the søcket.
+		this.id = id; // While currently unused, this property will likely be used in a details popup for the søcket.
+		// Should that information be supplied separately at the time of the event that actually activates the popup?
 
 		// SVG element to contain all the visual components of the søcket
 		this.element = svg.createElement("svg");

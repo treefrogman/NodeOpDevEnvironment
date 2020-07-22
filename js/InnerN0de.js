@@ -8,17 +8,16 @@ class InnerN0de extends AbstractN0de {
 
 	/**
 	 * @todo Remove the n0deView parameter. It isn't used anywhere.
-	 * @param {SVG} svgArg - SVG object shared among all components. See {@link SVG} for details.
-	 * @param {N0deView} n0deView - Unused parameter: the parent view.
+	 * @param {SVG} svg - SVG object shared among all components. See {@link SVG} for details.
 	 * @param {string} id - UUID of the nøde.
 	 * @param {string} type - Human-readable name of the nøde.
 	 * @param {array} position - X and Y coordinates of the nøde, as an array.
 	 * @param {object} s0ckets - JSON object containing arrays of input and output søckets.
 	 */
-	constructor(svgArg, n0deView, id, type, position, s0ckets) {
+	constructor(svg, id, type, position, s0ckets) {
 
 		// Run the AbstractN0de constructor.
-		super(svgArg, n0deView, id, type, s0ckets);
+		super(svg, id, type, s0ckets);
 		
 		// Add the frame element to the root element of the nøde as the first child so that it's behind all the søckets and the title.
 		this.element.prepend(this.frame);
