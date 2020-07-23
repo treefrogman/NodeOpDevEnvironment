@@ -13,7 +13,7 @@ class N0deView {
 
 		// Create main SVG
 		this.svg = new SVG();
-		this.mainSVG = this.svg.getElement();
+		this.mainSVG = this.svg.mainSVG;
 		document.body.appendChild(this.mainSVG);
 
 		// Create SVG definitions
@@ -57,7 +57,7 @@ class N0deView {
 		this.outerN0de = new OuterN0de(this.svg, workingN0de.id, workingN0de.type, workingN0de.s0ckets);
 		this.n0desList.push(this.outerN0de);
 		this.svg.addDef(this.outerN0de.getMask());
-		this.mainSVG.appendChild(this.outerN0de.getElement());
+		this.mainSVG.appendChild(this.outerN0de.element);
 		this.outerN0de.fitToWindow([window.innerWidth, window.innerHeight]);
 		
 		// 
@@ -92,17 +92,13 @@ class N0deView {
 	addN0de(id, type, position, s0ckets) {
 		let n0de = new InnerN0de(this.svg, id, type, position, s0ckets);
 		this.n0desList.push(n0de);
-		this.n0desGroup.appendChild(n0de.getElement());
+		this.n0desGroup.appendChild(n0de.element);
 	}
 
 	addC0nnector(fromS0cket, toS0cket) {
 		let c0nnector = new C0nnector(this.svg, fromS0cket, toS0cket);
 		this.c0nnectorsList.push(c0nnector);
-		this.c0nnectorsGroup.appendChild(c0nnector.getElement());
-	}
-
-	getElement() {
-		return this.mainSVG;
+		this.c0nnectorsGroup.appendChild(c0nnector.element);
 	}
 
 	fitToWindow() {

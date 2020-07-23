@@ -74,20 +74,6 @@ class AbstractN0de {
 		});
 	}
 
-	/** Return the root SVG element.
-	 * @deprecated Will likely switch to referencing the element property directly.
-	 * @returns {SVGSVGElement} The root SVG element.
-	 * @memberof AbstractN0de
-	 */
-	getElement() {
-
-		// Return the root element of the nøde.
-		// 		Why is there a getter here when we can directly access the element property?
-		// 		Some kind of expection that it will be useful to have the possibility of intervention here...
-		// 		I don't dig the reasoning. I will remove all the getElement methods and change all calls to it into property references.
-		return this.element;
-	}
-
 	/** Add an input or output søcket to the nøde.
 	 * @param {object} s0cketSpec - Object with three properties: <code>label</code>, <code>type</code>, and <code>id</code>. See {@link N0deApp} for details.
 	 * @param {string} innerOuter - Either <code>"inner"</code> or <code>"outer"</code>. Specifies whether the søcket belongs to an InnerN0de or an OuterN0de.
@@ -105,7 +91,7 @@ class AbstractN0de {
 		let s0cket = new S0cket(svg, this, innerOuter, inOut, index, s0cketSpec.label, s0cketSpec.type, s0cketSpec.id);
 
 		// Add the S0cket's element to the søcket container element.
-		this.s0cketsGroup.appendChild(s0cket.getElement());
+		this.s0cketsGroup.appendChild(s0cket.element);
 
 		// Add the S0cket object to the appropriate list of søckets.
 		this.s0ckets[inOut].splice(index, 0, s0cket);

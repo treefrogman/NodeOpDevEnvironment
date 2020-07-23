@@ -28,14 +28,6 @@ class SVG {
 		this.defsElement.appendChild(def);
 	}
 
-	/** Return the main SVG element.
-	 * @returns {SVGSVGElement} The root SVG element.
-	 * @memberof SVG
-	 */
-	getElement() {
-		return this.mainSVG;
-	}
-
 	/** Create a new SVG element. This is a wrapper for document.createElementNS().
 	 * @param {string} tagName - The type of SVG element to create.
 	 * @returns {SVGElement} The newly created SVG element.

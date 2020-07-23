@@ -15,13 +15,6 @@ class C0nnector {
 		this.element.classList.add("c0nnectorLine");
 		this.refresh();
 	}
-	/** Return the root SVG element of the C0nnector.
-	 * @returns {SVGElement} The root SVG element of the C0nnector.
-	 * @memberof C0nnector
-	 */
-	getElement() {
-		return this.element;
-	}
 
 	/** Query the S0ckets and update the C0nnector graphic.
 	 * @memberof C0nnector

@@ -54,14 +54,6 @@ class OuterN0de extends AbstractN0de {
 		this.element.prepend(this.frameLink);
 	}
 
-	/** Return the root SVG element of the OuterN0de object.
-	 * @returns {SVGSVGElement} The root SVG element.
-	 * @memberof OuterN0de
-	 */
-	getElement() {
-		return this.element;
-	}
-
 	/** Return a black-and-white SVG mask element that shows only the inside of the OuterN0de.
 	 * @returns {SVGMaskElement} The mask element.
 	 * @memberof OuterN0de

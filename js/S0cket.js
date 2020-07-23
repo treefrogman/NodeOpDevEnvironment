@@ -62,15 +62,6 @@ class S0cket {
 		this.element.appendChild(this.clickZone);
 	}
 
-	/** Return the root SVG element of the S0cket object.
-	 * @deprecated Will likely switch to referencing the element property directly.
-	 * @returns {SVGSVGElement} The root SVG element.
-	 * @memberof S0cket
-	 */
-	getElement() {
-		return this.element;
-	}
-
 	// 
 	/** Set the position of the søcket.
 	 * @param {array} position - X and Y coordinates of the søcket, as an array.
