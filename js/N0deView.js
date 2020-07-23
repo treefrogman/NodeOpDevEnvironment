@@ -9,7 +9,7 @@ class N0deView {
 
 	// The constructor creates lists to store the nødes and cønnectors, and SVG groups to contain their elements.
 	constructor(document) {
-		let _this = this;
+		const thisN0deView = this;
 
 		// Create main SVG
 		this.svg = new SVG();
@@ -47,7 +47,7 @@ class N0deView {
 		this.mainSVG.appendChild(this.frameMouseMask);
 
 		this.fitToWindow();
-		window.addEventListener("resize", () => _this.fitToWindow());
+		window.addEventListener("resize", () => thisN0deView.fitToWindow());
 	}
 
 	setupWorkingN0de(workingN0de) {
@@ -62,7 +62,7 @@ class N0deView {
 		
 		// 
 		let implementation = workingN0de["implementation"];
-		const _this = this;
+		const thisN0deView = this;
 
 		// Iterate over inner nødes
 		let innerN0des = implementation["n0des"];
@@ -71,7 +71,7 @@ class N0deView {
 			let type = innerN0de["type"];
 			let position = innerN0de["position"];
 			let s0ckets = innerN0de["s0ckets"];
-			_this.addN0de(n0deID, type, position, s0ckets);
+			thisN0deView.addN0de(n0deID, type, position, s0ckets);
 		});
 
 		// Iterate over cønnectors
@@ -80,10 +80,10 @@ class N0deView {
 			let inAddress = c0nnector["in"];
 			let outAddress = c0nnector["out"];
 			let fromS0cketInOut = ["in", "out"][1 * (inAddress[0] > 0)];
-			let fromS0cket = _this.n0desList[inAddress[0]].getS0cket(fromS0cketInOut, inAddress[1]);
+			let fromS0cket = thisN0deView.n0desList[inAddress[0]].getS0cket(fromS0cketInOut, inAddress[1]);
 			let toS0cketInOut = ["out", "in"][1 * (outAddress[0] > 0)];
-			let toS0cket = _this.n0desList[outAddress[0]].getS0cket(toS0cketInOut, outAddress[1]);
-			_this.addC0nnector(fromS0cket, toS0cket);
+			let toS0cket = thisN0deView.n0desList[outAddress[0]].getS0cket(toS0cketInOut, outAddress[1]);
+			thisN0deView.addC0nnector(fromS0cket, toS0cket);
 		});
 		
 		this.fitToWindow();

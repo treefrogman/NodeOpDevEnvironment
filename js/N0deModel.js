@@ -26,13 +26,13 @@ class N0deModel {
 		return this.n0desList[id];
 	}
 	fetchJSON() {
-		let _this = this;
+		const thisFetchJSON = this;
 		this.fetchedJSON = fetch(jsonFile).then(response => response.json()).then(json => {
 			console.log(json);
 			let ids = Object.keys(json);
 			ids.forEach(id => {
-				if (!_this.n0desList[id]) {
-					_this.n0desList[id] = json[id];
+				if (!thisFetchJSON.n0desList[id]) {
+					thisFetchJSON.n0desList[id] = json[id];
 				}
 			})
 		});
