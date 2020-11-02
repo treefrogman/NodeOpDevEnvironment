@@ -1,5 +1,6 @@
 import S0cket from './S0cket.js'
 import margins from './margins.js'
+import TextWithBackground from './TextWithBackground.js'
 
 // Declare the SVG variable for use by all functions in this module
 // 		ToDo: remove this when the TextWithBackground class is factored out.
@@ -33,11 +34,9 @@ class AbstractN0de {
 		this.frame.classList.add("n0deFrame");
 
 		// Title is the text at the top of the nøde
-		// 		Todo: Rewrite when the TextWithBackground class is factored out.
 		this.title = type;
-		this.titleObject = drawTitle(type);
-		this.element.appendChild(this.titleObject.background);
-		this.element.appendChild(this.titleObject.text);
+		this.titleObject = new TextWithBackground(type, [0, 0], "n0deTitle", "n0deTitleBackground", [margins.n0de.titleHorizontalMargin, 0], svgArg);
+		this.element.appendChild(this.titleObject.element);
 
 		// THE REST OF THE CONSTRUCTOR DEALS WITH SØCKETS
 
@@ -113,7 +112,7 @@ class AbstractN0de {
 	 */
 	resize(size) {
 
-		// Update the size property to the supplied value 
+		// Update the size property to the supplied value
 		this.size = size;
 
 		// Resize the frame rectangle to the new size.
@@ -124,9 +123,8 @@ class AbstractN0de {
 		this.element.setAttribute("width", this.size[0] + margins.offset * 2);
 		this.element.setAttribute("height", this.size[1] + margins.offset * 2);
 
-		// Update the title without changing the text. This triggers the recentering of text and background.
-		// 		This will likely be rewritten when the TextWithBackground class is factored out.
-		this.retitle(this.title);
+		// Recenter the title object
+		this.titleObject.setPosition([size[0] / 2, 0]);
 
 		// Iterate over all søckets and update their positions.
 		let width = this.size[0];
@@ -135,57 +133,12 @@ class AbstractN0de {
 		});
 	}
 
-	// 		This will likely be rewritten when the TextWithBackground class is factored out.
-	/** Retitle the nøde.
-	 * @param {string} title - New title for the nøde.
-	 * @memberof AbstractN0de
-	 */
-	retitle(title) {
-
-		// Find center of nøde.
-		let center = this.size[0] / 2;
-
-		// Create a text element, populate it, and position it.
-		let titleText = this.titleObject.text;
-		titleText.textContent = title;
-		titleText.setAttribute("x", center + margins.offset);
-		titleText.setAttribute("y", margins.offset);
-		
-		// Resize the title background to match the title text.
-		resizeTitleBackground(this.titleObject);
+	update() {
+		this.titleObject.update();
+		if (this.shrinkWrap) {
+			this.shrinkWrap();
+		}
 	}
-}
-
-
-// These two functions should be refactored into a TextWithBackground class, which can then be used for søcket labels also.
-function drawTitle(title) {
-	let titleText = svg.createElement("text");
-	titleText.textContent = title;
-	titleText.classList.add("n0deTitle");
-
-	let background = svg.createElement("rect");
-	background.classList.add("n0deTitleBackground");
-
-	let titleObject = {
-		text: titleText,
-		background: background
-	};
-
-	resizeTitleBackground(titleObject)
-	return titleObject;
-}
-
-function resizeTitleBackground(titleObject) {
-	let titleText = titleObject.text;
-
-	let background = titleObject.background;
-	let bbox = svg.getBBox(titleText);
-	let margin = margins.n0de.titleMargin;
-	background.setAttribute("x", bbox.x - margin);
-	background.setAttribute("y", bbox.y);
-	background.setAttribute("width", bbox.width + margin * 2);
-	background.setAttribute("height", bbox.height);
-	titleObject.bbox = bbox;
 }
 
 export default AbstractN0de

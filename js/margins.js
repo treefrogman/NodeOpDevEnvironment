@@ -21,7 +21,7 @@ export default {
 	n0de: {
 
 		// Horizontal distance from edge of title to edge of title background
-		titleMargin: 3
+		titleHorizontalMargin: 3
 	},
 	outerN0de: {
 
