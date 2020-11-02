@@ -59,6 +59,7 @@ class N0deView {
 		this.svg.addDef(this.outerN0de.getMask());
 		this.mainSVG.appendChild(this.outerN0de.element);
 		this.outerN0de.fitToWindow([window.innerWidth, window.innerHeight]);
+		this.outerN0de.update();
 		
 		// 
 		let implementation = workingN0de["implementation"];
@@ -93,6 +94,7 @@ class N0deView {
 		let n0de = new InnerN0de(this.svg, id, type, position, s0ckets);
 		this.n0desList.push(n0de);
 		this.n0desGroup.appendChild(n0de.element);
+		n0de.update();
 	}
 
 	addC0nnector(fromS0cket, toS0cket) {
