@@ -36,30 +36,6 @@ class SVG {
 	createElement(tagName) {
 		return document.createElementNS(svgNS, tagName);
 	}
-
-	/** Calculate the bounding box of the provided element. To do this, getBBox adds a clone of the element to a temporary SVG root element in the DOM and then queries the element for its bounding box.
-	 * @param {SVGElement} element - The element whose bounding box should be calculated.
-	 * @returns {SVGRect} An object containing x, y, width, and height properties.
-	 * @memberof SVG
-	 */
-	getBBox(element) {
-
-		// To calculate the bounding box of an element it must first be added to the DOM so that it visually "exists".
-		// It can't be directly added to the DOM---it needs to be wrapped in an <svg> element, hence the prerenderingSVG.
-		// This method is sometimes used on elements that have already been placed somewhere in the mainSVG,
-		// and appending the element to the prerenderingSVG would cause it to be removed from where it belongs.
-		// Instead, we make a clone of the element and calculate the bounding box of the clone.
-		let clone = element.cloneNode(true);
-		document.body.appendChild(this.prerenderingSVG);
-		this.prerenderingSVG.appendChild(clone);
-		let bbox = clone.getBBox();
-
-		// Before we return our measurements let's clean up our little measuring station.
-		this.prerenderingSVG.removeChild(clone);
-		document.body.removeChild(this.prerenderingSVG);
-
-		return bbox;
-	}
 }
 
 export default SVG

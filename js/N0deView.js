@@ -111,7 +111,7 @@ class N0deView {
 		this.fullScreenRect.setAttribute("height", windowVector[1]);
 		try {
 			this.outerN0de.fitToWindow(windowVector);
-			resizeFrameMouseMask(this.frameMouseMask, this.svg.getBBox(this.outerN0de.maskFrame), windowVector);
+			resizeFrameMouseMask(this.frameMouseMask, this.outerN0de.maskFrame.getBBox(), windowVector);
 			this.c0nnectorsList.forEach(c0nnector => {
 				c0nnector.refresh();
 			})

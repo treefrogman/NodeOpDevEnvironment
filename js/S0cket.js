@@ -78,7 +78,7 @@ class S0cket {
 	 * @memberof S0cket
 	 */
 	getLabelWidth() {
-		return svg.getBBox(this.labelText).width;
+		return this.labelText.getBBox().width;
 	}
 }
 

@@ -29,6 +29,12 @@ class TextWithBackground {
     }
 
     update() {
+		// If this element isn't in the document, then we can't update it
+		if (!document.contains(this.element)) {
+			console.log("Attempted to update element not in document.");
+			return;
+		}
+
         this.bbox = this.text.getBBox();
 
         this.background.setAttribute("x", this.bbox.x - this.textMargins[0]);
