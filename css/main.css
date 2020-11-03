@@ -30,6 +30,11 @@ body {
 	margin: 0;
 }
 
+/* Prevent cropping of SVG content. This allows content within an svg element to be displayed above and to the left of the origin. */
+svg {
+	overflow: visible
+}
+
 /* Assign the theme's element color to all text. */
 text {
 	fill: var(--main-element-color);

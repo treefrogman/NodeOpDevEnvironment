@@ -1,5 +1,3 @@
-import margins from './margins.js'
-
 class TextWithBackground {
     constructor(textContent, position, textClass, backgroundClass, textMargins, svg) {
         this.svg = svg;
@@ -9,7 +7,6 @@ class TextWithBackground {
         this.background.classList.add(backgroundClass);
         this.element = svg.createElement("svg");
         // https://stackoverflow.com/questions/14900502/how-to-prevent-objects-inside-an-svg-drawing-to-be-clipped-at-the-bounds-of-the
-        this.element.setAttribute("overflow", "visible");
         this.element.appendChild(this.background);
         this.element.appendChild(this.text);
         this.textMargins = textMargins;
@@ -19,8 +16,8 @@ class TextWithBackground {
 
     setPosition(position) {
         this.position = position;
-        this.element.setAttribute("x", position[0] + margins.offset);
-        this.element.setAttribute("y", position[1] + margins.offset);
+        this.element.setAttribute("x", position[0]);
+        this.element.setAttribute("y", position[1]);
     }
 
     setText(textContent) {

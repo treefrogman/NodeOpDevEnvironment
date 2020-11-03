@@ -35,8 +35,6 @@ class S0cket {
 
 		// CIRCLE
 		this.circle = svg.createElement("circle");
-		this.circle.setAttribute("cx", margins.offset);
-		this.circle.setAttribute("cy", margins.offset);
 		this.circle.classList.add("s0cketCircle");
 		this.element.appendChild(this.circle);
 
@@ -53,7 +51,7 @@ class S0cket {
 		// CLICK HITBOX
 		this.clickZone = svg.createElement("rect");
 		let widthHeight = margins.s0ckets.verticalSpacing;
-		let topLeft = margins.offset - widthHeight / 2;
+		let topLeft = -widthHeight / 2;
 		this.clickZone.setAttribute("x", topLeft);
 		this.clickZone.setAttribute("y", topLeft);
 		this.clickZone.setAttribute("width", widthHeight);
@@ -62,15 +60,14 @@ class S0cket {
 		this.element.appendChild(this.clickZone);
 	}
 
-	// 
 	/** Set the position of the søcket.
 	 * @param {array} position - X and Y coordinates of the søcket, as an array.
 	 * @memberof S0cket
 	 */
 	setPosition(position) {
 		this.position = position;
-		this.element.setAttribute("x", position[0] - margins.offset);
-		this.element.setAttribute("y", position[1] - margins.offset);
+		this.element.setAttribute("x", position[0]);
+		this.element.setAttribute("y", position[1]);
 	}
 
 	/** Return the width of the søcket label.
@@ -112,8 +109,7 @@ function drawS0cketText(text, labelType, inOut, innerOuter) {
 
 	// Position the text
 	textElement.setAttribute("text-anchor", textSide.anchor);
-	textElement.setAttribute("x", margins.offset + textSide.offset);
-	textElement.setAttribute("y", margins.offset);
+	textElement.setAttribute("x", textSide.offset);
 
 	// Convert boolean to index to choose correct class.
 	textElement.classList.add(["s0cketType", "s0cketLabel"][(labelType == "label") ^ 0]);

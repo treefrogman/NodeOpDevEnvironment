@@ -22,12 +22,9 @@ class InnerN0de extends AbstractN0de {
 		// Add the frame element to the root element of the nøde as the first child so that it's behind all the søckets and the title.
 		this.element.prepend(this.frame);
 		this.frame.classList.add("innerN0deFrame");
-		// Offset the frame. See margins.js for complete explanation of offset.
-		this.frame.setAttribute("x", margins.offset);
-		this.frame.setAttribute("y", margins.offset);
 
-		// Set the root element position based on position parameter and offset. See margins.js for complete explanation of offset.
-		this.position = [position[0] - margins.offset, position[1] - margins.offset];
+		// Set the root element position based on position parameter.
+		this.position = position;
 		this.element.setAttribute("x", this.position[0]);
 		this.element.setAttribute("y", this.position[1]);
 		this.element.classList.add("innerN0de");

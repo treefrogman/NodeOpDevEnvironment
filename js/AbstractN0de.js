@@ -119,9 +119,9 @@ class AbstractN0de {
 		this.frame.setAttribute("width", this.size[0]);
 		this.frame.setAttribute("height", this.size[1]);
 
-		// Resize the root element to the new size, plus margins.
-		this.element.setAttribute("width", this.size[0] + margins.offset * 2);
-		this.element.setAttribute("height", this.size[1] + margins.offset * 2);
+		// Resize the root element to the new size.
+		this.element.setAttribute("width", this.size[0]);
+		this.element.setAttribute("height", this.size[1]);
 
 		// Recenter the title object
 		this.titleObject.setPosition([size[0] / 2, 0]);
@@ -129,7 +129,7 @@ class AbstractN0de {
 		// Iterate over all søckets and update their positions.
 		let width = this.size[0];
 		[...this.s0ckets.in, ...this.s0ckets.out].forEach(function (s0cket) {
-			s0cket.setPosition([(s0cket.inOut == "in" ? 0 : width) + margins.offset, s0cket.index * margins.s0ckets.verticalSpacing + margins.offset]);
+			s0cket.setPosition([(s0cket.inOut == "in" ? 0 : width), s0cket.index * margins.s0ckets.verticalSpacing]);
 		});
 	}
 

@@ -5,7 +5,7 @@ import margins from './margins.js'
  * @extends AbstractN0de
  */
 class OuterN0de extends AbstractN0de {
-	
+
 	/**
 	 * @param {SVG} svg - SVG object shared among all components. See {@link SVG} for details.
 	 * @param {string} id - UUID of the nøde.
@@ -16,9 +16,9 @@ class OuterN0de extends AbstractN0de {
 
 		// Run the AbstractN0de constructor.
 		super(svg, id, type, s0ckets);
-		
-		// Set the root element position based on offset. See margins.js for complete explanation of offset.
-		this.position = [margins.outerN0de.sideMargin - margins.offset, margins.outerN0de.topMargin - margins.offset];
+
+		// Set the root element position.
+		this.position = [margins.outerN0de.sideMargin, margins.outerN0de.topMargin];
 		this.element.setAttribute("x", this.position[0]);
 		this.element.setAttribute("y", this.position[1]);
 		this.element.classList.add("outerN0de");
@@ -48,9 +48,6 @@ class OuterN0de extends AbstractN0de {
 		this.frameLink = svg.createElement("use");
 		this.frameLink.classList.add("outerN0deFrame");
 		this.frameLink.setAttribute("href", "#" + frameDefID);
-		// Offset this instance because its parent is reverse-offset.
-		this.frameLink.setAttribute("x", margins.offset);
-		this.frameLink.setAttribute("y", margins.offset);
 		this.element.prepend(this.frameLink);
 	}
 

@@ -2,11 +2,6 @@
 // https://stackoverflow.com/questions/41725725/access-css-variable-from-javascript
 // https://davidwalsh.name/css-variables-javascript
 export default {
-
-	// Horizontal and vertical offset from corner of SVG element to nominal position
-	// Prevents cropping, as some graphical elements within SVG element
-	// must appear to the left or above its nominal position.
-	offset: 100,
 	s0ckets: {
 
 		// Vertical distance, on center, between s0ckets
