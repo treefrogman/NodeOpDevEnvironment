@@ -105,7 +105,7 @@ function drawS0cketLabel(text, inOut, innerOuter) {
 	// Position the text
 	let textSide = whichSideOfS0cketToDrawTextOn("label", inOut, innerOuter);
 	textElement.setAttribute("text-anchor", ["end", "start"][textSide]);
-	textElement.setAttribute("x", margins.s0ckets.labelMargin * [-1, 1][textSide]);
+	textElement.setAttribute("x", margins.s0ckets.labelHorizontalMargin * [-1, 1][textSide]);
 
 	// Convert boolean to index to choose correct class.
 	textElement.classList.add("s0cketLabel");
@@ -118,7 +118,7 @@ function drawS0cketType(text, inOut, innerOuter) {
 	let textSide = whichSideOfS0cketToDrawTextOn("type", inOut, innerOuter);
 
 	// Create the textWithBackground element
-	let textAnchorPosition = [margins.s0ckets.typeMargin * [-1, 1][textSide], 0];
+	let textAnchorPosition = [margins.s0ckets.typeHorizontalMargin * [-1, 1][textSide], 0];
 	let textWithBackground = new TextWithBackground(text, svg, {
 		position: textAnchorPosition,
 		className: "s0cketType",

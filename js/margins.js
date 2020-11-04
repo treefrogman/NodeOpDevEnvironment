@@ -11,10 +11,10 @@ export default {
 		horizontalSpacing: 28,
 
 		// Horizontal distance from center of s0cket to edge of label text
-		labelMargin: 7,
+		labelHorizontalMargin: 7,
 
 		// Horizontal distance from center of s0cket to edge of type text
-		typeMargin: 8
+		typeHorizontalMargin: 8
 	},
 	n0de: {
 
