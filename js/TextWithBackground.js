@@ -8,9 +8,9 @@ class TextWithBackground {
         // https://stackoverflow.com/questions/14900502/how-to-prevent-objects-inside-an-svg-drawing-to-be-clipped-at-the-bounds-of-the
         this.element.appendChild(this.background);
         this.element.appendChild(this.text);
-        this.options = options;
         this.setPosition(options.position);
         this.setText(textContent);
+        this.options = options;
     }
 
     setPosition(position) {
