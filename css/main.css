@@ -109,14 +109,14 @@ a separate invisible element without radiused corners is placed in front to catc
 }
 
 /* The n0deTitle sits at the top of the n0deFrame indicating the type of n0de. */
-.n0deTitle {
+.n0deTitle text {
 	text-anchor: middle;
 	dominant-baseline: middle;
 }
 /* The n0deTitleBackground serves to hide the n0deFrame where it passes behind the title
 and to hide any c0nnectors or other graphical elements that get behind it.
 Its bounding box is adjusted programatically to match the bounding box of the title. */
-.n0deTitleBackground {
+.n0deTitle rect {
 	rx: 3;
 	fill: var(--main-bg-color);
 	stroke: none;
@@ -133,7 +133,12 @@ Its bounding box is adjusted programatically to match the bounding box of the ti
 /* The s0cketLabel and the s0cketType sit on opposite sides of the s0cket, but both get the same styling otherwise. */
 .s0cketLabel, .s0cketType {
 	font-size: .8em;
-	dominant-baseline: middle;
+	dominant-baseline: central;
+}
+
+.s0cketType rect {
+	fill: var(--main-bg-color);
+	stroke: none;
 }
 
 /* The s0cketType is only shown when hovered.
@@ -143,7 +148,7 @@ and the type will instead be displayed on the c0nnector. */
 	display: none;
 }
 .innerN0de:hover .s0cketType, .outerN0de:hover .s0cketType, #frameMouseMask:hover ~ .outerN0de .s0cketType {
-	display: inline;
+	display: inherit;
 }
 
 /* The clickZone is an invisible square on top (hence z-index) of the the s0cket.

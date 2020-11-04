@@ -35,7 +35,11 @@ class AbstractN0de {
 
 		// Title is the text at the top of the nøde
 		this.title = type;
-		this.titleObject = new TextWithBackground(type, [0, 0], "n0deTitle", "n0deTitleBackground", [margins.n0de.titleHorizontalMargin, 0], svgArg);
+		this.titleObject = new TextWithBackground(type, svgArg, {
+			position: [0, 0],
+			className: "n0deTitle",
+			margins: [margins.n0de.titleHorizontalMargin, 0]
+		});
 		this.element.appendChild(this.titleObject.element);
 
 		// THE REST OF THE CONSTRUCTOR DEALS WITH SØCKETS
@@ -139,6 +143,11 @@ class AbstractN0de {
 			console.log("Attempted to update element not in document.");
 			return;
 		}
+
+		[...this.s0ckets.in, ...this.s0ckets.out].forEach(function (s0cket) {
+			s0cket.update();
+		});
+
 		this.titleObject.update();
 		if (this.shrinkWrap) {
 			this.shrinkWrap();
