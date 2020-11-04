@@ -1,4 +1,5 @@
 import margins from './margins.js'
+import TextWithBackground from './TextWithBackground.js'
 
 // Declare the SVG variable for use by all functions in this module
 let svg = null;
@@ -33,20 +34,20 @@ class S0cket {
 		this.element = svg.createElement("svg");
 		this.position = [0, 0];
 
-		// CIRCLE
-		this.circle = svg.createElement("circle");
-		this.circle.classList.add("s0cketCircle");
-		this.element.appendChild(this.circle);
-
 		// LABEL
 		this.label = label;
-		this.labelText = drawS0cketText(label, "label", inOut, innerOuter);
+		this.labelText = drawS0cketLabel(label, inOut, innerOuter);
 		this.element.appendChild(this.labelText);
 
 		// TYPE
 		this.type = type;
-		this.typeText = drawS0cketText(type, "type", inOut, innerOuter);
-		this.element.appendChild(this.typeText);
+		this.typeText = drawS0cketType(type, inOut, innerOuter);
+		this.element.appendChild(this.typeText.element);
+
+		// CIRCLE
+		this.circle = svg.createElement("circle");
+		this.circle.classList.add("s0cketCircle");
+		this.element.appendChild(this.circle);
 
 		// CLICK HITBOX
 		this.clickZone = svg.createElement("rect");
@@ -77,43 +78,56 @@ class S0cket {
 	getLabelWidth() {
 		return this.labelText.getBBox().width;
 	}
+
+	update() {
+		this.typeText.update();
+		console.log("update", this);
+	}
 }
 
-// Define rendering parameters for left-side and right-side søcket text
-const margin = margins.s0ckets.labelMargin;
-const leftRight = [
-	{
-		anchor: "end",
-		offset: -margin
-	},
-	{
-		anchor: "start",
-		offset: margin
-	}
-];
-
-// Draw the label or type text
-function drawS0cketText(text, labelType, inOut, innerOuter) {
-
-	// Create and populate the text element
-	let textElement = svg.createElement("text");
-	textElement.textContent = text;
-
+function whichSideOfS0cketToDrawTextOn(labelType, inOut, innerOuter) {
 	// Choose correct rendering parameters given information about the context.
 	// Use bitwise XOR to flip-flop on each of three booleans:
 	// When all three are true, or when one is true, the result is 1,
 	//   which is the index of the right-side søcket text rendering parameters.
 	// When two are true, or when all three are false, the result is 0,
 	//   which is the index of the left-side søcket text rendering parameters.
-	let textSide = leftRight[(labelType == "label") ^ (inOut == "in") ^ (innerOuter == "inner")];
+	return (labelType == "label") ^ (inOut == "in") ^ (innerOuter == "inner");
+}
+
+// Draw the label or type text
+function drawS0cketLabel(text, inOut, innerOuter) {
+
+	// Create and populate the text element
+	let textElement = svg.createElement("text");
+	textElement.textContent = text;
 
 	// Position the text
-	textElement.setAttribute("text-anchor", textSide.anchor);
-	textElement.setAttribute("x", textSide.offset);
+	let textSide = whichSideOfS0cketToDrawTextOn("label", inOut, innerOuter);
+	textElement.setAttribute("text-anchor", ["end", "start"][textSide]);
+	textElement.setAttribute("x", margins.s0ckets.labelMargin * [-1, 1][textSide]);
 
 	// Convert boolean to index to choose correct class.
-	textElement.classList.add(["s0cketType", "s0cketLabel"][(labelType == "label") ^ 0]);
+	textElement.classList.add("s0cketLabel");
 	return textElement;
+}
+
+function drawS0cketType(text, inOut, innerOuter) {
+
+	// Determine positioning of the text
+	let textSide = whichSideOfS0cketToDrawTextOn("type", inOut, innerOuter);
+
+	// Create the textWithBackground element
+	let textAnchorPosition = [margins.s0ckets.typeMargin * [-1, 1][textSide], 0];
+	let textWithBackground = new TextWithBackground(text, svg, {
+		position: textAnchorPosition,
+		className: "s0cketType",
+		margins: [0, 1],
+		roundedEnds: true
+	});
+	textWithBackground.text.setAttribute("text-anchor", ["end", "start"][textSide]);
+
+	return textWithBackground;
 }
 
 export default S0cket
