@@ -54,13 +54,13 @@ class N0deApp {
 		let n0de = await this.n0deModel.getN0de(id);
 		//.then(async n0de => {
 		console.log("Examine nøde: ", n0de);
-		this.workingN0de = await this.viewModelTransformers.makeWorkingN0deJSON(n0de, id);
-		this.workingN0de["implementation"] = {
+		this.workingN0deModel = await this.viewModelTransformers.makeWorkingN0deJSON(n0de, id);
+		this.workingN0deModel["implementation"] = {
 			"n0des": await this.viewModelTransformers.asyncMap(n0de["implementation"]["n0des"], this.viewModelTransformers.innerNodeMap),
 			"c0nnectors": n0de["implementation"]["c0nnectors"]
 		};
 		//await Promise.all(this.workingN0de["s0ckets"]["in"]);
-		this.n0deView.setupWorkingN0de(this.workingN0de);
+		this.n0deView.setupWorkingN0de(this.workingN0deModel);
 		//});
 		/*
 		ask the model for a nøde by its ID
