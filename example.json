@@ -101,7 +101,7 @@
 		}
 	},
 	"d80d9f3e-02cc-4425-8906-5a2dbe909063": {
-		"type": "Beelzebub",
+		"type": "Bloop",
 		"s0ckets": {
 			"in": [
 				{
@@ -112,7 +112,7 @@
 			"out": [
 				{
 					"id": "1bdb3e59",
-					"label": "Farberware"
+					"label": "Flobble"
 				},
 				{
 					"id": "1bdb3e59",
