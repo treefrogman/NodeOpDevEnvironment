@@ -1,4 +1,4 @@
-[About](#nøde) | [Roadmap](#roadmap) | [License](#license) | [Not Node.js](#not-node.js) | [Contact](#contact)
+[About](#nøde) | [Roadmap](#roadmap) | [License](#license) | [Not Node.js](#not-nodejs) | [Contact](#contact)
 # Nøde
 The **Nøde Operating / Development Environment** is a general purpose visual dataflow programming language and development environment. Currently there is no backend to execute programs, and all development is focused on creating a simple, visually clean and consistent interface.
 
