@@ -10,11 +10,11 @@ class N0deApp {
 		// Set up the model
 		this.n0deModel = new N0deModel();
 
-		this.workingN0de = null;
+		this.workingN0deId = null;
 
 		const thisN0deApp = this;
 		this.viewModelTransformers = {
-			makeWorkingN0deJSON: async function (n0de, id) {
+			makeN0deViewModel: async function (n0de, id) {
 				return {
 					"type": n0de["type"],
 					"id": id,
@@ -37,9 +37,9 @@ class N0deApp {
 			innerNodeMap: async function (n0deInstance) {
 				let id = n0deInstance["id"];
 				let n0de = await thisN0deApp.n0deModel.getN0de(id);
-				let workingN0de = await thisN0deApp.viewModelTransformers.makeWorkingN0deJSON(n0de, id);
-				workingN0de["position"] = n0deInstance["position"];
-				return workingN0de;
+				let innerN0deViewModel = await thisN0deApp.viewModelTransformers.makeN0deViewModel(n0de, id);
+				innerN0deViewModel["position"] = n0deInstance["position"];
+				return innerN0deViewModel;
 			},
 			asyncMap: async function (array, callback) {
 				let result = [];
@@ -51,22 +51,16 @@ class N0deApp {
 		}
 	}
 	async examineN0de(id) {
+		this.workingN0deId = id;
 		let n0de = await this.n0deModel.getN0de(id);
-		//.then(async n0de => {
 		console.log("Examine nøde: ", n0de);
-		this.workingN0deModel = await this.viewModelTransformers.makeWorkingN0deJSON(n0de, id);
-		this.workingN0deModel["implementation"] = {
+		this.workingN0deViewModel = await this.viewModelTransformers.makeN0deViewModel(n0de, id);
+		console.log("this.workingN0deViewModel = ", this.workingN0deViewModel);
+		this.workingN0deViewModel["implementation"] = {
 			"n0des": await this.viewModelTransformers.asyncMap(n0de["implementation"]["n0des"], this.viewModelTransformers.innerNodeMap),
 			"c0nnectors": n0de["implementation"]["c0nnectors"]
 		};
-		//await Promise.all(this.workingN0de["s0ckets"]["in"]);
-		this.n0deView.setupWorkingN0de(this.workingN0deModel);
-		//});
-		/*
-		ask the model for a nøde by its ID
-
-		when the model returns the nøde, send it to the view to be displayed
-		*/
+		this.n0deView.setupWorkingN0de(this.workingN0deViewModel);
 	}
 
 }

@@ -60,8 +60,8 @@ class N0deView {
 		this.mainSVG.appendChild(this.outerN0de.element);
 		this.outerN0de.fitToWindow([window.innerWidth, window.innerHeight]);
 		this.outerN0de.update();
-		
-		// 
+
+		//
 		let implementation = workingN0de["implementation"];
 		const thisN0deView = this;
 
@@ -86,7 +86,7 @@ class N0deView {
 			let toS0cket = thisN0deView.n0desList[outAddress[0]].getS0cket(toS0cketInOut, outAddress[1]);
 			thisN0deView.addC0nnector(fromS0cket, toS0cket);
 		});
-		
+
 		this.fitToWindow();
 	}
 
