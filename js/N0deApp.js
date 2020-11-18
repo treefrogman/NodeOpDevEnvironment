@@ -62,7 +62,21 @@ class N0deApp {
 		};
 		this.n0deView.setupWorkingN0de(this.workingN0deViewModel);
 	}
-
+	makeC0nnection(inS0cket, outS0cket) {
+		this.n0deModel.makeC0nnection(this.workingN0deId, inS0cket, outS0cket);
+	}
+	breakConnection(index) {
+		this.n0deModel.breakConnection(this.workingN0deId, index);
+	}
+	addN0de(id, x, y) {
+		this.n0deModel.addN0de(this.workingN0deId, id, x, y);
+	}
+	removeN0de(index) {
+		this.n0deModel.removeN0de(this.workingN0deId, index);
+	}
+	repositionN0de(index, x, y) {
+		this.n0deModel.repositionN0de(this.workingN0deId, index, x, y);
+	}
 }
 
 export default N0deApp
