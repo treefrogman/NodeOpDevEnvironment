@@ -5,7 +5,7 @@ class N0deApp {
 	constructor() {
 
 		// Set up a view
-		this.n0deView = new N0deView(document);
+		this.n0deView = new N0deView(document, this);
 
 		// Set up the model
 		this.n0deModel = new N0deModel();

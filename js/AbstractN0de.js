@@ -23,7 +23,7 @@ class AbstractN0de {
 
 		// Initialize size and position properties.
 		this.size = [0, 0];
-		this.position = [0, 0];
+		this.position = this.temporaryPosition = [0, 0];
 
 		// This SVG will contain all the graphical components of the nøde.
 		this.element = svg.createElement("svg");

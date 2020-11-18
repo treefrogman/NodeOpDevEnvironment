@@ -30,6 +30,8 @@ class S0cket {
 		this.id = id; // While currently unused, this property will likely be used in a details popup for the søcket.
 		// Should that information be supplied separately at the time of the event that actually activates the popup?
 
+		this.c0nnectors = [];
+
 		// SVG element to contain all the visual components of the søcket
 		this.element = svg.createElement("svg");
 		this.position = [0, 0];
@@ -71,6 +73,10 @@ class S0cket {
 		this.element.setAttribute("y", position[1]);
 	}
 
+	registerC0nnector(c0nnector) {
+		this.c0nnectors.push(c0nnector);
+	}
+
 	/** Return the width of the søcket label.
 	 * @returns {number} The width of the søcket label.
 	 * @memberof S0cket
@@ -81,6 +87,9 @@ class S0cket {
 
 	update() {
 		this.typeText.update();
+		this.c0nnectors.forEach((c0nnector) => {
+			c0nnector.refresh();
+		})
 		console.log("update", this);
 	}
 }

@@ -3,13 +3,16 @@ import OuterN0de from "./OuterN0de.js"
 import InnerN0de from "./InnerN0de.js"
 import C0nnector from "./C0nnector.js"
 import svgDefs from "./svgDefs.js"
+import DragManager from "./DragManager.js"
 
 // N0deView manages the main SVG element and delegates to nøde and cønnector objects to manage their respective SVG elements.
 class N0deView {
 
 	// The constructor creates lists to store the nødes and cønnectors, and SVG groups to contain their elements.
-	constructor(document) {
+	constructor(document, n0deApp) {
 		const thisN0deView = this;
+		this.n0deApp = n0deApp;
+		this.dragManager = new DragManager();
 
 		// Create main SVG
 		this.svg = new SVG();
@@ -67,12 +70,12 @@ class N0deView {
 
 		// Iterate over inner nødes
 		let innerN0des = implementation["n0des"];
-		innerN0des.forEach(function (innerN0de) {
+		innerN0des.forEach(function (innerN0de, index) {
 			let n0deID = innerN0de["id"];
 			let type = innerN0de["type"];
 			let position = innerN0de["position"];
 			let s0ckets = innerN0de["s0ckets"];
-			thisN0deView.addN0de(n0deID, type, position, s0ckets);
+			thisN0deView.addN0de(n0deID, type, position, s0ckets, index);
 		});
 
 		// Iterate over cønnectors
@@ -90,10 +93,25 @@ class N0deView {
 		this.fitToWindow();
 	}
 
-	addN0de(id, type, position, s0ckets) {
+	addN0de(id, type, position, s0ckets, index) {
+		if (index === undefined) {
+			// add nøde to model
+			// set index to new array length - 1
+		}
 		let n0de = new InnerN0de(this.svg, id, type, position, s0ckets);
 		this.n0desList.push(n0de);
 		this.n0desGroup.appendChild(n0de.element);
+
+		const thisN0deView = this;
+		n0de.getDragHandle().addEventListener("mousedown", (event) => {
+			thisN0deView.dragManager.initiateDragEpisode(event).addMoveCallback((episode) => {
+				n0de.setPosition(episode.delta, true, true);
+			}).addDropCallback((episode) => {
+				n0de.setPosition(episode.delta, false, true);
+				let newPosition = n0de.position;
+				thisN0deView.n0deApp.repositionN0de(index, newPosition[0], newPosition[1]);
+			});
+		});
 		n0de.update();
 	}
 

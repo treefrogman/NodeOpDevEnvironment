@@ -24,10 +24,13 @@ class InnerN0de extends AbstractN0de {
 		this.frame.classList.add("innerN0deFrame");
 
 		// Set the root element position based on position parameter.
-		this.position = position;
-		this.element.setAttribute("x", this.position[0]);
-		this.element.setAttribute("y", this.position[1]);
+		this.setPosition(position);
+
 		this.element.classList.add("innerN0de");
+	}
+
+	getDragHandle() {
+		return this.frame;
 	}
 
 	/** Add an input or output søcket to the nøde.
@@ -38,6 +41,20 @@ class InnerN0de extends AbstractN0de {
 	 */
 	addS0cket(s0cketSpec, inOut, index) {
 		super.addS0cket(s0cketSpec, "inner", inOut, index);
+	}
+
+	setPosition(position, temporary, relative) {
+		if (relative) {
+			position[0] += this.position[0];
+			position[1] += this.position[1];
+		}
+		this.temporaryPosition = position;
+		if (!temporary) {
+			this.position = position;
+		}
+		this.element.setAttribute("x", position[0]);
+		this.element.setAttribute("y", position[1]);
+		this.update();
 	}
 
 	/** Automatically resize the nøde frame to just fit the title and søckets.
