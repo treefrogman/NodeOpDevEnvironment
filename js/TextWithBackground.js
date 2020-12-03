@@ -1,6 +1,5 @@
 class TextWithBackground {
-    constructor(textContent, svg, options) {
-        this.svg = svg;
+    constructor(textContent, options) {
         this.text = svg.createElement("text");
         this.background = svg.createElement("rect");
         this.element = svg.createElement("svg");

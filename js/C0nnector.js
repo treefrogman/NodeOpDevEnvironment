@@ -1,11 +1,10 @@
 /** The C0nnector class is used by the {@link N0deView} to display cønnectors. */
 class C0nnector {
 	/**
-	 * @param {SVG} svg - SVG object shared among all components. See {@link SVG} for details.
 	 * @param {S0cket} fromS0cket - The S0cket object that this C0nnector reads from.
 	 * @param {S0cket} toS0cket - The S0cket object that this C0nnector writes to.
 	 */
-	constructor(svg, fromS0cket, toS0cket) {
+	constructor(fromS0cket, toS0cket) {
 
 		this.fromS0cket = fromS0cket;
 		this.toS0cket = toS0cket;

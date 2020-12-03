@@ -1,7 +1,7 @@
 export default {
 
 	// The s0cketGradient is used by the clickZone element of s0ckets to display an indicator dot on mouseover.
-	s0cketGradient: function (svg) {
+	s0cketGradient: function () {
 
 		// Create a radialGradient SVG element and give it an ID.
 		let radialGradient = svg.createElement("radialGradient");

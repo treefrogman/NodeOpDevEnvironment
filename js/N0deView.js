@@ -4,6 +4,7 @@ import InnerN0de from "./InnerN0de.js"
 import C0nnector from "./C0nnector.js"
 import svgDefs from "./svgDefs.js"
 import DragManager from "./DragManager.js"
+import PseudoS0cket from "./PseudoS0cket.js"
 
 // N0deView manages the main SVG element and delegates to nøde and cønnector objects to manage their respective SVG elements.
 class N0deView {
@@ -15,37 +16,37 @@ class N0deView {
 		this.dragManager = new DragManager();
 
 		// Create main SVG
-		this.svg = new SVG();
-		this.mainSVG = this.svg.mainSVG;
+		window.svg = new SVG();
+		this.mainSVG = svg.mainSVG;
 		document.body.appendChild(this.mainSVG);
 
 		// Create SVG definitions
-		this.svg.addDef(svgDefs.s0cketGradient(this.svg));
-		this.fullScreenRect = this.svg.createElement("rect");
+		svg.addDef(svgDefs.s0cketGradient());
+		this.fullScreenRect = svg.createElement("rect");
 		this.fullScreenRect.id = "fullScreenRect";
-		this.svg.addDef(this.fullScreenRect);
+		svg.addDef(this.fullScreenRect);
 
-		this.frameBack = this.svg.createElement("use");
+		this.frameBack = svg.createElement("use");
 		this.frameBack.setAttribute("href", "#" + "fullScreenRect")
 		this.frameBack.id = "frameBack";
 		this.mainSVG.appendChild(this.frameBack);
 
-		this.canvasBack = this.svg.createElement("use");
+		this.canvasBack = svg.createElement("use");
 		this.canvasBack.setAttribute("href", "#" + "fullScreenRect")
 		this.canvasBack.id = "canvasBack";
 		this.mainSVG.appendChild(this.canvasBack);
 
 		this.c0nnectorsList = [];
-		this.c0nnectorsGroup = this.svg.createElement("g");
+		this.c0nnectorsGroup = svg.createElement("g");
 		this.c0nnectorsGroup.classList.add("c0nnectorsGroup");
 		this.mainSVG.appendChild(this.c0nnectorsGroup);
 
 		this.n0desList = [];
-		this.n0desGroup = this.svg.createElement("g");
+		this.n0desGroup = svg.createElement("g");
 		this.n0desGroup.classList.add("n0desGroup");
 		this.mainSVG.appendChild(this.n0desGroup);
 
-		this.frameMouseMask = this.svg.createElement("path");
+		this.frameMouseMask = svg.createElement("path");
 		this.frameMouseMask.id = "frameMouseMask";
 		this.mainSVG.appendChild(this.frameMouseMask);
 
@@ -57,9 +58,9 @@ class N0deView {
 		console.log("Set-up working nøde: ", workingN0de);
 
 		// Create the outer nøde
-		this.outerN0de = new OuterN0de(this.svg, workingN0de.id, workingN0de.type, workingN0de.s0ckets);
+		this.outerN0de = new OuterN0de(workingN0de.id, workingN0de.type, workingN0de.s0ckets);
 		this.n0desList.push(this.outerN0de);
-		this.svg.addDef(this.outerN0de.getMask());
+		svg.addDef(this.outerN0de.getMask());
 		this.mainSVG.appendChild(this.outerN0de.element);
 		this.outerN0de.fitToWindow([window.innerWidth, window.innerHeight]);
 		this.outerN0de.update();
@@ -98,7 +99,7 @@ class N0deView {
 			// add nøde to model
 			// set index to new array length - 1
 		}
-		let n0de = new InnerN0de(this.svg, id, type, position, s0ckets);
+		let n0de = new InnerN0de(id, type, position, s0ckets);
 		this.n0desList.push(n0de);
 		this.n0desGroup.appendChild(n0de.element);
 
@@ -116,7 +117,7 @@ class N0deView {
 	}
 
 	addC0nnector(fromS0cket, toS0cket) {
-		let c0nnector = new C0nnector(this.svg, fromS0cket, toS0cket);
+		let c0nnector = new C0nnector(fromS0cket, toS0cket);
 		this.c0nnectorsList.push(c0nnector);
 		this.c0nnectorsGroup.appendChild(c0nnector.element);
 	}

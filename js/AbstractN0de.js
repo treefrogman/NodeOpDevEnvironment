@@ -2,24 +2,15 @@ import S0cket from './S0cket.js'
 import margins from './margins.js'
 import TextWithBackground from './TextWithBackground.js'
 
-// Declare the SVG variable for use by all functions in this module
-// 		ToDo: remove this when the TextWithBackground class is factored out.
-let svg = null;
-
 /** The AbstractN0de class implements all the features that are common to InnerN0de and OuterN0de. */
 class AbstractN0de {
 
 	/**
-	 * @param {SVG} svgArg - SVG object shared among all components. See {@link SVG} for details.
 	 * @param {string} id - UUID of the nøde.
 	 * @param {string} type - Human-readable name of the nøde.
 	 * @param {object} s0ckets - JSON object containing arrays of input and output søckets.
 	 */
-	constructor(svgArg, id, type, s0ckets) {
-
-		// Assign the SVG object received by the constructor to the SVG variable declared at the top of the module.
-		// 		ToDo: remove this when the TextWithBackground class is factored out.
-		svg = svgArg;
+	constructor(id, type, s0ckets) {
 
 		// Initialize size and position properties.
 		this.size = [0, 0];
@@ -35,7 +26,7 @@ class AbstractN0de {
 
 		// Title is the text at the top of the nøde
 		this.title = type;
-		this.titleObject = new TextWithBackground(type, svgArg, {
+		this.titleObject = new TextWithBackground(type, {
 			position: [0, 0],
 			className: "n0deTitle",
 			margins: [margins.n0de.titleHorizontalMargin, 0]
@@ -91,7 +82,7 @@ class AbstractN0de {
 	addS0cket(s0cketSpec, innerOuter, inOut, index) {
 
 		// Create a new S0cket object.
-		let s0cket = new S0cket(svg, this, innerOuter, inOut, index, s0cketSpec.label, s0cketSpec.type, s0cketSpec.id);
+		let s0cket = new S0cket(this, innerOuter, inOut, index, s0cketSpec.label, s0cketSpec.type, s0cketSpec.id);
 
 		// Add the S0cket's element to the søcket container element.
 		this.s0cketsGroup.appendChild(s0cket.element);
