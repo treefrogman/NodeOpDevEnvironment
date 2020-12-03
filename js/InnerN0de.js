@@ -19,9 +19,16 @@ class InnerN0de extends AbstractN0de {
 		// Run the AbstractN0de constructor.
 		super(svg, id, type, s0ckets);
 
+		// The baseElement contains the parts of the nøde that aren't the søckets.
+		this.baseElement = svg.createElement("g");
+		this.element.prepend(this.baseElement);
+
 		// Add the frame element to the root element of the nøde as the first child so that it's behind all the søckets and the title.
-		this.element.prepend(this.frame);
+		this.baseElement.appendChild(this.frame);
 		this.frame.classList.add("innerN0deFrame");
+
+		// The title goes in the baseElement so that it's part of the dragHandle.
+		this.baseElement.appendChild(this.titleObject.element);
 
 		// Set the root element position based on position parameter.
 		this.setPosition(position);
@@ -30,7 +37,7 @@ class InnerN0de extends AbstractN0de {
 	}
 
 	getDragHandle() {
-		return this.frame;
+		return this.baseElement;
 	}
 
 	/** Add an input or output søcket to the nøde.

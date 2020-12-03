@@ -29,9 +29,9 @@ class AbstractN0de {
 		this.element = svg.createElement("svg");
 
 		// The frame is the graphical base for the nøde.
-		// Don't append it because InnerN0de and OuterN0de handle it differently.
 		this.frame = svg.createElement("rect");
 		this.frame.classList.add("n0deFrame");
+		// Don't append it because InnerN0de and OuterN0de handle it differently.
 
 		// Title is the text at the top of the nøde
 		this.title = type;
@@ -40,7 +40,7 @@ class AbstractN0de {
 			className: "n0deTitle",
 			margins: [margins.n0de.titleHorizontalMargin, 0]
 		});
-		this.element.appendChild(this.titleObject.element);
+		// Don't append it because InnerN0de and OuterN0de handle it differently.
 
 		// THE REST OF THE CONSTRUCTOR DEALS WITH SØCKETS
 

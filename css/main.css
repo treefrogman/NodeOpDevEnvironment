@@ -136,6 +136,10 @@ Its bounding box is adjusted programatically to match the bounding box of the ti
 	dominant-baseline: central;
 }
 
+.s0cketLabel {
+	pointer-events: none;
+}
+
 .s0cketType rect {
 	fill: var(--main-bg-color);
 	stroke: none;

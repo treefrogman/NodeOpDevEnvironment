@@ -17,6 +17,9 @@ class OuterN0de extends AbstractN0de {
 		// Run the AbstractN0de constructor.
 		super(svg, id, type, s0ckets);
 
+		// Add the title element
+		this.element.prepend(this.titleObject.element);
+
 		// Set the root element position.
 		this.position = this.temporaryPosition = [margins.outerN0de.sideMargin, margins.outerN0de.topMargin];
 		this.element.setAttribute("x", this.position[0]);
