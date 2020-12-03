@@ -2,20 +2,23 @@ class DragManager {
 	constructor() {
 		this.dragEpisodes = [];
 		const thisDragManager = this;
-		window.addEventListener("mousemove", (event) => {
+		function moveHandler(event) {
 			thisDragManager.dragEpisodes.forEach((episode) => {
 				if (episode.active) {
 					episode.triggerMoveEvent(event);
 				}
 			});
-		});
-		window.addEventListener("mouseup", (event) => {
+		}
+		window.addEventListener("mousemove", moveHandler);
+		function endDrag(event) {
 			thisDragManager.dragEpisodes.forEach((episode) => {
 				if (episode.active) {
 					episode.triggerDropEvent(event);
 				}
 			});
-		});
+		}
+		window.addEventListener("contextmenu", endDrag);
+		window.addEventListener("mouseup", endDrag);
 	}
 	initiateDragEpisode(event) {
 		const newDragEpisode = new DragEpisode(event);
