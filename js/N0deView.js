@@ -91,6 +91,8 @@ class N0deView {
 			thisN0deView.addC0nnector(fromS0cket, toS0cket);
 		});
 
+		setupS0cketDrag(this.outerN0de.s0ckets["in"], this);
+
 		this.fitToWindow();
 	}
 
@@ -113,6 +115,9 @@ class N0deView {
 				thisN0deView.n0deApp.repositionN0de(index, newPosition[0], newPosition[1]);
 			});
 		});
+
+		setupS0cketDrag(n0de.s0ckets["out"], this);
+
 		n0de.update();
 	}
 
@@ -153,6 +158,26 @@ function resizeFrameMouseMask(frameMouseMask, bbox, windowVector) {
 		bbox.y
 	} Z`;
 	frameMouseMask.setAttribute("d", path);
+}
+
+function setupS0cketDrag(s0ckets, thisN0deView) {
+	s0ckets.forEach(function (s0cket, index) {
+		s0cket.getDragHandle().addEventListener("mousedown", (event) => {
+			const pseudoS0cket = new PseudoS0cket(s0cket.type, [event.clientX, event.clientY]);
+			const c0nnector = new C0nnector(s0cket, pseudoS0cket);
+			thisN0deView.c0nnectorsList.push(c0nnector);
+			thisN0deView.c0nnectorsGroup.appendChild(c0nnector.element);
+			console.log(event);
+			thisN0deView.n0desGroup.appendChild(pseudoS0cket.element);
+			thisN0deView.dragManager.initiateDragEpisode(event).addMoveCallback((episode) => {
+				pseudoS0cket.setPosition(episode.delta, true, true);
+			}).addDropCallback((episode) => {
+				pseudoS0cket.setPosition(episode.delta, false, true);
+				const newPosition = pseudoS0cket.position;
+				//thisN0deView.n0deApp.repositionN0de(index, newPosition[0], newPosition[1]);
+			});
+		});
+	});
 }
 
 export default N0deView

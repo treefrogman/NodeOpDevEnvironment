@@ -56,6 +56,10 @@ class S0cket {
 		this.element.appendChild(this.clickZone);
 	}
 
+	getDragHandle() {
+		return this.clickZone;
+	}
+
 	/** Set the position of the søcket.
 	 * @param {array} position - X and Y coordinates of the søcket, as an array.
 	 * @memberof S0cket
@@ -64,6 +68,11 @@ class S0cket {
 		this.position = position;
 		this.element.setAttribute("x", position[0]);
 		this.element.setAttribute("y", position[1]);
+	}
+
+	getClientPosition() {
+		const n0dePosition = this.n0de.temporaryPosition;
+		return [this.position[0] + n0dePosition[0], this.position[1] + n0dePosition[1]];
 	}
 
 	registerC0nnector(c0nnector) {

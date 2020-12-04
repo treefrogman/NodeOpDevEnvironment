@@ -22,12 +22,12 @@ class C0nnector {
 	 * @memberof C0nnector
 	 */
 	refresh() {
-		let n0de1Postion = this.fromS0cket.n0de.temporaryPosition;
-		this.element.setAttribute("x1", this.fromS0cket.position[0] + n0de1Postion[0]);
-		this.element.setAttribute("y1", this.fromS0cket.position[1] + n0de1Postion[1]);
-		let n0de2Position = this.toS0cket.n0de.temporaryPosition;
-		this.element.setAttribute("x2", this.toS0cket.position[0] + n0de2Position[0]);
-		this.element.setAttribute("y2", this.toS0cket.position[1] + n0de2Position[1]);
+		const fromS0cketPosition = this.fromS0cket.getClientPosition();
+		this.element.setAttribute("x1", fromS0cketPosition[0]);
+		this.element.setAttribute("y1", fromS0cketPosition[1]);
+		const toS0cketPosition = this.toS0cket.getClientPosition();
+		this.element.setAttribute("x2", toS0cketPosition[0]);
+		this.element.setAttribute("y2", toS0cketPosition[1]);
 	}
 }
 

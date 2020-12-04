@@ -11,20 +11,18 @@ Please take a look at [the visual interface in its current form](https://treefro
 —Attribution disputed
 
 ### Here's a rough sequence of action items that should build well upon each other:
-- [ ] Implement or import a drag-and-drop framework that can handle all the use-cases outlined below
-- Should allow grabbing an object and scrolling the page, while the object you're holding stays put
--  Should allow dragging off the edge of the screen to automatically scroll
+- [x] **Implement** ~~or import~~ a drag-and-drop framework that can handle all the use-cases outlined below
+    - [ ] Should allow grabbing an object and scrolling the page, while the object you're holding stays put
+    - [ ] Should allow dragging off the edge of the screen to automatically scroll
     - I have rarely if ever experienced a smooth implementation of this feature, let's see if we can't do better
-- [ ] Make nødes draggable
-- Update the Model with the nøde's new position
-- [ ] Make søckets draggable
-- The original søcket stays put
-- Dragging produces a pseudo-søcket and a cønnector
+- [x] Make nødes draggable
+    - [ ] Update the Model with the nøde's new position
+- [x] Make søckets draggable
+    - [x] The original søcket stays put
+    - [x] Dragging produces a pseudo-søcket and a cønnector
 - [ ] Make pseudo-søckets snap to eligible søckets
-- If not snapped to an eligible søcket: (one of these results, perhaps configurable as optional behavior)
-    - Remove pseudo-søcket and cønnector
-    - Leave pseudo-søcket floating, can be dragged again to snap it on
-    - Create a new nøde where the pseudo-søcket was dropped
+- If not snapped to an eligible søcket, create a pseudo-nøde where the pseudo-søcket was dropped
+    - Pseudo-nøde offers selection interface to choose what nøde to put there
 - [ ] When a pseudo-søcket is dropped on an eligible søcket
 - Remove the pseudo-søcket
 - Connect the cønnector to the eligible søcket
@@ -44,6 +42,7 @@ Please take a look at [the visual interface in its current form](https://treefro
 - [ ] Implement renaming of nødes
 - [ ] Implement relabeling of søckets
 - [ ] Implement choosing of søcket types
+- [ ] Implement adding and removing søckets
 
 ## License
 I want Nøde to be open source. Currently it is not because I have not chosen a license for it. I want to choose the license carefully because I envision a profit model for professional or private use that coexists with free access for open source uses.
