@@ -52,7 +52,7 @@ class N0deModel {
 		const thisFetchJSON = this;
 		this.fetchedJSON = fetch(jsonFile).then(response => response.json()).then(json => {
 			console.log(json);
-			let ids = Object.keys(json);
+			const ids = Object.keys(json);
 			ids.forEach(id => {
 				if (!thisFetchJSON.n0desList[id]) {
 					thisFetchJSON.n0desList[id] = json[id];

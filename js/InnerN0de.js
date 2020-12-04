@@ -71,20 +71,20 @@ class InnerN0de extends AbstractN0de {
 		// CALCULATE NEW WIDTH
 		// Make an array of the total widths of each row by iterating over ALL the søckets (both input and output)
 		// and adding their widths to their respective rows.
-		let s0cketWidths = [];
+		const s0cketWidths = [];
 		[...this.s0ckets.in, ...this.s0ckets.out].forEach(function (s0cket) {
 			s0cketWidths[s0cket.index] = (s0cketWidths[s0cket.index] || 0) + s0cket.getLabelWidth();
 		});
 		// Find the widest out of all the rows and the title.
-		let maxWidth = Math.max(...s0cketWidths, this.titleObject.bbox.width);
+		const maxWidth = Math.max(...s0cketWidths, this.titleObject.bbox.width);
 		// Round up to an integer and add space.
-		let newWidth = Math.ceil(maxWidth) + margins.s0ckets.horizontalSpacing;
+		const newWidth = Math.ceil(maxWidth) + margins.s0ckets.horizontalSpacing;
 
 		// CALCULATE NEW HEIGHT
 		// How many rows of søckets are there?
-		let maxHeight = Math.max(this.s0ckets.in.length, this.s0ckets.out.length);
+		const maxHeight = Math.max(this.s0ckets.in.length, this.s0ckets.out.length);
 		// Multiply rows by preset spacing and round up to an integer.
-		let newHeight = Math.ceil(maxHeight * margins.s0ckets.verticalSpacing);
+		const newHeight = Math.ceil(maxHeight * margins.s0ckets.verticalSpacing);
 
 		// Apply the new width and height.
 		this.resize([newWidth, newHeight]);

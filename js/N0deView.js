@@ -66,28 +66,28 @@ class N0deView {
 		this.outerN0de.update();
 
 		//
-		let implementation = workingN0de["implementation"];
+		const implementation = workingN0de["implementation"];
 		const thisN0deView = this;
 
 		// Iterate over inner nødes
-		let innerN0des = implementation["n0des"];
+		const innerN0des = implementation["n0des"];
 		innerN0des.forEach(function (innerN0de, index) {
-			let n0deID = innerN0de["id"];
-			let type = innerN0de["type"];
-			let position = innerN0de["position"];
-			let s0ckets = innerN0de["s0ckets"];
+			const n0deID = innerN0de["id"];
+			const type = innerN0de["type"];
+			const position = innerN0de["position"];
+			const s0ckets = innerN0de["s0ckets"];
 			thisN0deView.addN0de(n0deID, type, position, s0ckets, index);
 		});
 
 		// Iterate over cønnectors
-		let c0nnectors = implementation["c0nnectors"];
+		const c0nnectors = implementation["c0nnectors"];
 		c0nnectors.forEach(function (c0nnector) {
-			let inAddress = c0nnector["in"];
-			let outAddress = c0nnector["out"];
-			let fromS0cketInOut = ["in", "out"][1 * (inAddress[0] > 0)];
-			let fromS0cket = thisN0deView.n0desList[inAddress[0]].getS0cket(fromS0cketInOut, inAddress[1]);
-			let toS0cketInOut = ["out", "in"][1 * (outAddress[0] > 0)];
-			let toS0cket = thisN0deView.n0desList[outAddress[0]].getS0cket(toS0cketInOut, outAddress[1]);
+			const inAddress = c0nnector["in"];
+			const outAddress = c0nnector["out"];
+			const fromS0cketInOut = ["in", "out"][1 * (inAddress[0] > 0)];
+			const fromS0cket = thisN0deView.n0desList[inAddress[0]].getS0cket(fromS0cketInOut, inAddress[1]);
+			const toS0cketInOut = ["out", "in"][1 * (outAddress[0] > 0)];
+			const toS0cket = thisN0deView.n0desList[outAddress[0]].getS0cket(toS0cketInOut, outAddress[1]);
 			thisN0deView.addC0nnector(fromS0cket, toS0cket);
 		});
 
@@ -101,7 +101,7 @@ class N0deView {
 			// add nøde to model
 			// set index to new array length - 1
 		}
-		let n0de = new InnerN0de(id, type, position, s0ckets);
+		const n0de = new InnerN0de(id, type, position, s0ckets);
 		this.n0desList.push(n0de);
 		this.n0desGroup.appendChild(n0de.element);
 
@@ -111,7 +111,7 @@ class N0deView {
 				n0de.setPosition(episode.delta, true, true);
 			}).addDropCallback((episode) => {
 				n0de.setPosition(episode.delta, false, true);
-				let newPosition = n0de.position;
+				const newPosition = n0de.position;
 				thisN0deView.n0deApp.repositionN0de(index, newPosition[0], newPosition[1]);
 			});
 		});
@@ -122,13 +122,13 @@ class N0deView {
 	}
 
 	addC0nnector(fromS0cket, toS0cket) {
-		let c0nnector = new C0nnector(fromS0cket, toS0cket);
+		const c0nnector = new C0nnector(fromS0cket, toS0cket);
 		this.c0nnectorsList.push(c0nnector);
 		this.c0nnectorsGroup.appendChild(c0nnector.element);
 	}
 
 	fitToWindow() {
-		let windowVector = [window.innerWidth, window.innerHeight];
+		const windowVector = [window.innerWidth, window.innerHeight];
 		this.mainSVG.setAttribute("width", windowVector[0]);
 		this.mainSVG.setAttribute("height", windowVector[1]);
 		this.fullScreenRect.setAttribute("width", windowVector[0]);
@@ -146,7 +146,7 @@ class N0deView {
 }
 
 function resizeFrameMouseMask(frameMouseMask, bbox, windowVector) {
-	let path = `M0,0 H${
+	const path = `M0,0 H${
 		windowVector[0]
 	} V${
 		windowVector[1]

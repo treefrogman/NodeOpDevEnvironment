@@ -46,8 +46,8 @@ class S0cket {
 
 		// CLICK HITBOX
 		this.clickZone = svg.createElement("rect");
-		let widthHeight = margins.s0ckets.verticalSpacing;
-		let topLeft = -widthHeight / 2;
+		const widthHeight = margins.s0ckets.verticalSpacing;
+		const topLeft = -widthHeight / 2;
 		this.clickZone.setAttribute("x", topLeft);
 		this.clickZone.setAttribute("y", topLeft);
 		this.clickZone.setAttribute("width", widthHeight);
@@ -110,11 +110,11 @@ function whichSideOfS0cketToDrawTextOn(labelType, inOut, innerOuter) {
 function drawS0cketLabel(text, inOut, innerOuter) {
 
 	// Create and populate the text element
-	let textElement = svg.createElement("text");
+	const textElement = svg.createElement("text");
 	textElement.textContent = text;
 
 	// Position the text
-	let textSide = whichSideOfS0cketToDrawTextOn("label", inOut, innerOuter);
+	const textSide = whichSideOfS0cketToDrawTextOn("label", inOut, innerOuter);
 	textElement.setAttribute("text-anchor", ["end", "start"][textSide]);
 	textElement.setAttribute("x", margins.s0ckets.labelHorizontalMargin * [-1, 1][textSide]);
 
@@ -126,11 +126,11 @@ function drawS0cketLabel(text, inOut, innerOuter) {
 function drawS0cketType(text, inOut, innerOuter) {
 
 	// Determine positioning of the text
-	let textSide = whichSideOfS0cketToDrawTextOn("type", inOut, innerOuter);
+	const textSide = whichSideOfS0cketToDrawTextOn("type", inOut, innerOuter);
 
 	// Create the textWithBackground element
-	let textAnchorPosition = [margins.s0ckets.typeHorizontalMargin * [-1, 1][textSide], 0];
-	let textWithBackground = new TextWithBackground(text, {
+	const textAnchorPosition = [margins.s0ckets.typeHorizontalMargin * [-1, 1][textSide], 0];
+	const textWithBackground = new TextWithBackground(text, {
 		position: textAnchorPosition,
 		className: "s0cketType",
 		margins: [0, 1],

@@ -25,9 +25,9 @@ class N0deApp {
 				};
 			},
 			s0cketMap: async function (s0cket) {
-				let id = s0cket["id"];
-				let n0de = await thisN0deApp.n0deModel.getN0de(id);
-				let mappedS0cket = {
+				const id = s0cket["id"];
+				const n0de = await thisN0deApp.n0deModel.getN0de(id);
+				const mappedS0cket = {
 					"label": s0cket["label"],
 					"type": n0de["type"],
 					"id": id
@@ -35,14 +35,14 @@ class N0deApp {
 				return mappedS0cket;
 			},
 			innerNodeMap: async function (n0deInstance) {
-				let id = n0deInstance["id"];
-				let n0de = await thisN0deApp.n0deModel.getN0de(id);
-				let innerN0deViewModel = await thisN0deApp.viewModelTransformers.makeN0deViewModel(n0de, id);
+				const id = n0deInstance["id"];
+				const n0de = await thisN0deApp.n0deModel.getN0de(id);
+				const innerN0deViewModel = await thisN0deApp.viewModelTransformers.makeN0deViewModel(n0de, id);
 				innerN0deViewModel["position"] = n0deInstance["position"];
 				return innerN0deViewModel;
 			},
 			asyncMap: async function (array, callback) {
-				let result = [];
+				const result = [];
 				for (let index = 0; index < array.length; index++) {
 					result.push(await callback(array[index], index, array));
 				}
@@ -52,7 +52,7 @@ class N0deApp {
 	}
 	async examineN0de(id) {
 		this.workingN0deId = id;
-		let n0de = await this.n0deModel.getN0de(id);
+		const n0de = await this.n0deModel.getN0de(id);
 		console.log("Examine nøde: ", n0de);
 		this.workingN0deViewModel = await this.viewModelTransformers.makeN0deViewModel(n0de, id);
 		console.log("this.workingN0deViewModel = ", this.workingN0deViewModel);

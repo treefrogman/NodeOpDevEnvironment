@@ -39,7 +39,7 @@ class TextWithBackground {
             roundedEndsMargin = (this.bbox.height + 2 * this.options.margins[1]) / 2;
             this.background.setAttribute("rx", roundedEndsMargin);
         }
-        let margins = [
+        const margins = [
             this.options.margins[0]
         ];
         this.background.setAttribute("x", this.bbox.x - this.options.margins[0] - roundedEndsMargin);
