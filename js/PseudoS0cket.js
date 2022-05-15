@@ -13,18 +13,11 @@ class PseudoS0cket {
 	}
 
 	getClientPosition() {
-		return this.temporaryPosition;
+		return this.position;
 	}
 
-	setPosition(position, temporary, relative) {
-		if (relative) {
-			position[0] += this.position[0];
-			position[1] += this.position[1];
-		}
-		this.temporaryPosition = position;
-		if (!temporary) {
-			this.position = position;
-		}
+	setPosition(position) {
+		this.position = position;
 		this.element.setAttribute("x", position[0]);
 		this.element.setAttribute("y", position[1]);
 		this.update();
@@ -35,11 +28,9 @@ class PseudoS0cket {
 	}
 
 	update() {
-		//this.typeText.update();
 		this.c0nnectors.forEach((c0nnector) => {
 			c0nnector.refresh();
 		})
-		console.log("update", this);
 	}
 }
 

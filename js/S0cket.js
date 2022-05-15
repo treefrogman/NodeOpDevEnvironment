@@ -71,7 +71,7 @@ class S0cket {
 	}
 
 	getClientPosition() {
-		const n0dePosition = this.n0de.temporaryPosition;
+		const n0dePosition = this.n0de.position;
 		return [this.position[0] + n0dePosition[0], this.position[1] + n0dePosition[1]];
 	}
 
@@ -92,7 +92,6 @@ class S0cket {
 		this.c0nnectors.forEach((c0nnector) => {
 			c0nnector.refresh();
 		})
-		console.log("update", this);
 	}
 }
 

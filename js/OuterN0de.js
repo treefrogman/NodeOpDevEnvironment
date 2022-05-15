@@ -20,7 +20,7 @@ class OuterN0de extends AbstractN0de {
 		this.element.prepend(this.titleObject.element);
 
 		// Set the root element position.
-		this.position = this.temporaryPosition = [margins.outerN0de.sideMargin, margins.outerN0de.topMargin];
+		this.position = [margins.outerN0de.sideMargin, margins.outerN0de.topMargin];
 		this.element.setAttribute("x", this.position[0]);
 		this.element.setAttribute("y", this.position[1]);
 		this.element.classList.add("outerN0de");

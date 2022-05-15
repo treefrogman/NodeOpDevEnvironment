@@ -13,10 +13,12 @@ class InnerN0de extends AbstractN0de {
 	 * @param {array} position - X and Y coordinates of the nøde, as an array.
 	 * @param {object} s0ckets - JSON object containing arrays of input and output søckets.
 	 */
-	constructor(id, type, position, s0ckets) {
+	constructor(id, index, type, position, s0ckets) {
 
 		// Run the AbstractN0de constructor.
 		super(id, type, s0ckets);
+
+		this.index = index;
 
 		// The baseElement contains the parts of the nøde that aren't the søckets.
 		this.baseElement = svg.createElement("g");
@@ -49,15 +51,8 @@ class InnerN0de extends AbstractN0de {
 		super.addS0cket(s0cketSpec, "inner", inOut, index);
 	}
 
-	setPosition(position, temporary, relative) {
-		if (relative) {
-			position[0] += this.position[0];
-			position[1] += this.position[1];
-		}
-		this.temporaryPosition = position;
-		if (!temporary) {
-			this.position = position;
-		}
+	setPosition(position) {
+		this.position = position;
 		this.element.setAttribute("x", position[0]);
 		this.element.setAttribute("y", position[1]);
 		this.update();

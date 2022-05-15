@@ -1,10 +1,13 @@
 class DragManager {
 	constructor() {
 		this.dragEpisodes = [];
+		this.dropTargets = {};
 		const thisDragManager = this;
 		function moveHandler(event) {
+			const dropTarget = thisDragManager.dropTargets[event.target.address];
 			thisDragManager.dragEpisodes.forEach((episode) => {
 				if (episode.active) {
+					episode.target = dropTarget;
 					episode.triggerMoveEvent(event);
 				}
 			});
@@ -25,7 +28,10 @@ class DragManager {
 		this.dragEpisodes.push(newDragEpisode);
 		return newDragEpisode;
 	}
-
+	registerDropTarget(targetElement, properties) {
+		targetElement.address = properties.targetAddress;
+		this.dropTargets[properties.targetAddress] = properties;
+	}
 }
 
 class DragEpisode {
@@ -43,7 +49,7 @@ class DragEpisode {
 	}
 
 	triggerMoveEvent(event) {
-		this.delta = [event.clientX - this.initiatingEvent.clientX, event.clientY - this.initiatingEvent.clientY];
+		this.clientPosition = [event.clientX, event.clientY];
 		const thisDragEpisode = this;
 		this.moveCallbacks.forEach((callback) => {
 			callback(thisDragEpisode);
@@ -56,7 +62,6 @@ class DragEpisode {
 	}
 
 	triggerDropEvent(event) {
-		this.delta = [event.clientX - this.initiatingEvent.clientX, event.clientY - this.initiatingEvent.clientY];
 		this.active = false;
 		const thisDragEpisode = this;
 		this.dropCallbacks.forEach((callback) => {
