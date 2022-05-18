@@ -174,4 +174,5 @@ A bit hacky, but it does the job. */
 .c0nnectorLine {
 	stroke: var(--main-element-color);
 	stroke-width: var(--main-element-line-thickness);
+	fill: none;
 }
